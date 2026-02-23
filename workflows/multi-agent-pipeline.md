@@ -71,6 +71,13 @@ What the Coordinator must include in each agent dispatch. Include only what is l
 - Last 3 entries from `AI-Dev-Shop-speckit/project-knowledge/learnings.md` (recent failure patterns)
 - Existing specs in `AI-Dev-Shop-speckit/specs/` (to avoid ID collisions, detect overlap, assign next FEAT number)
 
+**Integration contracts:** If the spec depends on another feature's API, data schema, or event contract, the Spec Agent must include an `## Integration Contracts` section in the spec listing:
+- Which features this spec depends on (by SPEC-ID)
+- The exact interface boundary: endpoint signatures, data shapes, or event names
+- Which ACs require the integration to be live
+
+The Coordinator records these dependencies in `.pipeline-state.md`. When all referenced features reach Done, the Coordinator may trigger an optional Integration Verification run against the combined system.
+
 ### Red-Team Agent (runs after Spec approval, before Architect dispatch)
 - Active spec (full content + hash) — must have zero [NEEDS CLARIFICATION] markers
 - `AI-Dev-Shop-speckit/project-knowledge/constitution.md` (for Constitution pre-flight)
@@ -162,6 +169,8 @@ Coordinator generates `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/tasks.md` 
 | Security finding (Critical/High) | Programmer | Full finding, mitigation steps; Security verifies after fix |
 | Security finding (Medium/Low) | Log and continue | — |
 | Refactor findings | Refactor Agent | Specific CR finding IDs marked Recommended |
+| Refactor proposals accepted by human | Programmer (refactor scope) | Accepted proposals with file refs, ADR constraints — no new TDD, no behavior changes, tests must stay green |
+| All integration-contract dependencies Done | Integration Verification (optional) | Integration contracts from each dependent spec, combined test suite |
 | Spec misalignment in code | Programmer or Spec Agent | Which requirement, what code does vs what spec says |
 
 ---
@@ -181,6 +190,29 @@ Coordinator generates `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/tasks.md` 
 | Architecture sign-off | Before tasks.md generation and TDD dispatch — requires clean Constitution Check | Is this ADR acceptable? Are all constitution exceptions justified? |
 | Convergence escalation | When iteration budget exhausted | Is the spec wrong? Is this a fundamental constraint? |
 | Security sign-off | Before merge/deploy | Accept, mitigate, or reject Critical/High findings |
+| Refactor review | After Refactor Agent delivers proposals | Accept or reject each proposal; accepted proposals are dispatched to Programmer |
+
+---
+
+## Done State
+
+A feature reaches **Done** when all of the following are true:
+1. All three human checkpoints cleared: spec approval, architecture sign-off, security sign-off
+2. All tests pass against the certified spec hash
+3. All Critical/High security findings are resolved, or accepted with documented rationale in `.pipeline-state.md`
+
+The Coordinator issues a **merge-ready summary** to the human:
+```
+MERGE-READY — <SPEC-ID> v<version>
+
+Spec:     <SPEC-ID> v<version> (hash: <hash>)
+Tests:    <N> passing, certified against hash <hash>
+ADR:      <path>
+Approvals: spec ✓  architecture ✓  security ✓
+Security: <"all resolved" | list of accepted-with-rationale findings>
+```
+
+The human decides whether to merge. The pipeline does not merge automatically.
 
 ---
 
