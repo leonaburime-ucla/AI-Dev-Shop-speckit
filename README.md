@@ -10,29 +10,25 @@ Copy the `AI-Dev-Shop-speckit/` folder into your project root:
 cp -r AI-Dev-Shop-speckit/ your-project/AI-Dev-Shop-speckit/
 ```
 
-**Verify required files are present before starting:**
-
-```
-AI-Dev-Shop-speckit/AGENTS.md                          ← must exist
-AI-Dev-Shop-speckit/CLAUDE.md                          ← must exist
-AI-Dev-Shop-speckit/project-knowledge/constitution.md  ← must exist (customize articles for your project)
-AI-Dev-Shop-speckit/project-knowledge/project_memory.md← fill in before first spec
-AI-Dev-Shop-speckit/templates/spec-template.md         ← must exist
-AI-Dev-Shop-speckit/templates/adr-template.md          ← must exist
-AI-Dev-Shop-speckit/templates/checklist-template.md    ← must exist
-AI-Dev-Shop-speckit/templates/tasks-template.md        ← must exist
-```
-
-Each tool has a file it reads automatically on startup. Add one line to the right one:
+Each tool has a file it reads automatically on startup. Add the following to the right one:
 
 **Claude Code** — add to `CLAUDE.md` at your project root (create if missing):
 ```
 Read `AI-Dev-Shop-speckit/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
 ```
 
-**Gemini CLI / OpenAI Codex** — add to `GEMINI.md` (Gemini) or `AGENTS.md` (Codex) at your project root:
+**Gemini CLI / OpenAI Codex** — add to `GEMINI.md` (Gemini) or `AGENTS.md` (Codex) at your project root. Paste the following into your root file:
 ```
 Read `AI-Dev-Shop-speckit/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
+
+# Mandatory Startup
+
+On the first user message in this repository (including greetings), before any reply:
+1. Open and read `AI-Dev-Shop-speckit/AGENTS.md`.
+2. Confirm compliance in the first response with: "Booted with AI-Dev-Shop-speckit/AGENTS.md loaded.", briefly list the 3 available Coordinator modes (Review Mode, Pipeline Mode, Direct Mode), and provide a short summary of what each mode does.
+3. If the file is missing or unreadable, state that explicitly and stop.
+
+Failure to perform Mandatory Startup is a blocking error. Do not proceed with task work until corrected.
 ```
 
 **Cursor** — add to `.cursor/rules/ai-dev-shop.mdc` (create if missing):
@@ -53,6 +49,19 @@ Multi-agent pipeline: see AI-Dev-Shop-speckit/AGENTS.md
 3. Type `/spec [description]` or say *"Act as Spec Agent. Here's what I want to build: [description]"*
 
 The Coordinator will route between agents, enforce convergence, and stop at human checkpoints.
+
+**Verify required files are present before starting:**
+
+```
+AI-Dev-Shop-speckit/AGENTS.md                          ← must exist
+AI-Dev-Shop-speckit/CLAUDE.md                          ← must exist
+AI-Dev-Shop-speckit/project-knowledge/constitution.md  ← must exist (customize articles for your project)
+AI-Dev-Shop-speckit/project-knowledge/project_memory.md← fill in before first spec
+AI-Dev-Shop-speckit/templates/spec-template.md         ← must exist
+AI-Dev-Shop-speckit/templates/adr-template.md          ← must exist
+AI-Dev-Shop-speckit/templates/checklist-template.md    ← must exist
+AI-Dev-Shop-speckit/templates/tasks-template.md        ← must exist
+```
 
 ## How It Works
 
