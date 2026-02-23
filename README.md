@@ -28,17 +28,11 @@ This toolkit deeply integrates concepts from [GitHub's spec-kit](https://github.
 
 ## Dropping This Into a New Project
 
-This folder can be renamed to anything. All internal path references use `AI-Dev-Shop-speckit/` as a prefix — the `AGENTS.md` Subfolder Install Shim maps this to whatever you name the folder (`<SHOP_ROOT>`).
-
-**Recommended setup:**
+Copy the folder into your project root:
 
 ```bash
-# Copy into your project root (rename as desired)
 cp -r AI-Dev-Shop-speckit/ your-project/AI-Dev-Shop-speckit/
-cd your-project
 ```
-
-If you rename the folder, update the shim note at the top of `AGENTS.md` to reflect the new name.
 
 **Verify required files are present before starting:**
 
@@ -51,7 +45,6 @@ AI-Dev-Shop-speckit/templates/spec-template.md         ← must exist
 AI-Dev-Shop-speckit/templates/adr-template.md          ← must exist
 AI-Dev-Shop-speckit/templates/checklist-template.md    ← must exist
 AI-Dev-Shop-speckit/templates/tasks-template.md        ← must exist
-AI-Dev-Shop-speckit/templates/commands/                ← copy to .claude/commands/ (see below)
 ```
 
 Each tool has a file it reads automatically on startup. Add one line to the right one:
@@ -59,10 +52,6 @@ Each tool has a file it reads automatically on startup. Add one line to the righ
 **Claude Code** — add to `CLAUDE.md` at your project root (create if missing):
 ```
 Read `AI-Dev-Shop-speckit/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
-```
-Then activate slash commands:
-```bash
-cp -r AI-Dev-Shop-speckit/templates/commands/ .claude/commands/
 ```
 
 **Gemini CLI** — add to `GEMINI.md` at your project root (create if missing):
