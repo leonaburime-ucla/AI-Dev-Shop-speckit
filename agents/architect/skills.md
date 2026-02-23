@@ -59,3 +59,16 @@ See `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` for system driv
 - Spec conflicts with required non-functional constraints
 - Legacy constraints invalidate the selected pattern
 - No candidate pattern satisfies the required risk profile
+
+## Directory Structure Decision (Required in Every ADR)
+The ADR must include an explicit section defining where `__specs__` and `__tests__` directories live, based on the chosen architecture pattern. This section is required before TDD or Programmer agents are dispatched.
+
+**Rules by pattern:**
+- **Vertical Slice / DDD / Feature-based:** specs and tests co-locate with the feature module. Example: `src/features/posts/__specs__/` and `src/features/posts/__tests__/`. This makes each feature a self-contained drop-in unit.
+- **Layered / Clean / Hexagonal:** specs live at feature level under a top-level `specs/` folder; tests mirror source structure under `__tests__/` at each layer.
+- **Modular Monolith:** specs and tests co-locate with the module they describe.
+- **Microservices:** each service has its own `__specs__/` and `__tests__/` at service root.
+
+The chosen placement must be stated in the ADR before handoff. If not stated, Coordinator must send back to Architect before dispatching TDD.
+
+**Why this matters:** specs and tests co-located with their module means the unit is fully self-contained. It can be added or removed without leaving orphaned files or breaking unrelated parts of the project.

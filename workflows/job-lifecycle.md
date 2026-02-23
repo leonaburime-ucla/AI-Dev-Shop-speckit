@@ -89,3 +89,12 @@ In `.pipeline-state.md`, update the Current Stage Detail block at every state tr
 ```
 
 When a job reaches `DONE`, move it to the Completed Stages table and clear the Current Stage Detail block for the next stage.
+
+---
+
+## Coordinator Modes and Job Lifecycle
+
+- Jobs only exist in **Pipeline Mode**. In Review Mode and Direct Mode, no jobs are created.
+- When user switches from Review Mode to Pipeline Mode, a new job is created at `QUEUED` state.
+- When user switches to Direct Mode, any in-progress jobs are `PAUSED` (not cancelled) — resumable on return to coordinator.
+- Debug mode does not affect job state — it only controls trace verbosity.

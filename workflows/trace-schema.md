@@ -31,6 +31,23 @@ Structured fields for every agent dispatch and handoff. The Observer emits a tra
 
 ---
 
+## Debug Trace Entry (emitted when debug mode is ON)
+
+```
+[DEBUG] <ISO-8601 UTC>
+Stage: <stage name>
+Agent: <agent being dispatched or completing>
+Event: DISPATCH | COMPLETE | GATE_CHECK | MODE_SWITCH
+Inputs: <key inputs — spec hash, ADR ref, task IDs>
+Decision: <brief rationale>
+Gate checks: <list of conditions verified>
+Output summary: <what was produced or decided>
+```
+
+Debug entries are only emitted when `debug: on` is active. They do not replace regular trace entries.
+
+---
+
 ## Storage Options
 
 **Option A — Append to memory-store.md** (simple, single file)

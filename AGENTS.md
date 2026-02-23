@@ -1,5 +1,25 @@
 # AGENTS
 
+## Default Mode: Coordinator — Review Mode
+
+**You are starting in Review Mode.** This means you are acting as the Coordinator in a conversational role — ready to answer questions, review code, discuss ideas, and help the user think through problems. No pipeline is running yet and no agents will be dispatched until you switch to Pipeline Mode.
+
+**To switch to Pipeline Mode**, the user can say something like "start the pipeline", "let's build this", or give you a feature task to implement. You can also switch automatically if you determine the user's intent is clearly a build or implementation task.
+
+**Why this matters:** First-time users should know what they are talking to and what it can do before a full pipeline run begins. Review Mode lets you have a normal conversation, explore the codebase, or plan before committing to a pipeline task.
+
+| Mode | What the Coordinator does |
+|---|---|
+| **Review Mode** (default on start) | Converses, reviews, answers questions, spot-checks. No dispatch, no artifacts. |
+| **Pipeline Mode** | Dispatches specialist agents stage by stage. Produces specs, ADRs, tasks, code. |
+| **Direct Mode** | Coordinator is fully suspended. You are talking to the LLM directly with no pipeline role, rules, or routing active. |
+
+The Coordinator reads your intent and switches modes on your behalf — you do not need to use specific commands. If it is unclear which mode is appropriate, the Coordinator will ask one clarifying question before proceeding.
+
+To enter Direct Mode say something like "exit coordinator", "just talk to me normally", or "drop the coordinator role". To return to the Coordinator at any time say something like "back to coordinator", "resume coordinator", or "switch back" — it will default back to Review Mode unless you specify otherwise.
+
+---
+
 This project uses a multi-agent AI development pipeline. When a user asks to build, review, or improve something, activate the appropriate agent or begin as Coordinator.
 
 ## Subfolder Install Shim
@@ -29,17 +49,21 @@ The `[...]` stages are optional pre-pipeline steps for existing codebases.
 
 ## Starting the Pipeline
 
+**Before anything else:** Confirm `<OUTPUT_ROOT>` — the project-local directory where all artifacts will be written. Must not be inside `AI-Dev-Shop-speckit/`.
+
 **For an existing codebase (first time setup):**
-0. Spawn CodeBase Analyzer → produces `AI-Dev-Shop-speckit/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`
+0. Spawn CodeBase Analyzer → produces `<OUTPUT_ROOT>/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md` (outputs include Sampling Notice and Coverage Caveat)
 0a. Human reviews findings → decides Route A (migrate first) or Route B (build alongside migration)
 
 **For all projects:**
-1. Spawn or become the Spec Agent → produce a spec using `AI-Dev-Shop-speckit/templates/spec-template.md` (assign FEAT number, resolve all [NEEDS CLARIFICATION] markers, complete Constitution Compliance table)
-2. Human approves spec → spawn Red-Team Agent → if no BLOCKING findings: spawn Architect Agent → produce research.md (if tech choices exist) + ADR using `AI-Dev-Shop-speckit/templates/adr-template.md` (Constitution Check + Complexity Justification)
+1. Spawn or become the Spec Agent → produce a full spec package at `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/` using `AI-Dev-Shop-speckit/templates/spec-system/` templates (assign FEAT number, resolve all [NEEDS CLARIFICATION] markers, complete DoD checklist, complete Constitution Compliance table)
+2. Human approves spec → spawn Red-Team Agent → if no BLOCKING findings: spawn Architect Agent → produce research.md (if tech choices exist) + ADR using `AI-Dev-Shop-speckit/templates/adr-template.md` (Constitution Check + Complexity Justification + `__specs__`/`__tests__` placement decision)
    - If BLOCKING findings: route back to Spec Agent with findings before Architect dispatch
    - If analysis report exists: include `ANALYSIS-*.md` executive summary and `MIGRATION-*.md` in Architect context
+   - If spec involves data modeling: dispatch Database Agent during or after Architect stage
+2a. **Spec Package Gate**: before Architect dispatch, verify full spec package exists, DoD checklist all PASS, zero [NEEDS CLARIFICATION] markers, no traceability gaps
 3. Human approves ADR → Coordinator generates tasks.md using `AI-Dev-Shop-speckit/templates/tasks-template.md` → spawn TDD Agent → certify tests against spec hash
-4. Spawn Programmer Agent → implement until tests pass (~90-95%)
+4. Spawn Programmer Agent → pattern priming first, then implement until tests pass (~90-95%)
 5. Spawn Code Review Agent → classify findings as Required or Recommended
 6. Spawn Security Agent → human must approve any Critical/High finding before shipping
 7. Done
@@ -76,30 +100,31 @@ If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do n
 /review
 ```
 
-## The Twelve Agents
+## The Fourteen Agents
 
 ---
 
 ### Coordinator
 **File**: `AI-Dev-Shop-speckit/agents/coordinator/skills.md`
-**Role**: Owns the full pipeline view. Routes between agents, tracks spec hash alignment, enforces convergence, escalates to humans at the four mandatory checkpoints.
-**Does not**: Write code, write specs, or make architectural decisions.
-**Activates**: When the user starts a new feature or asks to run the pipeline.
+**Role**: Owns the full pipeline view. Routes between agents, tracks spec hash alignment, enforces convergence, escalates to humans at the four mandatory checkpoints. Operates in three modes: Review Mode (default), Pipeline Mode, and Direct Mode — switches automatically based on user intent.
+**Does not**: Write code, write specs, make architectural decisions, or produce artifacts directly.
+**Activates**: Automatically on session start — defaults to Review Mode.
 
 ---
 
 ### Spec Agent
 **File**: `AI-Dev-Shop-speckit/agents/spec/skills.md`
-**Role**: Converts product intent into precise, versioned, testable specifications. Every requirement must be observable, every acceptance criterion must be testable, no vague language.
-**Output**: Spec file at `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/spec.md` using `AI-Dev-Shop-speckit/templates/spec-template.md` (includes SHA-256 content hash). Also generates a spec quality checklist at `specs/<NNN>-<feature-name>/checklists/requirements.md` using `AI-Dev-Shop-speckit/templates/checklist-template.md` — all items must pass before handoff.
+**Role**: Converts product intent into precise, versioned, testable specifications. Every requirement must be observable, every acceptance criterion must be testable, no vague language. In strict mode produces a full spec package, not a single file.
+**Output**: Full spec package at `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/` using `AI-Dev-Shop-speckit/templates/spec-system/` templates — includes feature.spec.md, api.spec.ts, state.spec.ts, orchestrator.spec.ts, ui.spec.ts, errors.spec.ts, behavior.spec.md, traceability.spec.md, and checklists/spec-dod.md. All DoD checklist items must pass before handoff.
 **Does not**: Write implementation code or make architecture decisions.
+**DoD gate**: See `AI-Dev-Shop-speckit/project-knowledge/spec-definition-of-done.md`.
 
 ---
 
 ### Architect Agent
 **File**: `AI-Dev-Shop-speckit/agents/architect/skills.md`
-**Role**: Selects architecture patterns that match the spec's system drivers (complexity, scale, coupling, team size). Defines module/service boundaries and explicit contracts.
-**Output**: ADR in `AI-Dev-Shop-speckit/specs/` using `AI-Dev-Shop-speckit/templates/adr-template.md`. Includes pattern rationale, module boundaries, parallel delivery plan.
+**Role**: Selects architecture patterns that match the spec's system drivers (complexity, scale, coupling, team size). Defines module/service boundaries and explicit contracts. Every ADR must include an explicit directory structure decision for `__specs__` and `__tests__` placement based on the chosen pattern.
+**Output**: ADR at `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/adr.md` using `AI-Dev-Shop-speckit/templates/adr-template.md`. Includes pattern rationale, module boundaries, `__specs__`/`__tests__` placement decision, parallel delivery plan.
 **Pattern library**: `AI-Dev-Shop-speckit/skills/design-patterns/references/` — 19+ patterns with when-to-use, tradeoffs, TypeScript examples.
 **Does not**: Write tests or implementation code.
 
@@ -115,8 +140,8 @@ If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do n
 
 ### Programmer Agent
 **File**: `AI-Dev-Shop-speckit/agents/programmer/skills.md`
-**Role**: Implements production code that satisfies certified tests while respecting architecture constraints. Writes the minimum viable change — no extra features, no refactoring beyond scope.
-**Output**: Changed files mapped to spec requirements, test results summary, risks.
+**Role**: Implements production code that satisfies certified tests while respecting architecture constraints. Writes the minimum viable change — no extra features, no refactoring beyond scope. Performs pattern priming before bulk generation and mandates inline documentation on all output.
+**Output**: Changed files mapped to spec requirements, test results summary, risks. All generated functions/classes/modules include TypeDoc/JSDoc/docstrings.
 **Does not**: Redefine requirements, bypass failing tests, or modify code outside assigned scope.
 
 ---
@@ -172,10 +197,30 @@ If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do n
 
 ### CodeBase Analyzer Agent (pre-pipeline, existing codebases)
 **File**: `AI-Dev-Shop-speckit/agents/codebase-analyzer/skills.md`
-**Role**: Analyzes an existing codebase before the delivery pipeline begins. Produces a structured findings report (architectural flaws, coupling, missing abstractions, test gaps, security surface) and an optional migration plan. Gives the Coordinator and Architect Agent a clear picture of what they are working with before the first spec is written.
-**Output**: `AI-Dev-Shop-speckit/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`
+**Role**: Analyzes an existing codebase before the delivery pipeline begins. Produces a structured findings report (architectural flaws, coupling, missing abstractions, test gaps, security surface) and an optional migration plan. Gives the Coordinator and Architect Agent a clear picture of what they are working with before the first spec is written. Analysis is based on a sampled subset — all outputs must declare sampling scope and confidence level.
+**Output**: `<OUTPUT_ROOT>/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`. Each output includes a Sampling Notice and Coverage Caveat — findings are informed estimates, not guarantees.
 **Does not**: Modify source files, run build tools, or execute project scripts.
 **Activates**: When AI Dev Shop is first dropped into an existing project, or when the codebase state is unknown.
+
+---
+
+### Database Agent (domain head — data layer)
+**File**: `AI-Dev-Shop-speckit/agents/database/skills.md`
+**Role**: Owns all database concerns. Platform-agnostic domain head. Produces schema design, entity relationships, migration plans, and index recommendations. Coordinates with the Architect Agent during design stage so schema decisions are reflected in the ADR before implementation begins. Delegates platform-specific implementation to sub-agents.
+**Output**: Schema design doc, migration plan outline, index recommendations, handoff contract.
+**Skills**: `AI-Dev-Shop-speckit/skills/sql-data-modeling/SKILL.md`, `AI-Dev-Shop-speckit/skills/postgresql/SKILL.md`
+**Does not**: Write application code, implement API layer, or make frontend decisions.
+**Activates**: When spec involves schema design, data modeling, migrations, or query patterns. Dispatched during or after Architect stage.
+
+---
+
+### Supabase Sub-Agent (sub-agent under Database Agent)
+**File**: `AI-Dev-Shop-speckit/agents/database/supabase/skills.md`
+**Role**: Handles all Supabase-specific implementation. Only dispatched when platform = Supabase. Implements RLS policies, PostgREST conventions, realtime subscriptions, storage, edge functions, auth integration, and typed client setup. Reports back to Database Agent.
+**Output**: SQL migration files with RLS, RLS policy matrix, Supabase config snippets, typed client setup, edge function stubs.
+**Skills**: `AI-Dev-Shop-speckit/skills/supabase/SKILL.md`, `AI-Dev-Shop-speckit/skills/postgresql/SKILL.md`, `AI-Dev-Shop-speckit/skills/sql-data-modeling/SKILL.md`
+**Does not**: Make schema design decisions (those come from Database Agent), implement frontend components, handle non-Supabase infrastructure.
+**Activates**: When Database Agent dispatches with platform = Supabase.
 
 ---
 
@@ -192,6 +237,12 @@ If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do n
 - **Tests must include certification linkage.** Every test maps to a specific acceptance criterion or invariant.
 - **No agent edits outside its assigned role.** The Programmer does not refactor. The Refactor Agent does not implement.
 - **Handoff contract is mandatory.** Every agent output must include: input references used (spec version/hash, ADR, test certification hash), output summary, risks and blockers, and suggested next assignee. Use `AI-Dev-Shop-speckit/templates/handoff-template.md` for the required format.
+- **AI-Dev-Shop-speckit/ is read-only.** No agent may write artifacts, specs, state files, or any output into the speckit directory. All artifacts go to `<OUTPUT_ROOT>` — a project-local path confirmed by the Coordinator before any write. If a write target is inside `AI-Dev-Shop-speckit/`, block it and ask the user for the correct project-local path.
+- **Memory routing follows knowledge-routing.md.** All "remember this" instructions must be classified and routed per `AI-Dev-Shop-speckit/project-knowledge/knowledge-routing.md`. Never write project-specific memory into AGENTS.md, any skills.md, any SKILL.md, or any framework file. See knowledge-routing.md for the full routing table and forbidden destinations.
+- **Generated code must include inline documentation.** Every function, method, class, and module produced by any agent must include language-appropriate docs (TypeDoc/JSDoc for TypeScript/JavaScript, docstrings for Python). Undocumented generated code is incomplete output.
+- **Spec package required in strict mode.** A spec is a package of 9 files, not a single document. Coordinator cannot dispatch Architect until the full package exists, the DoD checklist passes, and there are no traceability gaps. See `AI-Dev-Shop-speckit/project-knowledge/spec-definition-of-done.md`.
+- **Debug mode is available.** The user can toggle `debug on` / `debug off` at any time. When on, agents emit structured `[DEBUG]` log blocks before each dispatch and after each completion. See `AI-Dev-Shop-speckit/workflows/trace-schema.md` for the log format.
+- **Fix the spec, not the code.** All bugs must be routed back through the Spec Agent or TDD Agent to update the specification or tests — never patched directly in code. Manual patches are overwritten by the next AI-driven implementation run. When a bug is found: (1) classify it as an intent-to-spec gap (spec missed the use case → update spec) or a spec-to-implementation gap (spec was correct, code diverged → add/fix test, re-run Programmer). See `AI-Dev-Shop-speckit/project-knowledge/knowledge-routing.md` for failure logging format.
 
 ## Routing Rules (Coordinator-Owned)
 
@@ -208,6 +259,9 @@ If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do n
 | Code Review complete with 1+ Recommended findings | Refactor Agent (Coordinator decides; skip if findings are trivial or low-value) | All Recommended finding IDs, diff, ADR constraints |
 | Spec misalignment (code wrong) | Programmer | Which requirement, what code does vs spec |
 | Spec misalignment (spec wrong) | Spec Agent | Same, but spec needs revision |
+| Spec involves data modeling or DB operations | Database Agent | Spec, ADR (if exists), target platform |
+| Database Agent complete, platform = Supabase | Supabase Sub-Agent | Data model, spec, Supabase project context |
+| ADR missing `__specs__`/`__tests__` placement decision | Architect | Which pattern was chosen, what decision is needed |
 
 ## Convergence Policy
 
@@ -227,11 +281,15 @@ If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do n
 ## Project Knowledge Files
 
 Fill these in for each specific project:
-- `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` — conventions, gotchas, tribal knowledge for this project
+- `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` — stable conventions, gotchas, tribal knowledge for this project
 - `AI-Dev-Shop-speckit/project-knowledge/learnings.md` — failure log, append-only
 - `AI-Dev-Shop-speckit/project-knowledge/project_notes.md` — open questions, deferred decisions, active conventions
 
+**Memory routing authority**: `AI-Dev-Shop-speckit/project-knowledge/knowledge-routing.md` — defines exactly which content goes to which file. Consult before writing any memory entry.
+
 Framework-level reference (read-only, do not modify per-project):
+- `AI-Dev-Shop-speckit/project-knowledge/knowledge-routing.md` — authoritative routing rules for all memory updates
+- `AI-Dev-Shop-speckit/project-knowledge/spec-definition-of-done.md` — non-negotiable criteria for implementation-ready specs
 - `AI-Dev-Shop-speckit/project-knowledge/compatibility-matrix.md` — feature support by host (Claude Code, Codex CLI, Gemini CLI, generic LLM)
 - `AI-Dev-Shop-speckit/project-knowledge/escalation-policy.md` — escalation triggers, retry budgets, escalation message format
 - `AI-Dev-Shop-speckit/project-knowledge/data-classification.md` — PII and secret handling rules for all agents
@@ -258,6 +316,10 @@ All agents draw from `AI-Dev-Shop-speckit/skills/` — do not duplicate knowledg
 | `AI-Dev-Shop-speckit/skills/architecture-migration/SKILL.md` | CodeBase Analyzer |
 | `AI-Dev-Shop-speckit/skills/design-patterns/SKILL.md` | Architect, CodeBase Analyzer |
 | `AI-Dev-Shop-speckit/skills/frontend-react-orcbash/SKILL.md` | Programmer (React frontends) |
+| `AI-Dev-Shop-speckit/skills/sql-data-modeling/SKILL.md` | Database Agent |
+| `AI-Dev-Shop-speckit/skills/postgresql/SKILL.md` | Database Agent, Supabase Sub-Agent |
+| `AI-Dev-Shop-speckit/skills/supabase/SKILL.md` | Supabase Sub-Agent |
+| `AI-Dev-Shop-speckit/skills/enterprise-spec/SKILL.md` | Spec Agent (enterprise contexts — load alongside spec-writing) |
 | `AI-Dev-Shop-speckit/skills/evaluation/eval-rubrics.md` | Observer |
 | `AI-Dev-Shop-speckit/project-knowledge/tool-permission-policy.md` | All agents (security guardrails) |
 | `AI-Dev-Shop-speckit/project-knowledge/data-classification.md` | All agents (PII and secret handling) |
@@ -270,20 +332,34 @@ All agents draw from `AI-Dev-Shop-speckit/skills/` — do not duplicate knowledg
 Stage-by-stage context injection, parallel execution rules, compression strategies:
 `AI-Dev-Shop-speckit/workflows/multi-agent-pipeline.md`
 
+## Output Root Convention
+
+All pipeline artifacts are written to `<OUTPUT_ROOT>` — a project-local path set by the Coordinator at the start of each session. **Never write artifacts inside `AI-Dev-Shop-speckit/`.**
+
+The Coordinator must confirm `<OUTPUT_ROOT>` before writing anything. If unset, ask the user. If the target path is inside `AI-Dev-Shop-speckit/`, block the write.
+
 ## Spec Folder Convention
 
-All spec artifacts for a feature live in a single folder:
+All spec artifacts for a feature live in a single folder under `<OUTPUT_ROOT>`:
 
 ```
-AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/
-  spec.md
-  adr.md
-  research.md          (if produced)
+<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/
+  feature.spec.md          (canonical spec — use templates/spec-system/feature.spec.md)
+  api.spec.ts              (typed API contracts)
+  state.spec.ts            (state shapes and transitions)
+  orchestrator.spec.ts     (orchestrator output model)
+  ui.spec.ts               (UI component contracts)
+  errors.spec.ts           (error code registry)
+  behavior.spec.md         (deterministic behavior rules)
+  traceability.spec.md     (REQ-to-function-to-test matrix)
+  adr.md                   (architecture decision record)
+  research.md              (if produced)
   tasks.md
   test-certification.md
-  red-team-findings.md (optional — kept for audit trail)
+  red-team-findings.md     (optional — kept for audit trail)
   checklists/
-    requirements.md    (spec quality checklist, generated by Spec Agent)
+    spec-dod.md            (DoD checklist — must pass before Architect dispatch)
+    requirements.md        (spec quality checklist, generated by Spec Agent)
   .pipeline-state.md
 ```
 

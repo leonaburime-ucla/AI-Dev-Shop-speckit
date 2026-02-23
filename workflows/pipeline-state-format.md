@@ -13,6 +13,9 @@ Every pipeline run writes a `.pipeline-state.md` file to the active feature fold
 
 - run_id: <uuid or timestamp-based ID, e.g. 2026-02-22T14:30:00Z>
 - feature: <NNN>-<feature-name>
+- output_root: <absolute path to project-local output directory>
+- coordinator_mode: review | pipeline | direct
+- debug_mode: on | off
 - spec_version: <version>
 - spec_hash: <sha256>
 - started_at: <ISO-8601 UTC>
@@ -63,6 +66,39 @@ Every pipeline run writes a `.pipeline-state.md` file to the active feature fold
 
 ---
 
+## Field Reference: New Required and Optional Fields
+
+### `output_root` (required)
+
+```
+output_root: <absolute path to project-local output directory>
+```
+
+- Must be set before any artifact is written
+- Coordinator validates it is not inside `AI-Dev-Shop-speckit/`
+- All artifact paths in the pipeline are resolved relative to this root
+
+### `coordinator_mode` (required)
+
+```
+coordinator_mode: review | pipeline | direct
+```
+
+Tracks the Coordinator's current operating mode:
+- `pipeline` — full multi-agent pipeline is active; jobs are created and tracked
+- `review` — Coordinator is reviewing artifacts or answering questions; no jobs are created
+- `direct` — user is working directly with a single agent; in-progress jobs are PAUSED, not cancelled
+
+### `debug_mode` (optional, default: off)
+
+```
+debug_mode: on | off
+```
+
+When `on`, the Observer emits `[DEBUG]` trace entries at every dispatch, gate check, and mode switch. Does not affect job state or pipeline logic — controls trace verbosity only.
+
+---
+
 ## Stages (Valid Values for `current_stage`)
 
 | Stage | Description |
@@ -107,6 +143,9 @@ Every pipeline run writes a `.pipeline-state.md` file to the active feature fold
 
 - run_id: 2026-02-22T14:30:00Z
 - feature: 003-csv-invoice-export
+- output_root: /Users/la/projects/my-app
+- coordinator_mode: pipeline
+- debug_mode: off
 - spec_version: 1.1.0
 - spec_hash: sha256:a3f8c2d1e4b7091f56ac83e29d047b5f1c6e82a4d9f3071b2c5e8d4a7f1b6c9
 - started_at: 2026-02-22T14:30:00Z

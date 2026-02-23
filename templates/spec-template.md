@@ -1,3 +1,7 @@
+> WARNING: LEGACY/DEPRECATED IN STRICT MODE
+> This single-file template is the legacy format. In strict mode, use the full spec package under templates/spec-system/ instead.
+> This file is retained for backward compatibility only. New specs must use the spec-system package.
+
 # Spec: <feature-name>
 
 - Spec ID: SPEC-<id>

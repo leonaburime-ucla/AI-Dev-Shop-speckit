@@ -1,5 +1,20 @@
 # Multi-Agent Pipeline
 
+---
+
+## Pre-Pipeline: OUTPUT_ROOT Setup
+
+Before any pipeline stage begins, the Coordinator must confirm `<OUTPUT_ROOT>`.
+
+- **Default suggestion:** `<project-root>/` — wherever the user's project lives
+- **Hard rule:** `<OUTPUT_ROOT>` must NOT be inside `AI-Dev-Shop-speckit/`
+- All path references in this document use `<OUTPUT_ROOT>` as the base
+- Examples: `<OUTPUT_ROOT>/specs/001-feature-name/`, `<OUTPUT_ROOT>/.pipeline-state.md`
+- Coordinator writes `output_root` to `.pipeline-state.md` before writing any artifact
+- If `<OUTPUT_ROOT>` is not confirmed, Coordinator must ask the human before proceeding
+
+---
+
 ## Full Path (Existing Codebase)
 
 ```
@@ -37,7 +52,7 @@ Include in context:
 
 ### Using the Output
 
-The CodeBase Analyzer writes reports to `AI-Dev-Shop-speckit/codebase-analysis/`. Two ways to use them:
+The CodeBase Analyzer writes reports to `<OUTPUT_ROOT>/codebase-analysis/`. Two ways to use them:
 
 **Route A — Migration first, then build:**
 1. Review `MIGRATION-*.md` with human
@@ -54,8 +69,8 @@ Route B is faster to first feature delivery. Route A is safer for large legacy c
 ### Architect Agent Context When Analysis Exists
 
 When a codebase analysis report exists, include in Architect dispatch:
-- `AI-Dev-Shop-speckit/codebase-analysis/ANALYSIS-<id>.md` executive summary
-- `AI-Dev-Shop-speckit/codebase-analysis/MIGRATION-<id>.md` (if generated)
+- `<OUTPUT_ROOT>/codebase-analysis/ANALYSIS-<id>.md` executive summary
+- `<OUTPUT_ROOT>/codebase-analysis/MIGRATION-<id>.md` (if generated)
 - Flag: "Existing code has [Critical/High] findings — ADR must acknowledge migration path"
 
 ---
@@ -69,14 +84,14 @@ What the Coordinator must include in each agent dispatch. Include only what is l
 - `AI-Dev-Shop-speckit/project-knowledge/constitution.md` (for constitution compliance check and [NEEDS CLARIFICATION] detection)
 - Relevant entries from `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` (domain conventions)
 - Last 3 entries from `AI-Dev-Shop-speckit/project-knowledge/learnings.md` (recent failure patterns)
-- Existing specs in `AI-Dev-Shop-speckit/specs/` (to avoid ID collisions, detect overlap, assign next FEAT number)
+- Existing specs in `<OUTPUT_ROOT>/specs/` (to avoid ID collisions, detect overlap, assign next FEAT number)
 
 **Integration contracts:** If the spec depends on another feature's API, data schema, or event contract, the Spec Agent must include an `## Integration Contracts` section in the spec listing:
 - Which features this spec depends on (by SPEC-ID)
 - The exact interface boundary: endpoint signatures, data shapes, or event names
 - Which ACs require the integration to be live
 
-The Coordinator records these dependencies in `.pipeline-state.md`. When all referenced features reach Done, the Coordinator may trigger an optional Integration Verification run against the combined system.
+The Coordinator records these dependencies in `<OUTPUT_ROOT>/.pipeline-state.md`. When all referenced features reach Done, the Coordinator may trigger an optional Integration Verification run against the combined system.
 
 ### Red-Team Agent (runs after Spec approval, before Architect dispatch)
 - Active spec (full content + hash) — must have zero [NEEDS CLARIFICATION] markers
@@ -89,22 +104,56 @@ The Coordinator records these dependencies in `.pipeline-state.md`. When all ref
 - ADVISORY findings only → dispatch Architect, include advisory list in context
 - No findings → dispatch Architect normally
 
+### Spec Package Gate (Coordinator check before Architect dispatch)
+
+Coordinator cannot dispatch Architect until ALL of the following pass:
+
+- Full spec package exists at `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/`:
+  - `feature.spec.md`
+  - `api.spec.ts`
+  - `state.spec.ts`
+  - `orchestrator.spec.ts`
+  - `ui.spec.ts`
+  - `errors.spec.ts`
+  - `behavior.spec.md`
+  - `traceability.spec.md`
+  - `checklists/spec-dod.md`
+- `checklists/spec-dod.md`: all items PASS or NA
+- Zero unresolved [NEEDS CLARIFICATION] markers
+- No banned vague language violations
+- Traceability matrix has no gaps
+- Implementation-readiness gate passed
+
+Reference: `AI-Dev-Shop-speckit/project-knowledge/spec-definition-of-done.md`
+
 ### Architect Agent
 - Active spec file (full content + hash) — must be human-approved, zero unresolved [NEEDS CLARIFICATION] markers
 - Red-Team advisory findings (if any)
 - `AI-Dev-Shop-speckit/project-knowledge/constitution.md` (for Step 0 constitution check)
-- Current system boundaries (existing ADRs in `AI-Dev-Shop-speckit/specs/`)
+- Current system boundaries (existing ADRs in `<OUTPUT_ROOT>/specs/`)
 - Non-functional constraints from spec
 - `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md`
 - Relevant `AI-Dev-Shop-speckit/skills/design-patterns/references/` files (Coordinator selects based on system drivers in spec)
 
 **Architect outputs (in order):**
-1. `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/research.md` (if spec has technology choices) — using `AI-Dev-Shop-speckit/templates/research-template.md`
-2. `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/adr.md` — using `AI-Dev-Shop-speckit/templates/adr-template.md` (includes Constitution Check, Research Summary, Complexity Justification)
+1. `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/research.md` (if spec has technology choices) — using `AI-Dev-Shop-speckit/templates/research-template.md`
+2. `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/adr.md` — using `AI-Dev-Shop-speckit/templates/adr-template.md` (includes Constitution Check, Research Summary, Complexity Justification)
+
+### Database Agent (optional — dispatched alongside or immediately after Architect when spec involves data modeling)
+
+When the spec involves data modeling or database operations:
+- Coordinator dispatches Database Agent alongside Architect, or immediately after ADR is approved
+- Database Agent produces:
+  - Schema design
+  - Entity relationships
+  - Migration plan
+  - Index recommendations
+- If platform = Supabase: Database Agent dispatches to Supabase Sub-Agent for platform-specific implementation
+- Schema decisions must be reflected in the ADR before TDD is dispatched
 
 ### Coordinator: tasks.md Generation (after ADR human approval, before TDD dispatch)
 
-Coordinator generates `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/tasks.md` using `AI-Dev-Shop-speckit/templates/tasks-template.md`:
+Coordinator generates `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/tasks.md` using `AI-Dev-Shop-speckit/templates/tasks-template.md`:
 - Phases and story order derived from the ADR's parallel delivery plan and AC priorities (P1 first)
 - `[P]` markers based on the ADR's independent module boundaries
 - Checkpoint annotation after Phase 1 and after each story phase
@@ -116,12 +165,22 @@ Coordinator generates `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/tasks.md` 
 - `AI-Dev-Shop-speckit/skills/test-design/SKILL.md`
 - Relevant entries from `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` for the domain
 
+### Pattern Priming (runs between TDD dispatch and first Programmer dispatch)
+
+Before Programmer begins implementation:
+1. Programmer generates a seed example — one function, one component, or whatever is most relevant to the task
+2. Programmer explains to the user: what pattern priming is and why it is being done
+3. User approves or corrects — iterate until confirmed
+4. The confirmed pattern becomes the reference for all similar code in this session
+5. If the task changes significantly, pattern priming repeats for the new context
+
 ### Programmer Agent
 - Active spec (hash must match TDD certification hash)
 - Certified test names and which ACs they cover
 - ADR for the module (architecture constraints)
 - Relevant `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` entries
 - Handoff output from TDD Agent (summary only, not full session)
+- Confirmed pattern-priming reference (from Pattern Priming step above)
 
 ### TestRunner Agent
 - Test suite location
@@ -199,7 +258,7 @@ Coordinator generates `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/tasks.md` 
 A feature reaches **Done** when all of the following are true:
 1. All three human checkpoints cleared: spec approval, architecture sign-off, security sign-off
 2. All tests pass against the certified spec hash
-3. All Critical/High security findings are resolved, or accepted with documented rationale in `.pipeline-state.md`
+3. All Critical/High security findings are resolved, or accepted with documented rationale in `<OUTPUT_ROOT>/.pipeline-state.md`
 
 The Coordinator issues a **merge-ready summary** to the human:
 ```

@@ -45,3 +45,27 @@ Convert product intent into precise, versioned, testable specifications that bec
 - Always recompute hash when content changes
 - Never hand off with unresolved `[NEEDS CLARIFICATION]` markers — escalate to human if the ambiguity cannot be resolved from available context
 - The FEAT number must be assigned before handoff — never reuse an existing FEAT number
+
+## Strict Mode — Spec Package Output
+In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL of these files:
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/feature.spec.md` — canonical spec (use templates/spec-system/feature.spec.md)
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/api.spec.ts` — typed API contracts
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/state.spec.ts` — state shapes and transitions
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/orchestrator.spec.ts` — orchestrator output model
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/ui.spec.ts` — UI component contracts
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/errors.spec.ts` — error code registry
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/behavior.spec.md` — deterministic behavior rules
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/traceability.spec.md` — REQ-to-function-to-test matrix
+- `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/checklists/spec-dod.md` — filled DoD checklist with evidence
+
+## Spec Definition of Done Gate
+Before signaling handoff readiness:
+1. Every file in the spec package must exist
+2. Fill out checklists/spec-dod.md — every item must be PASS or NA with a reason
+3. Zero unresolved [NEEDS CLARIFICATION] markers
+4. No banned vague language (see project-knowledge/spec-definition-of-done.md for banned list)
+5. Implementation-readiness self-check: "Can a new developer implement this feature from these specs alone?" If no, continue working.
+6. Reference: project-knowledge/spec-definition-of-done.md
+
+## Output Path Rule
+All spec artifacts must be written to <OUTPUT_ROOT>/specs/ — NEVER inside AI-Dev-Shop-speckit/
