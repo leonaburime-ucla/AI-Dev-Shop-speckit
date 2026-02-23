@@ -2,33 +2,9 @@
 
 Drop this folder into any project. Point Claude Code, Codex, or Gemini at it. Tell the Coordinator what to build.
 
-## How It Works
-
-A structured multi-agent pipeline converts product intent into production code through specialized agents, each with a defined role, versioned operating procedure, and handoff contract.
-
-```
-Spec → Red-Team → Architect (research → constitution check → ADR) → tasks.md → TDD → Programmer → TestRunner → Code Review (+Refactor) → Security → Done
-```
-
-The Coordinator owns all routing. Agents never talk to each other directly. Specs are ground truth — everything downstream is traceable to a spec version and hash.
-
-Full operating manual: **`AI-Dev-Shop-speckit/AGENTS.md`**
-
-## Integration with github/spec-kit
-
-This toolkit deeply integrates concepts from [GitHub's spec-kit](https://github.com/github/spec-kit), a spec-driven development methodology. The following spec-kit ideas are incorporated and adapted for the multi-agent pipeline:
-
-- **Constitution framework** — `project-knowledge/constitution.md` with 8 governance articles. Every spec and ADR must comply. Violations are blocking escalations.
-- **[NEEDS CLARIFICATION] markers** — inline ambiguity flags in specs, with a structured `/clarify` command to resolve them before Architect dispatch.
-- **Quality checklist gate** — Spec Agent generates `checklists/requirements.md` per feature and validates the spec against it before handoff.
-- **Per-feature artifact folders** — all artifacts for a feature (spec, ADR, research, tasks, checklists) live in `specs/<NNN>-<feature-name>/`, matching spec-kit's directory convention.
-- **Slash commands** — `/spec`, `/clarify`, `/plan`, `/tasks`, `/implement`, `/review` as executable Claude Code commands (see `templates/commands/`).
-- **Research artifact** — Architect produces `research.md` before the ADR when technology choices are involved.
-- **tasks.md with [P] markers** — parallelizable task list generated from the ADR, with story phases ordered by AC priority.
-
 ## Dropping This Into a New Project
 
-Copy the folder into your project root:
+Copy the `AI-Dev-Shop-speckit/` folder into your project root:
 
 ```bash
 cp -r AI-Dev-Shop-speckit/ your-project/AI-Dev-Shop-speckit/
@@ -54,14 +30,9 @@ Each tool has a file it reads automatically on startup. Add one line to the righ
 Read `AI-Dev-Shop-speckit/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
 ```
 
-**Gemini CLI** — add to `GEMINI.md` at your project root (create if missing):
+**Gemini CLI / OpenAI Codex** — add to `GEMINI.md` (Gemini) or `AGENTS.md` (Codex) at your project root:
 ```
 Read `AI-Dev-Shop-speckit/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
-```
-
-**OpenAI Codex** — add to `AGENTS.md` at your project root (create if missing):
-```
-Multi-agent pipeline: see AI-Dev-Shop-speckit/AGENTS.md
 ```
 
 **Cursor** — add to `.cursor/rules/ai-dev-shop.mdc` (create if missing):
@@ -82,6 +53,30 @@ Multi-agent pipeline: see AI-Dev-Shop-speckit/AGENTS.md
 3. Type `/spec [description]` or say *"Act as Spec Agent. Here's what I want to build: [description]"*
 
 The Coordinator will route between agents, enforce convergence, and stop at human checkpoints.
+
+## How It Works
+
+A structured multi-agent pipeline converts product intent into production code through specialized agents, each with a defined role, versioned operating procedure, and handoff contract.
+
+```
+[CodeBase Analyzer] → [Architecture Migration Plan] → Spec → [Red-Team] → Architect (research → constitution check → ADR) → tasks.md → TDD → Programmer → TestRunner → Code Review (+Refactor) → Security → Done
+```
+
+`[...]` stages are optional but recommended when dropping into an existing codebase. The Coordinator owns all routing. Agents never talk to each other directly. Specs are ground truth — everything downstream is traceable to a spec version and hash.
+
+Full operating manual: **`AI-Dev-Shop-speckit/AGENTS.md`**
+
+## Integration with github/spec-kit
+
+This toolkit deeply integrates concepts from [GitHub's spec-kit](https://github.com/github/spec-kit), a spec-driven development methodology. The following spec-kit ideas are incorporated and adapted for the multi-agent pipeline:
+
+- **Constitution framework** — `project-knowledge/constitution.md` with 8 governance articles. Every spec and ADR must comply. Violations are blocking escalations.
+- **[NEEDS CLARIFICATION] markers** — inline ambiguity flags in specs, with a structured `/clarify` command to resolve them before Architect dispatch.
+- **Quality checklist gate** — Spec Agent generates `checklists/requirements.md` per feature and validates the spec against it before handoff.
+- **Per-feature artifact folders** — all artifacts for a feature (spec, ADR, research, tasks, checklists) live in `specs/<NNN>-<feature-name>/`, matching spec-kit's directory convention.
+- **Slash commands** — `/spec`, `/clarify`, `/plan`, `/tasks`, `/implement`, `/review` as executable Claude Code commands (see `templates/commands/`).
+- **Research artifact** — Architect produces `research.md` before the ADR when technology choices are involved.
+- **tasks.md with [P] markers** — parallelizable task list generated from the ADR, with story phases ordered by AC priority.
 
 ## Repository Layout
 
