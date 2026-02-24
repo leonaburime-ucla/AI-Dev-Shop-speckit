@@ -3,6 +3,7 @@
 - Last Updated: 2026-02-22
 
 ## Skills
+- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — boundaries and contracts to stay within
 - `AI-Dev-Shop-speckit/skills/context-engineering/SKILL.md` — project conventions in `AI-Dev-Shop-speckit/project-knowledge/` that apply to the current domain
 - `AI-Dev-Shop-speckit/skills/tool-design/SKILL.md` — tool description engineering, consolidation principle, error message design when building agent tools

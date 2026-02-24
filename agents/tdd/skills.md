@@ -3,6 +3,7 @@
 - Last Updated: 2026-02-22
 
 ## Skills
+- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `AI-Dev-Shop-speckit/skills/test-design/SKILL.md` — requirement-to-test matrix, test types, certification protocol, drift detection, anti-patterns, coverage targets
 - `AI-Dev-Shop-speckit/skills/spec-writing/SKILL.md` — spec anatomy and hash protocol (to verify inputs are valid before certifying tests)
 - `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — ADR format and API/Event Contract Summary structure; required for step 3b contract tests — reading which contracts the Architect defined and which testing approach (consumer-driven, schema validation, integration) was specified

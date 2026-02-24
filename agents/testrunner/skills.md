@@ -3,6 +3,7 @@
 - Last Updated: 2026-02-22
 
 ## Skills
+- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `AI-Dev-Shop-speckit/skills/test-design/SKILL.md` — test types, coverage expectations, failure clustering patterns
 - `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — pattern catalog and layer/boundary definitions; required for step 5 failure classification — distinguishing "architecture issue" (wrong layer, dependency direction violation) from "implementation bug" (logic error within correct structure)
 

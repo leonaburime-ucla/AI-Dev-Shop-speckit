@@ -3,6 +3,7 @@
 - Last Updated: 2026-02-22
 
 ## Skills
+- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `AI-Dev-Shop-speckit/skills/context-engineering/SKILL.md` — project knowledge file governance, skills.md versioning, context rot detection
 - `AI-Dev-Shop-speckit/skills/memory-systems/SKILL.md` — memory layer definitions, project knowledge file governance, invalidate-don't-discard policy, consolidation rules, retrieval strategies; required for all memory operations (FAILURE/DECISION/FACT/TRACE/QUALITY/CONSTITUTION entries) and for governing memory-store.md health over time
 - `AI-Dev-Shop-speckit/skills/coordination/SKILL.md` — routing logic and convergence policy (to detect when Coordinator is making suboptimal routing decisions)
