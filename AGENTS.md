@@ -61,7 +61,7 @@ The `[...]` stages are optional pre-pipeline steps for existing codebases.
 
 ## Starting the Pipeline
 
-**Before anything else:** Confirm `<SHOP_ROOT>` — the path to the AI Dev Shop toolkit folder (default: `<SHOP_ROOT>/`). All artifacts are written under `<SHOP_ROOT>/specs/` and `<SHOP_ROOT>/reports/`.
+**Before anything else:** Confirm `<SHOP_ROOT>` — the path to the AI Dev Shop toolkit folder (default: `AI-Dev-Shop-speckit/`). All artifacts are written under `<SHOP_ROOT>/specs/` and `<SHOP_ROOT>/reports/`.
 
 **For an existing codebase (first time):**
 0. Spawn CodeBase Analyzer → `<SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`

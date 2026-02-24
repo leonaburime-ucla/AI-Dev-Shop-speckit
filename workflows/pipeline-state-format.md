@@ -34,7 +34,7 @@ Every pipeline run writes a `.pipeline-state.md` file to the active feature fold
 
 - stage: tdd
 - dispatched_at: 2026-02-22T15:13:00Z
-- job_status: RUNNING | RETRYING | WAITING_FOR_HUMAN
+- job_status: QUEUED | DISPATCHED | RUNNING | DONE | RETRYING | FAILED | ESCALATED | WAITING_FOR_HUMAN | CANCELLED | ABORTED
 - retry_count: 0
 - last_output_summary: <one sentence>
 

@@ -12,7 +12,7 @@ Located at: `specs/<NNN>-<feature-name>/.pipeline-state.md`
 - [ ] `run_id` is present and non-empty
 - [ ] `spec_hash` is present — re-hash `feature.spec.md` and confirm it matches
 - [ ] `current_stage` is a valid stage name (see `<SHOP_ROOT>/workflows/pipeline-state-format.md`)
-- [ ] `status` is one of: `IN_PROGRESS` | `WAITING_FOR_HUMAN` | `COMPLETE` | `FAILED`
+- [ ] `status` is one of: `IN_PROGRESS` | `WAITING_FOR_HUMAN` | `COMPLETE` | `FAILED` | `CANCELLED` | `ABORTED`
 - [ ] `last_updated_at` timestamp is recent (if stale by days, the run may have been abandoned)
 
 ### Completed stages

@@ -37,7 +37,7 @@ Structured fields for every agent dispatch and handoff. The Observer emits a tra
 [DEBUG] <ISO-8601 UTC>
 Stage: <stage name>
 Agent: <agent being dispatched or completing>
-Event: DISPATCH | COMPLETE | GATE_CHECK | MODE_SWITCH
+Event: DISPATCHED | COMPLETED | GATE_CHECK | MODE_SWITCH
 Inputs: <key inputs — spec hash, ADR ref, task IDs>
 Decision: <brief rationale>
 Gate checks: <list of conditions verified>

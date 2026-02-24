@@ -96,5 +96,5 @@ When a job reaches `DONE`, move it to the Completed Stages table and clear the C
 
 - Jobs only exist in **Pipeline Mode**. In Review Mode and Direct Mode, no jobs are created.
 - When user switches from Review Mode to Pipeline Mode, a new job is created at `QUEUED` state.
-- When user switches to Direct Mode, any in-progress jobs are `PAUSED` (not cancelled) — resumable on return to coordinator.
+- When user switches to Direct Mode, any in-progress jobs are set to `WAITING_FOR_HUMAN` (not cancelled) — resumable on return to coordinator mode.
 - Debug mode does not affect job state — it only controls trace verbosity.

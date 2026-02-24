@@ -9,7 +9,7 @@ description: Output root, spec folder structure, and reports folder structure fo
 
 ## Output Root
 
-All pipeline artifacts are written under `<SHOP_ROOT>` — the AI-Dev-Shop-speckit folder itself (default: `<SHOP_ROOT>/`).
+All pipeline artifacts are written under `<SHOP_ROOT>` — the AI-Dev-Shop-speckit folder itself (default: `AI-Dev-Shop-speckit/`).
 
 **Writable subdirectories:** `specs/`, `reports/`, `project-knowledge/` — these are the project workspace.
 **Read-only subdirectories:** `agents/`, `skills/`, `templates/`, `workflows/` — these are toolkit source files. Never modify them.

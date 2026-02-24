@@ -4,7 +4,7 @@
 
 ## Path Convention
 
-All pipeline artifacts are written under `<SHOP_ROOT>` — the AI-Dev-Shop-speckit folder (default: `<SHOP_ROOT>/`).
+All pipeline artifacts are written under `<SHOP_ROOT>` — the AI-Dev-Shop-speckit folder (default: `AI-Dev-Shop-speckit/`).
 
 - Specs and ADRs → `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`
 - Reports (analysis, test runs, reviews) → `<SHOP_ROOT>/reports/`

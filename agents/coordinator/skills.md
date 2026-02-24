@@ -104,7 +104,7 @@ When the user says "remember this", "note this", "add this convention", or any s
 Before writing any artifact (spec, ADR, tasks, pipeline state, checklists):
 1. All artifacts go to `<SHOP_ROOT>/specs/`, `<SHOP_ROOT>/reports/`, or `<SHOP_ROOT>/project-knowledge/`
 2. Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are read-only toolkit source files
-3. `<SHOP_ROOT>` defaults to `<SHOP_ROOT>/`. If the folder is renamed, update `<SHOP_ROOT>` accordingly.
+3. `<SHOP_ROOT>` defaults to `AI-Dev-Shop-speckit/`. If the folder is renamed, update `<SHOP_ROOT>` in the tool's entry-point file accordingly.
 
 ## Checkpointing Rules
 - Write or update `.pipeline-state.md` (format: `<SHOP_ROOT>/workflows/pipeline-state-format.md`) at every stage transition

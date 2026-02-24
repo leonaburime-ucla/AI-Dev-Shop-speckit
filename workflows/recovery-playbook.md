@@ -11,8 +11,8 @@ At the start of every session, before doing anything else:
 1. Ask the user: "Is there an active feature in progress?"
 2. If yes, locate the feature folder: `specs/<NNN>-<feature-name>/`
 3. Check for `.pipeline-state.md` in that folder
-4. If found and status is `IN_PROGRESS` or `WAITING_FOR_HUMAN` → follow this playbook
-5. If not found or status is `COMPLETE` → start fresh
+4. If found and status is `IN_PROGRESS`, `WAITING_FOR_HUMAN`, or `ABORTED` → follow this playbook
+5. If not found or status is `COMPLETE`, `FAILED`, or `CANCELLED` → start fresh
 
 ---
 

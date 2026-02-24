@@ -31,7 +31,7 @@ Why it matters for this pipeline: specs are ground truth, tests are the converge
 Extends Meta-Coding into multi-agent orchestration with role specialization, coordinator routing, and convergence controls.
 
 Key concepts:
-- **skills.md as versioned SOP**: Each agent's operating procedure is a file, not a prompt you retype each session. It defines role, required inputs, workflow, output format, quality checklist, failure modes, and escalation rules. When an agent repeatedly makes the same mistake, you update the skills.md — the fix propagates permanently.
+- **skills.md as versioned SOP**: Each agent's operating procedure is a file, not a prompt you retype each session. It defines role, required inputs, workflow, output format, quality checklist, failure modes, and escalation rules. When an agent repeatedly makes the same mistake, a human updates the skills.md — the fix propagates permanently to all future dispatches of that agent.
 - **Coordinator owns all routing**: Agents never talk to each other directly. The Coordinator receives outputs, validates handoff contracts, and dispatches to the next agent with the right context. This prevents context pollution (agents receiving irrelevant information) and creates a single auditable routing log.
 - **Project knowledge files**: `project_memory.md` (conventions, gotchas), `learnings.md` (failure log), `project_notes.md` (open questions). No individual skills.md covers project-specific knowledge — these files do.
 - **Spec hash traceability**: Every spec has a content hash. Every test certifies which spec version and hash it was written against. CI flags drift when hashes diverge. This is the mechanism that prevents "tests passing against a spec that no longer exists."

@@ -48,7 +48,7 @@ Deliberately small and realistic — small enough to understand end-to-end, larg
 
 ## How to Use This as a Reference
 
-**When writing a spec:** compare against `spec.md`. Every requirement should be observable and testable. Zero `[NEEDS CLARIFICATION]` markers at dispatch. Constitution Compliance table filled in.
+**When writing a spec:** compare against `feature.spec.md`. Every requirement should be observable and testable. Zero `[NEEDS CLARIFICATION]` markers at dispatch. Constitution Compliance table filled in.
 
 **When reading Red-Team output:** compare against `red-team-findings.md`. Findings are BLOCKING, ADVISORY, or CONSTITUTION-FLAG. Only BLOCKING findings halt Architect dispatch.
 
