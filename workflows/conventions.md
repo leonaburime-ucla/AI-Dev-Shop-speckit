@@ -47,7 +47,7 @@ All spec artifacts for a feature live in a single folder:
 
 ## Reports Folder Convention
 
-All agent reports live under a single centralized folder. This is the single source of truth for everything agents produce outside of spec artifacts.
+All agent reports live under a single centralized folder. This is the single source of truth for everything agents produce outside of spec artifacts. The subdirectory structure is pre-created in the repo — agents can write directly without creating directories.
 
 ```
 <SHOP_ROOT>/reports/

@@ -76,7 +76,7 @@ coordinator_mode: review | pipeline | direct
 Tracks the Coordinator's current operating mode:
 - `pipeline` — full multi-agent pipeline is active; jobs are created and tracked
 - `review` — Coordinator is reviewing artifacts or answering questions; no jobs are created
-- `direct` — user is working directly with a single agent; in-progress jobs are PAUSED, not cancelled
+- `direct` — user is working directly with a single agent; in-progress jobs are set to WAITING_FOR_HUMAN, not cancelled
 
 ### `debug_mode` (optional, default: off)
 
