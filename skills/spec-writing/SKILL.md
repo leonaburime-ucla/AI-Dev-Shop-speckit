@@ -172,10 +172,10 @@ A spec is ready when:
 | Content | Location |
 |---|---|
 | Requirements, acceptance criteria, invariants, edge cases | Spec file |
-| Architecture decisions and pattern choices | ADR in `AI-Dev-Shop-speckit/specs/` — see `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` |
-| Project conventions and tribal knowledge | `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` |
-| Lessons learned from past mistakes | `AI-Dev-Shop-speckit/project-knowledge/learnings.md` |
-| Open questions and parking lot items | `AI-Dev-Shop-speckit/project-knowledge/project_notes.md` |
+| Architecture decisions and pattern choices | ADR in `<SHOP_ROOT>/specs/` — see `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` |
+| Project conventions and tribal knowledge | `<SHOP_ROOT>/project-knowledge/project_memory.md` |
+| Lessons learned from past mistakes | `<SHOP_ROOT>/project-knowledge/learnings.md` |
+| Open questions and parking lot items | `<SHOP_ROOT>/project-knowledge/project_notes.md` |
 
 ## Strict Mode — Spec Package
 
@@ -209,7 +209,7 @@ Example of compliant usage: "The system must return HTTP 422 with body `{ error:
 
 **Implementation-readiness test**: Before a strict-mode spec package is approved, apply this test: can a competent developer who has never seen this project implement the feature from these spec files alone, without asking any clarifying questions? If the answer is no — because something is missing, ambiguous, or requires assumed context — the spec is not done.
 
-**Reference**: `AI-Dev-Shop-speckit/project-knowledge/spec-definition-of-done.md` is the authoritative checklist template for strict-mode spec packages.
+**Reference**: `<SHOP_ROOT>/project-knowledge/spec-definition-of-done.md` is the authoritative checklist template for strict-mode spec packages.
 
 ## Brownfield / Legacy Code Rule
 

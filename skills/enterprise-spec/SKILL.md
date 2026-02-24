@@ -39,7 +39,7 @@ When a feature cannot be delivered by changes to a single repository, it is a pr
 
 The `feature.spec.md` lives at the program level. It describes the full end-to-end capability: what the system does from the user's perspective, the cross-service acceptance criteria, and the integration contracts between services. It does not describe how any individual service implements its part.
 
-Program-level spec location: `<OUTPUT_ROOT>/specs/programs/<program-id>/<feature-spec-id>/feature.spec.md`
+Program-level spec location: `<SHOP_ROOT>/specs/programs/<program-id>/<feature-spec-id>/feature.spec.md`
 
 ### Architect Agent Decomposition
 
@@ -53,7 +53,7 @@ Each sub-spec:
 Sub-spec naming convention:
 
 ```
-<OUTPUT_ROOT>/specs/programs/<program-id>/<feature-spec-id>/<repo-name>/feature.spec.md
+<SHOP_ROOT>/specs/programs/<program-id>/<feature-spec-id>/<repo-name>/feature.spec.md
 ```
 
 Example:
@@ -81,7 +81,7 @@ No requirement at the program level is considered verified until its traceabilit
 Integration contracts between repositories are explicit typed interfaces defined in the program-level spec, not in any individual sub-spec. They live in:
 
 ```
-<OUTPUT_ROOT>/specs/programs/<program-id>/<feature-spec-id>/integration-contracts.ts
+<SHOP_ROOT>/specs/programs/<program-id>/<feature-spec-id>/integration-contracts.ts
 ```
 
 Example:
@@ -340,7 +340,7 @@ Fix path: route to Programmer Agent with the failing test (or, if no test exists
 
 ### Step 2 — Record in learnings.md
 
-Every post-ship defect is recorded in `<OUTPUT_ROOT>/project-knowledge/learnings.md` using this structure:
+Every post-ship defect is recorded in `<SHOP_ROOT>/project-knowledge/learnings.md` using this structure:
 
 ```
 [FAILURE] <ISO-8601 date> | Gap type: intent-to-spec | spec-to-implementation
@@ -384,7 +384,7 @@ Use the program-level rollup when a feature is part of a named initiative (an OK
 
 ### Program Spec Location and Structure
 
-Program spec location: `<OUTPUT_ROOT>/specs/programs/<program-id>/program.spec.md`
+Program spec location: `<SHOP_ROOT>/specs/programs/<program-id>/program.spec.md`
 
 The program spec is not a feature spec. It does not define REQ-level requirements. It defines initiative-level goals and tracks the features that collectively fulfill them.
 

@@ -37,7 +37,7 @@ Maps AI Dev Shop (speckit) features to host environments. Use this before adopti
 All features work as documented. Slash commands require the one-time setup:
 
 ```bash
-cp -r AI-Dev-Shop-speckit/templates/commands/ .claude/commands/
+cp -r <SHOP_ROOT>/templates/commands/ .claude/commands/
 ```
 
 The Task tool enables true parallel agent dispatch and isolated context windows per agent. This is the recommended host for production use of this framework.

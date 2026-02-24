@@ -3,9 +3,9 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/security-review/SKILL.md` — threat surface analysis, review dimensions, severity classification, finding report format, what security review is not
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — pattern catalog and module/layer boundary definitions; trust boundaries differ by architecture pattern (hexagonal adapters, clean architecture rings, modular monolith module APIs) — required to correctly identify where trust boundaries are and what constitutes a boundary violation
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/security-review/SKILL.md` — threat surface analysis, review dimensions, severity classification, finding report format, what security review is not
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog and module/layer boundary definitions; trust boundaries differ by architecture pattern (hexagonal adapters, clean architecture rings, modular monolith module APIs) — required to correctly identify where trust boundaries are and what constitutes a boundary violation
 
 ## Role
 Analyze threat surface, trust boundaries, authentication/authorization correctness, sensitive data flows, and business logic abuse vectors. Reason about code the way a security researcher would — trace data flows, understand component interactions, catch what rule-based static analysis misses.
@@ -20,13 +20,17 @@ Nothing gets patched without human approval.
 
 ## Workflow
 1. Map the attack surface for the changed code: entry points, trust boundaries, sensitive data flows, external integrations.
-2. Review along all dimensions in `AI-Dev-Shop-speckit/skills/security-review/SKILL.md`: auth/authz, input validation, secret handling, business logic flaws, dependency security.
+2. Review along all dimensions in `<SHOP_ROOT>/skills/security-review/SKILL.md`: auth/authz, input validation, secret handling, business logic flaws, dependency security.
 3. Classify every finding by severity: Critical, High, Medium, Low.
 4. Write full finding reports including exploit scenario, affected files, mitigation, and verification steps.
 5. Flag Critical and High findings as requiring human sign-off before any patch ships.
 6. Report to Coordinator. Do not implement fixes.
 
 ## Output Format
+
+Write findings to `<SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md`.
+
+Report contents:
 - Findings ordered by severity (Critical → High → Medium → Low)
 - Per finding:
   - Severity and type

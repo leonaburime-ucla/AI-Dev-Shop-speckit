@@ -5,7 +5,7 @@
 # Spec: <feature-name>
 
 - Spec ID: SPEC-<id>
-- Feature: FEAT-<scan existing specs in AI-Dev-Shop-speckit/specs/ for next available number — 001, 002, 003, ...>
+- Feature: FEAT-<scan existing specs in <SHOP_ROOT>/specs/ for next available number — 001, 002, 003, ...>
 - Version: <semver — major for scope changes, minor for clarifications>
 - Last Edited: <ISO-8601 UTC>
 - Content Hash: <sha256 of content below the header metadata block>

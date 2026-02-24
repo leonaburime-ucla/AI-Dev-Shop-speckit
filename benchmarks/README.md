@@ -29,7 +29,7 @@ benchmarks/
 ### Regression Detection (run after any skills.md change)
 
 1. Pass `input.md` to the relevant agent with no other context
-2. Score the output using `AI-Dev-Shop-speckit/skills/evaluation/eval-rubrics.md`
+2. Score the output using `<SHOP_ROOT>/skills/evaluation/eval-rubrics.md`
 3. Compare to `baseline-score.md` — if overall score drops more than **1.0/10.0**, treat as a regression
 4. Either revert the skills.md change or improve it until score recovers
 

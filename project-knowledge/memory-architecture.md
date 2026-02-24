@@ -12,7 +12,7 @@ The pipeline cannot get smarter over time without a durable, queryable memory su
 
 ### Option A — Structured Markdown Schema (no new infrastructure)
 
-Upgrade `project_memory.md` and `learnings.md` from free-form notes to schema-driven entries that the Observer writes to and reads from in a consistent format. See `AI-Dev-Shop-speckit/project-knowledge/memory-schema.md`.
+Upgrade `project_memory.md` and `learnings.md` from free-form notes to schema-driven entries that the Observer writes to and reads from in a consistent format. See `<SHOP_ROOT>/project-knowledge/memory-schema.md`.
 
 - **Requires:** Nothing new — just structured writing conventions
 - **Query method:** Agent reads the file and scans by tag, category, or date
@@ -78,7 +78,7 @@ When ready to move from structured markdown to Mem0:
 
 | File | Purpose |
 |------|---------|
-| `AI-Dev-Shop-speckit/project-knowledge/memory-schema.md` | Entry format, categories, tagging conventions |
-| `AI-Dev-Shop-speckit/project-knowledge/memory-store.md` | The actual memory entries (Observer writes here) |
-| `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` | Legacy free-form notes — migrate to memory-store.md over time |
-| `AI-Dev-Shop-speckit/project-knowledge/learnings.md` | Legacy failure log — migrate to memory-store.md over time |
+| `<SHOP_ROOT>/project-knowledge/memory-schema.md` | Entry format, categories, tagging conventions |
+| `<SHOP_ROOT>/project-knowledge/memory-store.md` | The actual memory entries (Observer writes here) |
+| `<SHOP_ROOT>/project-knowledge/project_memory.md` | Legacy free-form notes — migrate to memory-store.md over time |
+| `<SHOP_ROOT>/project-knowledge/learnings.md` | Legacy failure log — migrate to memory-store.md over time |

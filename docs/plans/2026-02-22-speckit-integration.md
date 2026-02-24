@@ -6,7 +6,7 @@
 
 **Architecture:** All changes are to markdown files — no code. The constitution becomes a hard gate in the Architect agent's workflow. Four new files are created; eight existing files are modified. No existing pipeline stages, handoff contracts, or skills are removed.
 
-**Tech Stack:** Markdown, file edits only. All paths are relative to `AI-Dev-Shop-speckit/`.
+**Tech Stack:** Markdown, file edits only. All paths are relative to `<SHOP_ROOT>/`.
 
 **Reference files:**
 - Design doc: `docs/plans/2026-02-22-speckit-integration-design.md`
@@ -287,7 +287,7 @@ git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" comm
 **Files:**
 - Create: `templates/research-template.md`
 
-Produced by the Architect Agent before writing the ADR when the spec involves library or technology choices. Stored in `AI-Dev-Shop-speckit/specs/` alongside the ADR.
+Produced by the Architect Agent before writing the ADR when the spec involves library or technology choices. Stored in `<SHOP_ROOT>/specs/` alongside the ADR.
 
 **Step 1: Create the file**
 
@@ -382,7 +382,7 @@ git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" comm
 **Files:**
 - Create: `templates/tasks-template.md`
 
-Produced by the Coordinator after ADR approval, before TDD dispatch. Uses `[P]` markers for parallelizable tasks. Stored in `AI-Dev-Shop-speckit/specs/` alongside the spec and ADR.
+Produced by the Coordinator after ADR approval, before TDD dispatch. Uses `[P]` markers for parallelizable tasks. Stored in `<SHOP_ROOT>/specs/` alongside the spec and ADR.
 
 **Step 1: Create the file**
 
@@ -523,7 +523,7 @@ Replace with:
 # Spec: <feature-name>
 
 - Spec ID: SPEC-<id>
-- Feature: FEAT-<auto-increment from existing specs in AI-Dev-Shop-speckit/specs/ — 001, 002, 003, ...>
+- Feature: FEAT-<auto-increment from existing specs in <SHOP_ROOT>/specs/ — 001, 002, 003, ...>
 - Version: <semver — major for scope changes, minor for clarifications>
 - Last Edited: <ISO-8601 UTC>
 - Content Hash: <sha256 of content below the header metadata block>
@@ -571,7 +571,7 @@ Insert before it:
 ```
 ## Constitution Compliance
 
-For each article in `AI-Dev-Shop-speckit/project-knowledge/constitution.md`, record status.
+For each article in `<SHOP_ROOT>/project-knowledge/constitution.md`, record status.
 The Spec Agent completes this. The Architect verifies it.
 
 | Article | Status | Notes |
@@ -637,7 +637,7 @@ Any EXCEPTION must have a row in the Complexity Justification table below.
 
 ## Research Summary
 
-- Research artifact: `AI-Dev-Shop-speckit/specs/RESEARCH-<id>.md` / N/A (no library or technology choices in this spec)
+- Research artifact: `<SHOP_ROOT>/specs/RESEARCH-<id>.md` / N/A (no library or technology choices in this spec)
 - Key decision: <one sentence summary of what was selected and why, or N/A>
 
 ```
@@ -690,7 +690,7 @@ Find:
 ```
 ## Workflow
 1. Normalize request into clear scope and explicit non-goals.
-2. Write or revise spec using the format in `AI-Dev-Shop-speckit/skills/spec-writing/SKILL.md`.
+2. Write or revise spec using the format in `<SHOP_ROOT>/skills/spec-writing/SKILL.md`.
 3. Assign/update metadata: Spec ID, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
 4. List ambiguities and open questions that require human decision before TDD can proceed.
 5. Publish spec delta summary (what changed and why).
@@ -701,8 +701,8 @@ Replace with:
 ```
 ## Workflow
 1. Normalize request into clear scope and explicit non-goals.
-2. Read `AI-Dev-Shop-speckit/project-knowledge/constitution.md`. For any requirement that conflicts with or is unclear against a constitution article, inline a `[NEEDS CLARIFICATION: Article <N> — <specific question>]` marker in the requirement text.
-3. Write or revise spec using the format in `AI-Dev-Shop-speckit/skills/spec-writing/SKILL.md`. Assign FEAT number by scanning existing specs in `AI-Dev-Shop-speckit/specs/` for the next available increment.
+2. Read `<SHOP_ROOT>/project-knowledge/constitution.md`. For any requirement that conflicts with or is unclear against a constitution article, inline a `[NEEDS CLARIFICATION: Article <N> — <specific question>]` marker in the requirement text.
+3. Write or revise spec using the format in `<SHOP_ROOT>/skills/spec-writing/SKILL.md`. Assign FEAT number by scanning existing specs in `<SHOP_ROOT>/specs/` for the next available increment.
 4. Complete the Constitution Compliance table in the spec. Mark each article COMPLIES, EXCEPTION (with one-line justification), or N/A.
 5. Assign/update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
 6. Verify zero unresolved `[NEEDS CLARIFICATION]` markers remain. Any unresolved marker must be listed in Open Questions with an owner and resolution target. Do not hand off with unresolved markers unless explicitly escalated to human.
@@ -767,11 +767,11 @@ Replace with:
 ```
 ## Required Inputs
 - Active spec file (full content + hash) — must be human-approved
-- Constitution: `AI-Dev-Shop-speckit/project-knowledge/constitution.md`
+- Constitution: `<SHOP_ROOT>/project-knowledge/constitution.md`
 - Non-functional constraints (scale, reliability, latency, cost)
-- Existing system boundaries and dependencies (existing ADRs in `AI-Dev-Shop-speckit/specs/`)
+- Existing system boundaries and dependencies (existing ADRs in `<SHOP_ROOT>/specs/`)
 - Coordinator directive
-- Research artifact (`AI-Dev-Shop-speckit/specs/RESEARCH-<id>.md`) if produced in Step 0
+- Research artifact (`<SHOP_ROOT>/specs/RESEARCH-<id>.md`) if produced in Step 0
 ```
 
 **Step 2: Replace Workflow section**
@@ -779,26 +779,26 @@ Replace with:
 Find:
 ```
 ## Workflow
-1. Review requirements and classify system drivers (complexity, scale, coupling, release cadence) using the framework in `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md`.
+1. Review requirements and classify system drivers (complexity, scale, coupling, release cadence) using the framework in `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md`.
 2. Evaluate candidate patterns from the pattern catalog.
 3. Select primary pattern and optional secondary patterns. Justify against system drivers.
 4. Define module/service boundaries and explicit contracts.
 5. Identify parallelizable slices and sequence plan.
-6. Write ADR using `AI-Dev-Shop-speckit/templates/adr-template.md`. Store in `AI-Dev-Shop-speckit/specs/`.
+6. Write ADR using `<SHOP_ROOT>/templates/adr-template.md`. Store in `<SHOP_ROOT>/specs/`.
 7. Publish architecture decision as a constraint for all downstream agents.
 ```
 
 Replace with:
 ```
 ## Workflow
-0. **Research** (conditional): If the spec involves library or technology choices (any requirement that implies selecting a library, framework, storage system, or messaging system), produce `AI-Dev-Shop-speckit/specs/RESEARCH-<spec-id>.md` using `AI-Dev-Shop-speckit/templates/research-template.md` before proceeding. Skip this step only if the spec has no technology choices.
-1. **Constitution Check**: Read `AI-Dev-Shop-speckit/project-knowledge/constitution.md`. For each article, determine if the proposed architecture complies. For any violation: either (a) revise the architecture to comply, or (b) document a justified exception in the ADR's Complexity Justification table. An unjustified violation is a blocking escalation — do not proceed to Step 2.
-2. Review requirements and classify system drivers (complexity, scale, coupling, release cadence) using the framework in `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md`.
+0. **Research** (conditional): If the spec involves library or technology choices (any requirement that implies selecting a library, framework, storage system, or messaging system), produce `<SHOP_ROOT>/specs/RESEARCH-<spec-id>.md` using `<SHOP_ROOT>/templates/research-template.md` before proceeding. Skip this step only if the spec has no technology choices.
+1. **Constitution Check**: Read `<SHOP_ROOT>/project-knowledge/constitution.md`. For each article, determine if the proposed architecture complies. For any violation: either (a) revise the architecture to comply, or (b) document a justified exception in the ADR's Complexity Justification table. An unjustified violation is a blocking escalation — do not proceed to Step 2.
+2. Review requirements and classify system drivers (complexity, scale, coupling, release cadence) using the framework in `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md`.
 3. Evaluate candidate patterns from the pattern catalog.
 4. Select primary pattern and optional secondary patterns. Justify against system drivers.
 5. Define module/service boundaries and explicit contracts.
 6. Identify parallelizable slices and sequence plan. These become the basis for `tasks.md` (produced by Coordinator after ADR approval).
-7. Write ADR using `AI-Dev-Shop-speckit/templates/adr-template.md`. Complete the Constitution Check table and Research Summary field. Store in `AI-Dev-Shop-speckit/specs/`.
+7. Write ADR using `<SHOP_ROOT>/templates/adr-template.md`. Complete the Constitution Check table and Research Summary field. Store in `<SHOP_ROOT>/specs/`.
 8. Publish architecture decision as a constraint for all downstream agents.
 ```
 
@@ -855,7 +855,7 @@ Find:
 ## Workflow
 1. Validate all incoming outputs reference the active spec version/hash. Reject stale references.
 2. Verify each output includes the full handoff contract (input refs, output summary, risks, suggested next).
-3. Build routing plan for this cycle using the decision tree in `AI-Dev-Shop-speckit/skills/coordination/SKILL.md`.
+3. Build routing plan for this cycle using the decision tree in `<SHOP_ROOT>/skills/coordination/SKILL.md`.
 4. Dispatch to agents with explicit scope, constraints, and deliverables.
 5. Apply convergence policy — advance or escalate, never loop indefinitely.
 6. Publish cycle summary.
@@ -866,9 +866,9 @@ Replace with:
 ## Workflow
 1. Validate all incoming outputs reference the active spec version/hash. Reject stale references.
 2. Verify each output includes the full handoff contract (input refs, output summary, risks, suggested next).
-3. Build routing plan for this cycle using the decision tree in `AI-Dev-Shop-speckit/skills/coordination/SKILL.md`.
-4. Dispatch to agents with explicit scope, constraints, and deliverables. Include `AI-Dev-Shop-speckit/project-knowledge/constitution.md` in every Spec Agent and Architect Agent dispatch.
-5. After ADR is human-approved: generate `AI-Dev-Shop-speckit/specs/TASKS-<spec-id>.md` using `AI-Dev-Shop-speckit/templates/tasks-template.md`. Base the phase structure and [P] markers on the ADR's parallel delivery plan. Dispatch TDD Agent only after tasks.md is produced.
+3. Build routing plan for this cycle using the decision tree in `<SHOP_ROOT>/skills/coordination/SKILL.md`.
+4. Dispatch to agents with explicit scope, constraints, and deliverables. Include `<SHOP_ROOT>/project-knowledge/constitution.md` in every Spec Agent and Architect Agent dispatch.
+5. After ADR is human-approved: generate `<SHOP_ROOT>/specs/TASKS-<spec-id>.md` using `<SHOP_ROOT>/templates/tasks-template.md`. Base the phase structure and [P] markers on the ADR's parallel delivery plan. Dispatch TDD Agent only after tasks.md is produced.
 6. Apply convergence policy — advance or escalate, never loop indefinitely.
 7. Publish cycle summary.
 ```
@@ -946,19 +946,19 @@ Find:
 ```
 ### Spec Agent
 - Product intent from human (verbatim)
-- Relevant entries from `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` (domain conventions)
-- Last 3 entries from `AI-Dev-Shop-speckit/project-knowledge/learnings.md` (recent failure patterns)
-- Existing specs in `AI-Dev-Shop-speckit/specs/` (to avoid ID collisions and detect overlap)
+- Relevant entries from `<SHOP_ROOT>/project-knowledge/project_memory.md` (domain conventions)
+- Last 3 entries from `<SHOP_ROOT>/project-knowledge/learnings.md` (recent failure patterns)
+- Existing specs in `<SHOP_ROOT>/specs/` (to avoid ID collisions and detect overlap)
 ```
 
 Replace with:
 ```
 ### Spec Agent
 - Product intent from human (verbatim)
-- `AI-Dev-Shop-speckit/project-knowledge/constitution.md` (for constitution compliance check and [NEEDS CLARIFICATION] detection)
-- Relevant entries from `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` (domain conventions)
-- Last 3 entries from `AI-Dev-Shop-speckit/project-knowledge/learnings.md` (recent failure patterns)
-- Existing specs in `AI-Dev-Shop-speckit/specs/` (to avoid ID collisions, detect overlap, assign next FEAT number)
+- `<SHOP_ROOT>/project-knowledge/constitution.md` (for constitution compliance check and [NEEDS CLARIFICATION] detection)
+- Relevant entries from `<SHOP_ROOT>/project-knowledge/project_memory.md` (domain conventions)
+- Last 3 entries from `<SHOP_ROOT>/project-knowledge/learnings.md` (recent failure patterns)
+- Existing specs in `<SHOP_ROOT>/specs/` (to avoid ID collisions, detect overlap, assign next FEAT number)
 ```
 
 **Step 3: Update Architect Agent context injection**
@@ -967,25 +967,25 @@ Find:
 ```
 ### Architect Agent
 - Active spec file (full content + hash)
-- Current system boundaries (existing ADRs in `AI-Dev-Shop-speckit/specs/`)
+- Current system boundaries (existing ADRs in `<SHOP_ROOT>/specs/`)
 - Non-functional constraints from spec
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md`
-- Relevant `AI-Dev-Shop-speckit/skills/design-patterns/references/` files (Coordinator selects based on system drivers in spec)
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md`
+- Relevant `<SHOP_ROOT>/skills/design-patterns/references/` files (Coordinator selects based on system drivers in spec)
 ```
 
 Replace with:
 ```
 ### Architect Agent
 - Active spec file (full content + hash) — must be human-approved, zero unresolved [NEEDS CLARIFICATION] markers
-- `AI-Dev-Shop-speckit/project-knowledge/constitution.md` (for Step 0 constitution check)
-- Current system boundaries (existing ADRs in `AI-Dev-Shop-speckit/specs/`)
+- `<SHOP_ROOT>/project-knowledge/constitution.md` (for Step 0 constitution check)
+- Current system boundaries (existing ADRs in `<SHOP_ROOT>/specs/`)
 - Non-functional constraints from spec
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md`
-- Relevant `AI-Dev-Shop-speckit/skills/design-patterns/references/` files (Coordinator selects based on system drivers in spec)
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md`
+- Relevant `<SHOP_ROOT>/skills/design-patterns/references/` files (Coordinator selects based on system drivers in spec)
 
 **Architect outputs (in order):**
-1. `AI-Dev-Shop-speckit/specs/RESEARCH-<spec-id>.md` (if spec has technology choices) — using `AI-Dev-Shop-speckit/templates/research-template.md`
-2. `AI-Dev-Shop-speckit/specs/ADR-<id>.md` — using `AI-Dev-Shop-speckit/templates/adr-template.md` (includes Constitution Check table and Complexity Justification)
+1. `<SHOP_ROOT>/specs/RESEARCH-<spec-id>.md` (if spec has technology choices) — using `<SHOP_ROOT>/templates/research-template.md`
+2. `<SHOP_ROOT>/specs/ADR-<id>.md` — using `<SHOP_ROOT>/templates/adr-template.md` (includes Constitution Check table and Complexity Justification)
 ```
 
 **Step 4: Add tasks.md generation step between Architect and TDD**
@@ -1000,7 +1000,7 @@ Insert before it:
 ```
 ### Coordinator: tasks.md Generation (after ADR human approval, before TDD dispatch)
 
-The Coordinator generates `AI-Dev-Shop-speckit/specs/TASKS-<spec-id>.md` using `AI-Dev-Shop-speckit/templates/tasks-template.md`:
+The Coordinator generates `<SHOP_ROOT>/specs/TASKS-<spec-id>.md` using `<SHOP_ROOT>/templates/tasks-template.md`:
 - Phases derived from the ADR's parallel delivery plan
 - `[P]` markers based on the ADR's independent module boundaries
 - Story phases ordered by AC priority (P1 first)
@@ -1048,12 +1048,12 @@ Add slash commands section.
 
 Find:
 ```
-Full pipeline reference: `AI-Dev-Shop-speckit/workflows/multi-agent-pipeline.md`
+Full pipeline reference: `<SHOP_ROOT>/workflows/multi-agent-pipeline.md`
 ```
 
 Replace with:
 ```
-Full pipeline reference: `AI-Dev-Shop-speckit/workflows/multi-agent-pipeline.md`
+Full pipeline reference: `<SHOP_ROOT>/workflows/multi-agent-pipeline.md`
 
 ## Slash Commands
 
@@ -1148,7 +1148,7 @@ Replace with:
 ## Shared Rules (All Agents)
 
 - **Specs are ground truth.** If specs are wrong, all downstream work is wrong. Confirm spec hash before every dispatch.
-- **The constitution governs architecture.** Every ADR must include a Constitution Check table. An unjustified violation is a blocking escalation — same severity as a spec hash mismatch. Constitution lives at `AI-Dev-Shop-speckit/project-knowledge/constitution.md`.
+- **The constitution governs architecture.** Every ADR must include a Constitution Check table. An unjustified violation is a blocking escalation — same severity as a spec hash mismatch. Constitution lives at `<SHOP_ROOT>/project-knowledge/constitution.md`.
 - **[NEEDS CLARIFICATION] markers block Architect dispatch.** A spec with unresolved markers may not be handed to the Architect. Resolve or escalate to human first.
 - **Every artifact references the active spec version and hash.** No exceptions.
 - **Tests must include certification linkage.** Every test maps to a specific acceptance criterion or invariant.
@@ -1181,8 +1181,8 @@ Expected: 12 commits, one per task.
 
 Confirm new files exist:
 ```bash
-ls "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit/templates/"
-ls "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit/project-knowledge/"
+ls "/Users/la/Desktop/Multi-Agent Swarm Foundation/<SHOP_ROOT>/templates/"
+ls "/Users/la/Desktop/Multi-Agent Swarm Foundation/<SHOP_ROOT>/project-knowledge/"
 ```
 
 Expected in templates: `constitution-template.md`, `research-template.md`, `tasks-template.md` (alongside existing `spec-template.md`, `adr-template.md`, `test-certification-template.md`)

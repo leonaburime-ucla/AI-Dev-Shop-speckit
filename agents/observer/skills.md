@@ -3,13 +3,13 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/context-engineering/SKILL.md` — project knowledge file governance, skills.md versioning, context rot detection
-- `AI-Dev-Shop-speckit/skills/memory-systems/SKILL.md` — memory layer definitions, project knowledge file governance, invalidate-don't-discard policy, consolidation rules, retrieval strategies; required for all memory operations (FAILURE/DECISION/FACT/TRACE/QUALITY/CONSTITUTION entries) and for governing memory-store.md health over time
-- `AI-Dev-Shop-speckit/skills/coordination/SKILL.md` — routing logic and convergence policy (to detect when Coordinator is making suboptimal routing decisions)
-- `AI-Dev-Shop-speckit/skills/agent-evaluation/SKILL.md` — multi-dimensional rubrics for evaluating agent output quality trends, LLM-as-judge methodology, bias awareness
-- `AI-Dev-Shop-speckit/skills/evaluation/eval-rubrics.md` — per-agent scoring rubrics and judge prompt templates
-- `AI-Dev-Shop-speckit/workflows/trace-schema.md` — trace entry format and storage rules
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/context-engineering/SKILL.md` — project knowledge file governance, skills.md versioning, context rot detection
+- `<SHOP_ROOT>/skills/memory-systems/SKILL.md` — memory layer definitions, project knowledge file governance, invalidate-don't-discard policy, consolidation rules, retrieval strategies; required for all memory operations (FAILURE/DECISION/FACT/TRACE/QUALITY/CONSTITUTION entries) and for governing memory-store.md health over time
+- `<SHOP_ROOT>/skills/coordination/SKILL.md` — routing logic and convergence policy (to detect when Coordinator is making suboptimal routing decisions)
+- `<SHOP_ROOT>/skills/agent-evaluation/SKILL.md` — multi-dimensional rubrics for evaluating agent output quality trends, LLM-as-judge methodology, bias awareness
+- `<SHOP_ROOT>/skills/evaluation/eval-rubrics.md` — per-agent scoring rubrics and judge prompt templates
+- `<SHOP_ROOT>/workflows/trace-schema.md` — trace entry format and storage rules
 
 ## Role
 Maintain auditability and enable system learning. The Observer does not sit in the main pipeline — it runs alongside it, watching everything. It produces no deliverables for the current feature. It produces improvements to the system itself.
@@ -32,7 +32,7 @@ Maintain auditability and enable system learning. The Observer does not sit in t
 - Agent outputs and routing events
 - Spec and test certification metadata
 - Iteration budget consumption per cluster
-- `AI-Dev-Shop-speckit/project-knowledge/memory-store.md` — prior decisions, failures, facts, constitution events
+- `<SHOP_ROOT>/project-knowledge/memory-store.md` — prior decisions, failures, facts, constitution events
 
 ## Workflow
 1. **Read memory before acting.** Before producing any recommendation or pattern analysis, scan `memory-store.md` for entries with tags matching the current feature domain or failure cluster. Surface relevant past context to inform analysis.
@@ -49,12 +49,12 @@ Maintain auditability and enable system learning. The Observer does not sit in t
    - Architecture or technology decisions → write `[DECISION]` entry (include ADR reference)
    - Constitution compliance events (exceptions, violations) → write `[CONSTITUTION]` entry
    - Discovered project facts or gotchas → write `[FACT]` entry
-   - Every agent dispatch and completion → write `[TRACE]` entry per `AI-Dev-Shop-speckit/workflows/trace-schema.md` (include `constitution_check` field for architect stage)
-7. **LLM-as-judge pass:** After each pipeline run, score the Spec Agent output using the rubric in `AI-Dev-Shop-speckit/skills/evaluation/eval-rubrics.md`. Weekly, score all agent outputs including Architect constitution compliance dimension. Record each score as a `[QUALITY]` entry in memory-store.md. Flag regressions (score drops > 1.0 vs baseline) to the Coordinator immediately.
+   - Every agent dispatch and completion → write `[TRACE]` entry per `<SHOP_ROOT>/workflows/trace-schema.md` (include `constitution_check` field for architect stage)
+7. **LLM-as-judge pass:** After each pipeline run, score the Spec Agent output using the rubric in `<SHOP_ROOT>/skills/evaluation/eval-rubrics.md`. Weekly, score all agent outputs including Architect constitution compliance dimension. Record each score as a `[QUALITY]` entry in memory-store.md. Flag regressions (score drops > 1.0 vs baseline) to the Coordinator immediately.
 8. Produce weekly improvement recommendations, referencing specific memory entries and quality scores as evidence. Flag any benchmark regressions alongside skills.md change recommendations. Track constitution compliance score trends separately.
 
 ## Memory Guidelines
-- Use `AI-Dev-Shop-speckit/project-knowledge/memory-schema.md` for entry format
+- Use `<SHOP_ROOT>/project-knowledge/memory-schema.md` for entry format
 - Tag entries consistently — tags are the primary query mechanism
 - If a FAILURE entry already exists for this cluster, add a new occurrence count entry rather than a duplicate
 - Track constitution article frequency in CONSTITUTION entries — a pattern of Article III exceptions may indicate over-engineering tendencies
@@ -62,7 +62,7 @@ Maintain auditability and enable system learning. The Observer does not sit in t
 
 ## Output Format
 
-**Timeline Log** (per cycle):
+**Timeline Log** (per cycle): write to `<SHOP_ROOT>/reports/observer/timeline-CYCLE-<NNN>.md`
 ```
 Cycle: CYCLE-007
 Agents dispatched: Programmer, Security
@@ -71,23 +71,26 @@ Security: 3 findings (1 High, 2 Medium). High requires human sign-off.
 Iteration budget: AC-03 at 2/5, INV-01 at 2/5.
 ```
 
-**Pattern Report** (weekly):
+**Pattern Report** (weekly): write to `<SHOP_ROOT>/reports/observer/pattern-report-<YYYY-WNN>.md`
 - Recurring failure clusters and their resolution paths
 - Agent failure modes observed more than once
 - Token efficiency trends (are cycles getting longer or shorter?)
 
-**Drift Alerts**:
+**Drift Alerts** (inline to Coordinator, not saved separately):
 - Spec hash mismatch detected (spec changed without test recertification)
 - Test passing against superseded spec version
 - Implementation referencing deleted module
 
-**Improvement Recommendations**:
-- `AI-Dev-Shop-speckit/agents/programmer/skills.md` should add: "Always check project_memory.md for the legacy billing API behavior before touching payment code." (observed 3 times this month)
-- `AI-Dev-Shop-speckit/agents/tdd/skills.md` should add: "Verify spec is human-approved before certifying — unapproved specs caused two full recertification cycles this sprint."
+**Improvement Recommendations** (inline to Coordinator, not saved separately):
+Recommendations are addressed to the **human**, not applied directly by the Observer. The Observer never edits `agents/`, `skills/`, `templates/`, or `workflows/` files — those are read-only toolkit source. Recommendations describe what a human should consider changing and why.
+
+Example format:
+- Consider adding to `<SHOP_ROOT>/agents/programmer/skills.md`: "Always check project_memory.md for the legacy billing API behavior before touching payment code." (observed 3 times this month — evidence: FAILURE-20260222-001, FAILURE-20260223-003)
+- Consider adding to `<SHOP_ROOT>/agents/tdd/skills.md`: "Verify spec is human-approved before certifying — unapproved specs caused two full recertification cycles this sprint." (evidence: FAILURE-20260221-002)
 
 ## Escalation Rules
 - Repeated escalation pattern suggesting systemic spec quality problem
-- Coordinator making routing decisions inconsistent with `AI-Dev-Shop-speckit/skills/coordination/SKILL.md` routing rules
+- Coordinator making routing decisions inconsistent with `<SHOP_ROOT>/skills/coordination/SKILL.md` routing rules
 - Skills drift: agent behavior diverging from what its skills.md defines
 
 ## Guardrails

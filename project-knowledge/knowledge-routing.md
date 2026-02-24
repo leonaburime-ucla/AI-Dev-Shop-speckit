@@ -41,7 +41,7 @@ The following files MUST NEVER receive project memory, user instructions, learne
 | Any `skills/*/SKILL.md` | Shared skill definitions. These are framework primitives, not project-specific stores. |
 | Any file under `templates/` | Templates generate artifacts. They must remain project-agnostic. |
 | Any file under `workflows/` | Pipeline workflow definitions. Same reason as templates. |
-| Any spec file (`specs/*/spec.md`) | Specs are immutable ground truth for a specific version. They are not memory stores. |
+| Any spec file (`specs/*/feature.spec.md`) | Specs are immutable ground truth for a specific version. They are not memory stores. |
 | Any ADR file | ADRs are point-in-time architecture decisions. They are not updated to store new facts. |
 | Any test file | Tests encode spec behavior. They are not memory stores. |
 | Any source code file | Source code implements specs. Memory does not belong in source. |

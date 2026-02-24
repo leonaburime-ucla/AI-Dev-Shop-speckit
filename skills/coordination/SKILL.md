@@ -26,6 +26,30 @@ When an agent returns output, classify findings and route accordingly:
 ```
 Agent output received
 │
+├─ Spec human-approved?
+│   └─ Route to: Red-Team Agent
+│       Context: full spec, spec hash, constitution.md
+│
+├─ Red-Team findings?
+│   ├─ 3+ BLOCKING → Route to: Spec Agent
+│   │   Context: all BLOCKING findings with exact spec refs
+│   ├─ CONSTITUTION-FLAG → Escalate to human before proceeding
+│   │   Context: flag details, relevant constitution article
+│   └─ ADVISORY only (or no findings) → Route to: Architect
+│       Context: approved spec, full ADVISORY list
+│
+├─ ADR missing __specs__/__tests__ placement decision?
+│   └─ Route back to: Architect
+│       Context: which pattern was chosen, what decision is needed
+│
+├─ Spec involves data modeling or DB operations?
+│   └─ Route to: Database Agent
+│       Context: spec, ADR (if exists), target platform
+│
+├─ Database Agent complete, platform = Supabase?
+│   └─ Route to: Supabase Sub-Agent
+│       Context: data model, spec, Supabase project context
+│
 ├─ Test failures?
 │   └─ Route to: Programmer Agent
 │       Context: failing test names, spec ref, architecture constraints
@@ -39,13 +63,13 @@ Agent output received
 │       Context: exact ambiguity, what decision is blocked
 │
 ├─ Security finding (from Security Agent)?
-│   ├─ Critical/High → Route to: Programmer Agent
+│   ├─ Critical/High → Route to: Programmer Agent + require human sign-off before ship
 │   │   Context: full SEC finding, mitigation steps, Security Agent verifies after fix
 │   └─ Medium/Low → Log finding, continue to next pipeline stage
 │
 ├─ Refactor findings (from Code Review)?
-│   └─ Route to: Refactor Agent
-│       Context: specific CR finding IDs marked as Recommended
+│   └─ Route to: Refactor Agent (Coordinator decides — skip if findings are trivial or low-value)
+│       Context: specific CR finding IDs marked as Recommended, diff, ADR constraints
 │
 ├─ Spec misalignment (from Code Review)?
 │   └─ Route to: Spec Agent (if spec is wrong) or Programmer Agent (if code is wrong)

@@ -3,10 +3,10 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/test-design/SKILL.md` — requirement-to-test matrix, test types, certification protocol, drift detection, anti-patterns, coverage targets
-- `AI-Dev-Shop-speckit/skills/spec-writing/SKILL.md` — spec anatomy and hash protocol (to verify inputs are valid before certifying tests)
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — ADR format and API/Event Contract Summary structure; required for step 3b contract tests — reading which contracts the Architect defined and which testing approach (consumer-driven, schema validation, integration) was specified
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/test-design/SKILL.md` — requirement-to-test matrix, test types, certification protocol, drift detection, anti-patterns, coverage targets
+- `<SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy and hash protocol (to verify inputs are valid before certifying tests)
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — ADR format and API/Event Contract Summary structure; required for step 3b contract tests — reading which contracts the Architect defined and which testing approach (consumer-driven, schema validation, integration) was specified
 
 ## Role
 Encode the spec into executable tests before implementation. Certify each test suite against a specific spec version and hash. This is a specification role, not a verification role — tests define what the system must do, not whether it currently does it.
@@ -18,14 +18,14 @@ Encode the spec into executable tests before implementation. Certify each test s
 
 ## Workflow
 1. Verify active spec metadata is current and human-approved. Refuse to proceed against unapproved specs.
-2. Build requirement-to-test matrix (see `AI-Dev-Shop-speckit/skills/test-design/SKILL.md`):
+2. Build requirement-to-test matrix (see `<SHOP_ROOT>/skills/test-design/SKILL.md`):
    - Each acceptance criterion → one or more tests
    - Each invariant → dedicated assertion set
    - Each edge case → explicit scenario test
 3. Write tests before code, prioritizing: unit tests for invariants, integration tests for boundary contracts, acceptance tests for criteria.
-3a. **Property-based tests:** For each AC or invariant involving ranges, collections, validation logic, or round-trip guarantees, generate at least one property-based test. See `AI-Dev-Shop-speckit/skills/test-design/SKILL.md` Property-Based Testing section. List property tests separately in the certification record.
-3b. **Contract tests:** For each API or event contract defined in the ADR's API/Event Contract Summary section, generate at least one contract test verifying the implementation honors the contract. Use the testing approach flagged by the Architect (consumer-driven / schema validation / integration). See `AI-Dev-Shop-speckit/skills/test-design/SKILL.md` Contract Testing section.
-4. Create test certification record using `AI-Dev-Shop-speckit/templates/test-certification-template.md`. Include spec ID, version, and hash.
+3a. **Property-based tests:** For each AC or invariant involving ranges, collections, validation logic, or round-trip guarantees, generate at least one property-based test. See `<SHOP_ROOT>/skills/test-design/SKILL.md` Property-Based Testing section. List property tests separately in the certification record.
+3b. **Contract tests:** For each API or event contract defined in the ADR's API/Event Contract Summary section, generate at least one contract test verifying the implementation honors the contract. Use the testing approach flagged by the Architect (consumer-driven / schema validation / integration). See `<SHOP_ROOT>/skills/test-design/SKILL.md` Contract Testing section.
+4. Create test certification record using `<SHOP_ROOT>/templates/test-certification-template.md`. Include spec ID, version, and hash.
 5. List uncovered requirements explicitly as gaps with risk level.
 6. Hand off certified test suite to Programmer via Coordinator.
 

@@ -22,7 +22,7 @@ Before resuming, verify the checkpoint is trustworthy:
 
 | Check | How | Fail Action |
 |-------|-----|-------------|
-| Spec hash matches | Re-hash spec.md, compare to state file's `spec_hash` | Stop — spec may have changed. Escalate to human before resuming. |
+| Spec hash matches | Re-hash feature.spec.md, compare to state file's `spec_hash` | Stop — spec may have changed. Escalate to human before resuming. |
 | Completed stage artifacts exist | Check that every file listed in Completed Stages actually exists on disk | If missing, treat that stage as incomplete and re-run it |
 | Current stage output is partial | Check whether the in-progress stage produced any artifact | If artifact exists and looks complete, treat stage as done and advance |
 | Constitution Check not bypassed | If resuming at or after `architect`, verify adr.md has a completed Constitution Check table | If missing, re-run architect stage |

@@ -36,7 +36,7 @@ List every artifact this agent read and acted on. Include version or hash where 
 
 | Artifact | Version / Hash | Notes |
 |----------|---------------|-------|
-| Spec: `specs/<NNN>-<feature>/spec.md` | v<X.Y.Z> · sha256:<hash> | |
+| Spec: `specs/<NNN>-<feature>/feature.spec.md` | v<X.Y.Z> · sha256:<hash> | |
 | ADR: `specs/<NNN>-<feature>/adr.md` | sha256:<hash> | (if applicable) |
 | Test certification: `specs/<NNN>-<feature>/test-certification.md` | sha256:<hash> | (if applicable) |
 | tasks.md | sha256:<hash> | (if applicable) |

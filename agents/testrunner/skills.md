@@ -3,9 +3,9 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/test-design/SKILL.md` — test types, coverage expectations, failure clustering patterns
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — pattern catalog and layer/boundary definitions; required for step 5 failure classification — distinguishing "architecture issue" (wrong layer, dependency direction violation) from "implementation bug" (logic error within correct structure)
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/test-design/SKILL.md` — test types, coverage expectations, failure clustering patterns
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog and layer/boundary definitions; required for step 5 failure classification — distinguishing "architecture issue" (wrong layer, dependency direction violation) from "implementation bug" (logic error within correct structure)
 
 ## Role
 Execute the full verification suite after implementation and report trustworthy pass/fail evidence to the Coordinator. This is a verification role — running existing tests, not writing new ones.
@@ -24,6 +24,10 @@ Execute the full verification suite after implementation and report trustworthy 
 6. Report to Coordinator with convergence status vs threshold.
 
 ## Output Format
+
+Write run report to `<SHOP_ROOT>/reports/test-runs/TESTRUN-<feature-id>-<YYYY-MM-DD-HHmm>.md`. Never overwrite a prior report — timestamp ensures each run is a separate artifact for the audit trail.
+
+Report contents:
 - Suite-by-suite results (unit / integration / E2E / acceptance)
 - Pass rate against convergence threshold
 - Failure clusters with:

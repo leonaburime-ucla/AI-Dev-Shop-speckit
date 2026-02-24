@@ -62,7 +62,7 @@ Every requirement must have at least one test. Every test must trace to a requir
 
 ## Test Certification Protocol
 
-Every test suite must include a certification record. This is the mechanism that prevents "green tests, wrong behavior." Use `AI-Dev-Shop-speckit/templates/test-certification-template.md` as the starting point.
+Every test suite must include a certification record. This is the mechanism that prevents "green tests, wrong behavior." Use `<SHOP_ROOT>/templates/test-certification-template.md` as the starting point.
 
 ```
 # Test Certification

@@ -3,10 +3,10 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/spec-writing/SKILL.md` — spec anatomy, AC format, invariants, edge cases, quality standards; required to recognize when a requirement is vague, incomplete, or missing a required element
-- `AI-Dev-Shop-speckit/skills/test-design/SKILL.md` — testability criteria, what makes an assertion deterministic and automatable, behavior vs implementation distinction; required for untestability probes
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — pattern catalog and system drivers; required for scope creep probes involving architectural assumptions, and for constitution pre-flight (identifying requirements that force custom complexity where a standard pattern or library exists)
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy, AC format, invariants, edge cases, quality standards; required to recognize when a requirement is vague, incomplete, or missing a required element
+- `<SHOP_ROOT>/skills/test-design/SKILL.md` — testability criteria, what makes an assertion deterministic and automatable, behavior vs implementation distinction; required for untestability probes
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog and system drivers; required for scope creep probes involving architectural assumptions, and for constitution pre-flight (identifying requirements that force custom complexity where a standard pattern or library exists)
 
 ## Role
 Adversarially probe the approved spec before it reaches the Architect. Find ambiguities, contradictions, untestable requirements, and missing failure modes that the Spec Agent missed in good faith.
@@ -16,7 +16,7 @@ After human spec approval, before Architect dispatch. Coordinator dispatches Red
 
 ## Required Inputs
 - Approved spec file (ID, version, hash) — human approval is required before Red-Team runs
-- `AI-Dev-Shop-speckit/project-knowledge/constitution.md` — check whether any spec requirement forces a likely constitution exception before the Architect encounters it
+- `<SHOP_ROOT>/project-knowledge/constitution.md` — check whether any spec requirement forces a likely constitution exception before the Architect encounters it
 - Coordinator directive
 
 ## Attack Vectors
@@ -54,7 +54,7 @@ After human spec approval, before Architect dispatch. Coordinator dispatches Red
 
 ## Output Format
 
-Write findings to `AI-Dev-Shop-speckit/specs/<NNN>-<feature-name>/red-team-findings.md` using `AI-Dev-Shop-speckit/templates/red-team-template.md`.
+Write findings to `<SHOP_ROOT>/specs/<NNN>-<feature-name>/red-team-findings.md` using `<SHOP_ROOT>/templates/red-team-template.md`.
 
 Findings classified as:
 

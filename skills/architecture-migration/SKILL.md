@@ -13,10 +13,10 @@ Architecture migration moves an existing codebase from its current structure to 
 
 ## Inputs
 
-Load from `AI-Dev-Shop-speckit/codebase-analysis/`:
+Load from `<SHOP_ROOT>/reports/codebase-analysis/`:
 - The relevant `ANALYSIS-*.md` report(s) — all parts if split
-- Also load `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` for pattern selection
-- Also load `AI-Dev-Shop-speckit/skills/design-patterns/SKILL.md` for the target pattern's implementation details
+- Also load `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` for pattern selection
+- Also load `<SHOP_ROOT>/skills/design-patterns/SKILL.md` for the target pattern's implementation details
 
 ## Step 1 — Classify Current State
 
@@ -45,7 +45,7 @@ Map the Critical flaws from the analysis report to the best target:
 | Services tightly coupled via shared database | Event-driven with owned data stores |
 | Simple CRUD with no real domain complexity | Layered (healthy) — fix the degradation, don't over-architect |
 
-Validate against system drivers using `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md`. The target must match the actual complexity and team context — not just fix the flaws.
+Validate against system drivers using `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md`. The target must match the actual complexity and team context — not just fix the flaws.
 
 ## Step 3 — Identify Migration Seams
 
@@ -97,7 +97,7 @@ Addresses: FLAW-002, FLAW-008
 
 ## Step 5 — Output Format
 
-Save to `AI-Dev-Shop-speckit/codebase-analysis/MIGRATION-<analysis-id>-<YYYY-MM-DD>.md`.
+Save to `<SHOP_ROOT>/reports/codebase-analysis/MIGRATION-<analysis-id>-<YYYY-MM-DD>.md`.
 
 ```markdown
 # Architecture Migration Plan: <project-name>

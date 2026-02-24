@@ -20,7 +20,7 @@ A well-designed `skills.md`:
 - Lists common failure modes — prevents the agent from making predictable mistakes
 - Lists escalation triggers — prevents agents from spinning in loops on unresolvable problems
 
-Treat `skills.md` files as versioned artifacts. When you notice an agent repeatedly making the same mistake, update the skills.md to address it. That update propagates permanently — unlike a one-time prompt correction.
+Treat `skills.md` files as versioned artifacts. When an agent repeatedly makes the same mistake, a **human** should update the relevant `skills.md` to address it — agents never edit framework files directly. That human-applied update propagates permanently to all future dispatches of that agent, unlike a one-time prompt correction.
 
 ## Progressive Disclosure
 
@@ -36,7 +36,7 @@ The Coordinator controls what context each agent receives. A Programmer Agent wo
 
 These three files capture shared context that no individual `skills.md` covers:
 
-**`AI-Dev-Shop-speckit/project-knowledge/project_memory.md`**
+**`<SHOP_ROOT>/project-knowledge/project_memory.md`**
 Stable, project-specific facts: conventions, gotchas, tribal knowledge.
 - "We use UTC everywhere for all timestamps"
 - "The legacy billing API returns HTTP 200 even on errors — check the response body for error codes"
@@ -45,7 +45,7 @@ Stable, project-specific facts: conventions, gotchas, tribal knowledge.
 Update when: A convention is established or changed. A gotcha is discovered.
 Do not include: Architecture decisions (those belong in ADRs). Lessons learned (those belong in learnings.md).
 
-**`AI-Dev-Shop-speckit/project-knowledge/learnings.md`**
+**`<SHOP_ROOT>/project-knowledge/learnings.md`**
 Retrospective lessons: what went wrong, why, and what to do instead.
 - "2026-02-15: TDD Agent wrote tests against a draft spec that hadn't been approved yet. Tests had to be rewritten when spec changed. Fix: TDD Agent must verify spec is human-approved before certifying tests."
 - "2026-02-18: Programmer Agent bypassed the repository interface and queried the DB directly. Code Review caught it. Reminder: all DB access must go through the repository layer."
@@ -53,7 +53,7 @@ Retrospective lessons: what went wrong, why, and what to do instead.
 Update when: A failure pattern reveals something worth remembering.
 Governance: Entries are permanent. Do not delete old lessons.
 
-**`AI-Dev-Shop-speckit/project-knowledge/project_notes.md`**
+**`<SHOP_ROOT>/project-knowledge/project_notes.md`**
 Open questions, parking lot items, in-progress thinking.
 - "Open: Should EC-02 (idempotency) be handled at the API layer or the service layer? Waiting on architect decision."
 - "Parked: Rate limiting on invoice creation — deferred to v1.1."
@@ -63,7 +63,7 @@ Governance: Resolved items should be closed (not deleted — mark as [RESOLVED])
 
 ## Memory Placement Authority
 
-When making any context engineering decision about where to write a memory entry, `AI-Dev-Shop-speckit/project-knowledge/knowledge-routing.md` is the authoritative source. It defines which file each category of memory belongs in and supersedes any informal judgment call.
+When making any context engineering decision about where to write a memory entry, `<SHOP_ROOT>/project-knowledge/knowledge-routing.md` is the authoritative source. It defines which file each category of memory belongs in and supersedes any informal judgment call.
 
 Rules:
 - Before writing any memory entry, consult `knowledge-routing.md` to confirm the correct destination file
@@ -79,12 +79,12 @@ Getting this wrong turns knowledge files into junk drawers, which degrades every
 | Content Type | Correct Location |
 |---|---|
 | Requirements, acceptance criteria | Spec files |
-| Architecture pattern choices | ADRs in `AI-Dev-Shop-speckit/specs/` |
-| Reusable domain knowledge | `AI-Dev-Shop-speckit/skills/` files |
+| Architecture pattern choices | ADRs in `<SHOP_ROOT>/specs/` |
+| Reusable domain knowledge | `<SHOP_ROOT>/skills/` files |
 | Project-specific conventions | `project_memory.md` |
 | Lessons from past failures | `learnings.md` |
 | Open questions, deferred items | `project_notes.md` |
-| Agent operating procedures | `AI-Dev-Shop-speckit/agents/*/skills.md` |
+| Agent operating procedures | `<SHOP_ROOT>/agents/*/skills.md` |
 
 ## Context Injection by Coordinator
 

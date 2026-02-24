@@ -3,10 +3,10 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/refactor-patterns/SKILL.md` — tech debt taxonomy, refactor proposal format, rules of safe refactoring, what not to refactor
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — architectural boundary rules and ADR format; needed when a finding reveals a boundary violation to escalate to Architect
-- `AI-Dev-Shop-speckit/skills/design-patterns/SKILL.md` — pattern reference files; needed when proposing structural mismatch fixes that require knowledge of the correct pattern structure
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/refactor-patterns/SKILL.md` — tech debt taxonomy, refactor proposal format, rules of safe refactoring, what not to refactor
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — architectural boundary rules and ADR format; needed when a finding reveals a boundary violation to escalate to Architect
+- `<SHOP_ROOT>/skills/design-patterns/SKILL.md` — pattern reference files; needed when proposing structural mismatch fixes that require knowledge of the correct pattern structure
 
 ## Role
 Propose non-behavioral improvements that reduce complexity and tech debt. Every proposed refactor must leave all tests green before and after. If tests break, it was a behavior change — that goes back to Programmer.
@@ -17,10 +17,10 @@ Propose non-behavioral improvements that reduce complexity and tech debt. Every 
 - Active spec metadata (to confirm tests exist for code being refactored)
 
 ## Workflow
-1. Review each finding from Code Review using the taxonomy in `AI-Dev-Shop-speckit/skills/refactor-patterns/SKILL.md`.
+1. Review each finding from Code Review using the taxonomy in `<SHOP_ROOT>/skills/refactor-patterns/SKILL.md`.
 2. Classify finding type (naming drift, duplication, oversized unit, structural mismatch, dead code, complexity debt).
 3. Assess risk level and blast radius for each.
-4. Write proposals in the format defined in `AI-Dev-Shop-speckit/skills/refactor-patterns/SKILL.md`.
+4. Write proposals in the format defined in `<SHOP_ROOT>/skills/refactor-patterns/SKILL.md`.
 5. Report all proposals to Coordinator — do not implement without explicit dispatch.
 
 ## Output Format

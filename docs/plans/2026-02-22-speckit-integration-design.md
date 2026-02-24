@@ -79,19 +79,19 @@ Add:
 
 ### 7. `agents/spec/skills.md`
 Add to Workflow:
-- Step 0: Read `AI-Dev-Shop-speckit/project-knowledge/constitution.md`. For any requirement that conflicts with a constitution article, inline a `[NEEDS CLARIFICATION]` marker with the specific article and what decision is needed.
+- Step 0: Read `<SHOP_ROOT>/project-knowledge/constitution.md`. For any requirement that conflicts with a constitution article, inline a `[NEEDS CLARIFICATION]` marker with the specific article and what decision is needed.
 - Step: Before handing off, confirm zero unresolved `[NEEDS CLARIFICATION]` markers remain (all resolved or escalated to human).
 
 ### 8. `agents/architect/skills.md`
 Add to Workflow:
-- Step 0 (new): If spec involves library or technology choices, produce `research.md` using `AI-Dev-Shop-speckit/templates/research-template.md` before writing the ADR.
-- Step 1 (new, before current Step 1): Run Constitution Check — for each article in `AI-Dev-Shop-speckit/project-knowledge/constitution.md`, verify the proposed architecture complies. Any violation goes into the Complexity Justification table in the ADR, or triggers a revised architecture.
+- Step 0 (new): If spec involves library or technology choices, produce `research.md` using `<SHOP_ROOT>/templates/research-template.md` before writing the ADR.
+- Step 1 (new, before current Step 1): Run Constitution Check — for each article in `<SHOP_ROOT>/project-knowledge/constitution.md`, verify the proposed architecture complies. Any violation goes into the Complexity Justification table in the ADR, or triggers a revised architecture.
 
 ### 9. `agents/coordinator/skills.md`
 Add:
-- Inject `AI-Dev-Shop-speckit/project-knowledge/constitution.md` in Spec Agent and Architect Agent dispatches
+- Inject `<SHOP_ROOT>/project-knowledge/constitution.md` in Spec Agent and Architect Agent dispatches
 - New escalation trigger: constitution violation without justification (same severity as spec hash mismatch)
-- After ADR approval: generate `tasks.md` using `AI-Dev-Shop-speckit/templates/tasks-template.md` based on the ADR's parallel delivery plan
+- After ADR approval: generate `tasks.md` using `<SHOP_ROOT>/templates/tasks-template.md` based on the ADR's parallel delivery plan
 
 ### 10. `workflows/multi-agent-pipeline.md`
 Add:

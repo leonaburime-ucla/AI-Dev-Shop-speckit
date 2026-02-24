@@ -2,7 +2,7 @@
 
 Defines when agents must stop and escalate to a human, what the retry budgets are per stage, and what distinguishes a recoverable failure from a systemic problem. This document governs all escalation decisions in the pipeline.
 
-Supplements the convergence policy in `AI-Dev-Shop-speckit/AGENTS.md` and the resume logic in `AI-Dev-Shop-speckit/workflows/recovery-playbook.md`.
+Supplements the convergence policy in `<SHOP_ROOT>/AGENTS.md` and the resume logic in `<SHOP_ROOT>/workflows/recovery-playbook.md`.
 
 ---
 
@@ -27,7 +27,7 @@ The following conditions halt the pipeline immediately. The Coordinator must sur
 
 When a stage fails, the Coordinator re-dispatches up to the budget. On budget exhaustion, escalate to human — do not retry further.
 
-**Source of truth:** `AI-Dev-Shop-speckit/workflows/job-lifecycle.md` defines these budgets. This table mirrors those values. If they ever conflict, `job-lifecycle.md` wins.
+**Source of truth:** `<SHOP_ROOT>/workflows/job-lifecycle.md` defines these budgets. This table mirrors those values. If they ever conflict, `job-lifecycle.md` wins.
 
 | Stage | Max Retries | Escalation Trigger | Reset Condition |
 |-------|------------|-------------------|-----------------|

@@ -13,27 +13,27 @@ description: Use when selecting or implementing architecture patterns including 
 
 | Situation | Load |
 |---|---|
-| Greenfield product, small team | `AI-Dev-Shop-speckit/skills/design-patterns/references/modular-monolith.md` |
-| Complex domain logic, long-lived product | `AI-Dev-Shop-speckit/skills/design-patterns/references/clean-architecture.md` or `hexagonal-architecture.md` |
-| Multiple I/O channels (HTTP + CLI + events) | `AI-Dev-Shop-speckit/skills/design-patterns/references/hexagonal-architecture.md` |
-| Feature teams, autonomous delivery | `AI-Dev-Shop-speckit/skills/design-patterns/references/vertical-slice-architecture.md` |
-| Asymmetric read/write workloads | `AI-Dev-Shop-speckit/skills/design-patterns/references/cqrs.md` |
-| Audit trail, financial, compliance | `AI-Dev-Shop-speckit/skills/design-patterns/references/event-sourcing.md` (pair with CQRS) |
-| Async cross-service side effects | `AI-Dev-Shop-speckit/skills/design-patterns/references/event-driven-architecture.md` |
-| Multi-service business transactions | `AI-Dev-Shop-speckit/skills/design-patterns/references/reliability-patterns.md` (Saga) |
-| Reliable event publishing | `AI-Dev-Shop-speckit/skills/design-patterns/references/reliability-patterns.md` (Outbox) |
-| Independent team deployment at scale | `AI-Dev-Shop-speckit/skills/design-patterns/references/microservices.md` |
-| Migrating a legacy system | `AI-Dev-Shop-speckit/skills/design-patterns/references/strangler-fig.md` |
-| Multiple client types (mobile, web, API) | `AI-Dev-Shop-speckit/skills/design-patterns/references/api-patterns.md` (BFF) |
-| Centralized auth, rate limiting at edge | `AI-Dev-Shop-speckit/skills/design-patterns/references/api-patterns.md` (API Gateway) |
-| Preventing cascade failures | `AI-Dev-Shop-speckit/skills/design-patterns/references/resilience-patterns.md` |
-| Bursty traffic, ops-light team | `AI-Dev-Shop-speckit/skills/design-patterns/references/serverless-architecture.md` |
-| Offline batch / ML pipelines | `AI-Dev-Shop-speckit/skills/design-patterns/references/pipeline-batch-architecture.md` |
-| Simple CRUD, familiar team structure | `AI-Dev-Shop-speckit/skills/design-patterns/references/layered-architecture.md` |
-| Domain layer needs data access without DB coupling | `AI-Dev-Shop-speckit/skills/design-patterns/references/repository-pattern.md` |
-| Modeling complex domain with entities, aggregates, value objects | `AI-Dev-Shop-speckit/skills/design-patterns/references/ddd-tactical-patterns.md` |
-| SaaS product with multiple isolated customers | `AI-Dev-Shop-speckit/skills/design-patterns/references/multi-tenant-architecture.md` |
-| Read-heavy workloads, expensive repeated queries, latency reduction | `AI-Dev-Shop-speckit/skills/design-patterns/references/caching-patterns.md` |
+| Greenfield product, small team | `<SHOP_ROOT>/skills/design-patterns/references/modular-monolith.md` |
+| Complex domain logic, long-lived product | `<SHOP_ROOT>/skills/design-patterns/references/clean-architecture.md` or `hexagonal-architecture.md` |
+| Multiple I/O channels (HTTP + CLI + events) | `<SHOP_ROOT>/skills/design-patterns/references/hexagonal-architecture.md` |
+| Feature teams, autonomous delivery | `<SHOP_ROOT>/skills/design-patterns/references/vertical-slice-architecture.md` |
+| Asymmetric read/write workloads | `<SHOP_ROOT>/skills/design-patterns/references/cqrs.md` |
+| Audit trail, financial, compliance | `<SHOP_ROOT>/skills/design-patterns/references/event-sourcing.md` (pair with CQRS) |
+| Async cross-service side effects | `<SHOP_ROOT>/skills/design-patterns/references/event-driven-architecture.md` |
+| Multi-service business transactions | `<SHOP_ROOT>/skills/design-patterns/references/reliability-patterns.md` (Saga) |
+| Reliable event publishing | `<SHOP_ROOT>/skills/design-patterns/references/reliability-patterns.md` (Outbox) |
+| Independent team deployment at scale | `<SHOP_ROOT>/skills/design-patterns/references/microservices.md` |
+| Migrating a legacy system | `<SHOP_ROOT>/skills/design-patterns/references/strangler-fig.md` |
+| Multiple client types (mobile, web, API) | `<SHOP_ROOT>/skills/design-patterns/references/api-patterns.md` (BFF) |
+| Centralized auth, rate limiting at edge | `<SHOP_ROOT>/skills/design-patterns/references/api-patterns.md` (API Gateway) |
+| Preventing cascade failures | `<SHOP_ROOT>/skills/design-patterns/references/resilience-patterns.md` |
+| Bursty traffic, ops-light team | `<SHOP_ROOT>/skills/design-patterns/references/serverless-architecture.md` |
+| Offline batch / ML pipelines | `<SHOP_ROOT>/skills/design-patterns/references/pipeline-batch-architecture.md` |
+| Simple CRUD, familiar team structure | `<SHOP_ROOT>/skills/design-patterns/references/layered-architecture.md` |
+| Domain layer needs data access without DB coupling | `<SHOP_ROOT>/skills/design-patterns/references/repository-pattern.md` |
+| Modeling complex domain with entities, aggregates, value objects | `<SHOP_ROOT>/skills/design-patterns/references/ddd-tactical-patterns.md` |
+| SaaS product with multiple isolated customers | `<SHOP_ROOT>/skills/design-patterns/references/multi-tenant-architecture.md` |
+| Read-heavy workloads, expensive repeated queries, latency reduction | `<SHOP_ROOT>/skills/design-patterns/references/caching-patterns.md` |
 
 ## Common Pattern Combinations
 
@@ -51,4 +51,4 @@ description: Use when selecting or implementing architecture patterns including 
 
 ## All Pattern Files
 
-See `AI-Dev-Shop-speckit/skills/design-patterns/references/` for the full set.
+See `<SHOP_ROOT>/skills/design-patterns/references/` for the full set.

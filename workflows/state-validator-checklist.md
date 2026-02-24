@@ -10,8 +10,8 @@ Located at: `specs/<NNN>-<feature-name>/.pipeline-state.md`
 
 ### Required fields
 - [ ] `run_id` is present and non-empty
-- [ ] `spec_hash` is present — re-hash `spec.md` and confirm it matches
-- [ ] `current_stage` is a valid stage name (see `AI-Dev-Shop-speckit/workflows/pipeline-state-format.md`)
+- [ ] `spec_hash` is present — re-hash `feature.spec.md` and confirm it matches
+- [ ] `current_stage` is a valid stage name (see `<SHOP_ROOT>/workflows/pipeline-state-format.md`)
 - [ ] `status` is one of: `IN_PROGRESS` | `WAITING_FOR_HUMAN` | `COMPLETE` | `FAILED`
 - [ ] `last_updated_at` timestamp is recent (if stale by days, the run may have been abandoned)
 
@@ -26,7 +26,7 @@ Located at: `specs/<NNN>-<feature-name>/.pipeline-state.md`
 ### Current stage detail
 - [ ] `job_status` is a valid state: `QUEUED` | `DISPATCHED` | `RUNNING` | `RETRYING` | `DONE` | `FAILED` | `ESCALATED` | `WAITING_FOR_HUMAN` | `CANCELLED` | `ABORTED`
 - [ ] If `job_status` is `RETRYING`, `retry_count` is present and within the stage's budget
-- [ ] If `job_status` is `ABORTED`, treat as resumable — follow `AI-Dev-Shop-speckit/workflows/recovery-playbook.md`
+- [ ] If `job_status` is `ABORTED`, treat as resumable — follow `<SHOP_ROOT>/workflows/recovery-playbook.md`
 - [ ] If `job_status` is `CANCELLED`, do not resume — start a new run
 
 ### Failure clusters
@@ -37,7 +37,7 @@ Located at: `specs/<NNN>-<feature-name>/.pipeline-state.md`
 
 ## 2. Memory Store Entries (`project-knowledge/memory-store.md`)
 
-Run this when reviewing entries written by the Observer, or when promoting entries to agent skills.md files.
+Run this when reviewing entries written by the Observer, or when a human is promoting Observer recommendations to agent skills.md files.
 
 ### Per-entry checks
 - [ ] `entry_id` is present and follows format: `TYPE-YYYYMMDD-NNN` (e.g. `FAILURE-20260222-001`)

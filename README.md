@@ -4,29 +4,29 @@ Drop this folder into any project. Point Claude Code, Codex, or Gemini at it. Te
 
 ## Dropping This Into a New Project
 
-Copy the `AI-Dev-Shop-speckit/` folder into your project root:
+Copy the `<SHOP_ROOT>/` folder into your project root:
 
 ```bash
-cp -r AI-Dev-Shop-speckit/ your-project/AI-Dev-Shop-speckit/
+cp -r <SHOP_ROOT>/ your-project/<SHOP_ROOT>/
 ```
 
 Each tool has a file it reads automatically on startup. Add the following to the right one:
 
 **Claude Code** — add to `CLAUDE.md` at your project root (create if missing):
 ```
-Read `AI-Dev-Shop-speckit/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
+Read `<SHOP_ROOT>/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
 ```
 
 **Gemini CLI / OpenAI Codex** — add to `GEMINI.md` (Gemini) or `AGENTS.md` (Codex) at your project root. Paste the following into your root file:
 ```
-Read `AI-Dev-Shop-speckit/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
+Read `<SHOP_ROOT>/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
 
 # Mandatory Startup
 
 On the first user message in this repository (including greetings), before any reply:
-1. Open and read `AI-Dev-Shop-speckit/AGENTS.md`.
+1. Open and read `<SHOP_ROOT>/AGENTS.md`.
 2. Provide a comprehensive welcome message that MUST include:
-   - "Booted with AI-Dev-Shop-speckit/AGENTS.md loaded."
+   - "Booted with <SHOP_ROOT>/AGENTS.md loaded."
    - A bulleted list of the 3 Coordinator modes (Review Mode, Pipeline Mode, Direct Mode) along with a 1-sentence summary explaining what each mode actually does.
 3. If the file is missing or unreadable, state that explicitly and stop.
 
@@ -35,29 +35,29 @@ Failure to perform Mandatory Startup is a blocking error. Do not proceed with ta
 
 **Cursor** — add to `.cursor/rules/ai-dev-shop.mdc` (create if missing):
 ```
-Multi-agent pipeline: see AI-Dev-Shop-speckit/AGENTS.md
+Multi-agent pipeline: see <SHOP_ROOT>/AGENTS.md
 ```
 
 **GitHub Copilot** — add to `.github/copilot-instructions.md` (create if missing):
 ```
-Multi-agent pipeline: see AI-Dev-Shop-speckit/AGENTS.md
+Multi-agent pipeline: see <SHOP_ROOT>/AGENTS.md
 ```
 
-**Other** — add the same one-liner to whatever file your tool reads on startup, or include `AI-Dev-Shop-speckit/AGENTS.md` manually at the start of your first session.
+**Other** — add the same one-liner to whatever file your tool reads on startup, or include `<SHOP_ROOT>/AGENTS.md` manually at the start of your first session.
 
 **Slash commands (Claude Code)** — copy the command templates once to activate `/spec`, `/plan`, `/tasks`, `/implement`, `/review`, `/clarify`, `/consensus`:
 ```bash
-cp -r AI-Dev-Shop-speckit/templates/commands/ .claude/commands/
+cp -r <SHOP_ROOT>/templates/commands/ .claude/commands/
 ```
 
 **Slash commands (Gemini CLI)** — copy the Gemini-specific command templates:
 ```bash
-cp -r AI-Dev-Shop-speckit/templates/commands/gemini/ .gemini/commands/
+cp -r <SHOP_ROOT>/templates/commands/gemini/ .gemini/commands/
 ```
 
 **First-time setup:**
-1. Edit `AI-Dev-Shop-speckit/project-knowledge/constitution.md` — replace the default articles with your project's engineering principles, or keep the defaults
-2. Fill in `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` with your project's conventions and gotchas
+1. Edit `<SHOP_ROOT>/project-knowledge/constitution.md` — replace the default articles with your project's engineering principles, or keep the defaults
+2. Fill in `<SHOP_ROOT>/project-knowledge/project_memory.md` with your project's conventions and gotchas
 3. Tell the Coordinator what you want to build, or type `/spec [description]`
 
 The Coordinator will route between agents, enforce convergence, and stop at human checkpoints.
@@ -65,15 +65,15 @@ The Coordinator will route between agents, enforce convergence, and stop at huma
 **Verify required files are present before starting:**
 
 ```
-AI-Dev-Shop-speckit/AGENTS.md                                    ← must exist
-AI-Dev-Shop-speckit/CLAUDE.md                                    ← must exist
-AI-Dev-Shop-speckit/project-knowledge/constitution.md            ← customize articles for your project
-AI-Dev-Shop-speckit/project-knowledge/project_memory.md          ← fill in before first spec
-AI-Dev-Shop-speckit/project-knowledge/knowledge-routing.md       ← memory routing rules
-AI-Dev-Shop-speckit/project-knowledge/spec-definition-of-done.md ← spec DoD checklist
-AI-Dev-Shop-speckit/templates/spec-system/feature.spec.md        ← strict-mode spec package templates
-AI-Dev-Shop-speckit/templates/adr-template.md                    ← must exist
-AI-Dev-Shop-speckit/templates/tasks-template.md                  ← must exist
+<SHOP_ROOT>/AGENTS.md                                    ← must exist
+<SHOP_ROOT>/CLAUDE.md                                    ← must exist
+<SHOP_ROOT>/project-knowledge/constitution.md            ← customize articles for your project
+<SHOP_ROOT>/project-knowledge/project_memory.md          ← fill in before first spec
+<SHOP_ROOT>/project-knowledge/knowledge-routing.md       ← memory routing rules
+<SHOP_ROOT>/project-knowledge/spec-definition-of-done.md ← spec DoD checklist
+<SHOP_ROOT>/templates/spec-system/feature.spec.md        ← strict-mode spec package templates
+<SHOP_ROOT>/templates/adr-template.md                    ← must exist
+<SHOP_ROOT>/templates/tasks-template.md                  ← must exist
 ```
 
 ## How It Works
@@ -90,7 +90,7 @@ Spec → [Red-Team] → Architect (research → constitution check → ADR)
 
 `[...]` stages are optional but recommended. The Database Agent is dispatched by the Coordinator whenever schema design, migrations, or data modeling are involved. The Coordinator owns all routing. Agents never talk to each other directly. Specs are ground truth — everything downstream is traceable to a spec version and hash.
 
-Full operating manual: **`AI-Dev-Shop-speckit/AGENTS.md`**
+Full operating manual: **`<SHOP_ROOT>/AGENTS.md`**
 
 ## Integration with github/spec-kit
 
@@ -99,7 +99,7 @@ This toolkit deeply integrates concepts from [GitHub's spec-kit](https://github.
 - **Constitution framework** — `project-knowledge/constitution.md` with 8 governance articles. Every spec and ADR must comply. Violations are blocking escalations.
 - **[NEEDS CLARIFICATION] markers** — inline ambiguity flags in specs, with a structured `/clarify` command to resolve them before Architect dispatch.
 - **Quality checklist gate** — Spec Agent generates `checklists/requirements.md` per feature and validates the spec against it before handoff.
-- **Per-feature artifact folders** — all artifacts for a feature (spec, ADR, research, tasks, checklists) live in `<OUTPUT_ROOT>/specs/<NNN>-<feature-name>/`, matching spec-kit's directory convention.
+- **Per-feature artifact folders** — all artifacts for a feature (spec, ADR, research, tasks, checklists) live in `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`, matching spec-kit's directory convention.
 - **Slash commands** — `/spec`, `/clarify`, `/plan`, `/tasks`, `/implement`, `/review`, `/consensus` as executable commands (see `templates/commands/`).
 - **Research artifact** — Architect produces `research.md` before the ADR when technology choices are involved.
 - **tasks.md with [P] markers** — parallelizable task list generated from the ADR, with story phases ordered by AC priority.
@@ -215,4 +215,4 @@ AGENTS.md                          ← Full operating manual for all agents and 
 
 ## Methodology
 
-This pipeline is built on Meta-Coding (ASTRA: AI + Specs + TDD + Reference Architecture). Full source reading and philosophy: `AI-Dev-Shop-speckit/project-knowledge/foundation.md`.
+This pipeline is built on Meta-Coding (ASTRA: AI + Specs + TDD + Reference Architecture). Full source reading and philosophy: `<SHOP_ROOT>/project-knowledge/foundation.md`.

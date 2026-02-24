@@ -2,7 +2,7 @@
 
 Defines how agents treat sensitive data encountered during pipeline execution. All agents are bound by this policy. Violations are Constitution Article VI (Security-by-Default) concerns and are logged to memory-store.md.
 
-Supplements `AI-Dev-Shop-speckit/project-knowledge/tool-permission-policy.md`, which governs tool scope. This document governs data handling within those scopes.
+Supplements `<SHOP_ROOT>/project-knowledge/tool-permission-policy.md`, which governs tool scope. This document governs data handling within those scopes.
 
 ---
 
@@ -56,7 +56,7 @@ No restrictions.
 
 | Artifact | SECRET | PII | SENSITIVE-BUSINESS | INTERNAL | PUBLIC |
 |----------|--------|-----|--------------------|----------|--------|
-| spec.md | ❌ | ❌ (synthetic only) | ⚠️ (flag in Agent Directives) | ✅ | ✅ |
+| feature.spec.md | ❌ | ❌ (synthetic only) | ⚠️ (flag in Agent Directives) | ✅ | ✅ |
 | adr.md | ❌ | ❌ | ⚠️ | ✅ | ✅ |
 | tasks.md | ❌ | ❌ | ⚠️ | ✅ | ✅ |
 | test-certification.md | ❌ | ❌ (synthetic only) | ⚠️ | ✅ | ✅ |

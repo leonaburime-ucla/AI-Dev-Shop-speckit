@@ -8,7 +8,7 @@ The Observer updates this file after each feature ships and produces a full scor
 
 ## How Scores Are Computed
 
-Each agent is scored on the dimensions defined in `AI-Dev-Shop-speckit/skills/evaluation/eval-rubrics.md` using LLM-as-judge methodology. Scores are 1–5 per dimension. The composite score is the unweighted mean, rounded to one decimal place.
+Each agent is scored on the dimensions defined in `<SHOP_ROOT>/skills/evaluation/eval-rubrics.md` using LLM-as-judge methodology. Scores are 1–5 per dimension. The composite score is the unweighted mean, rounded to one decimal place.
 
 A **regression** is a composite score drop of >1.0 vs. the agent's rolling 4-run baseline. Regressions are flagged to the Coordinator immediately, not held for the weekly report.
 

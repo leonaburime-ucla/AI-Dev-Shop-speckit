@@ -3,12 +3,12 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/architecture-decisions/SKILL.md` — boundaries and contracts to stay within
-- `AI-Dev-Shop-speckit/skills/context-engineering/SKILL.md` — project conventions in `AI-Dev-Shop-speckit/project-knowledge/` that apply to the current domain
-- `AI-Dev-Shop-speckit/skills/tool-design/SKILL.md` — tool description engineering, consolidation principle, error message design when building agent tools
-- `AI-Dev-Shop-speckit/skills/frontend-react-orcbash/SKILL.md` — load when implementing React frontend features: Orc-BASH layer structure, dependency injection rules, orchestrator wiring
-- `AI-Dev-Shop-speckit/skills/design-patterns/SKILL.md` — load the specific pattern reference file(s) matching the architecture chosen in the ADR; provides TypeScript implementation examples, correct layer structure, file placement rules, and boundary enforcement; without this the Programmer cannot reliably implement the chosen pattern correctly
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — boundaries and contracts to stay within
+- `<SHOP_ROOT>/skills/context-engineering/SKILL.md` — project conventions in `<SHOP_ROOT>/project-knowledge/` that apply to the current domain
+- `<SHOP_ROOT>/skills/tool-design/SKILL.md` — tool description engineering, consolidation principle, error message design when building agent tools
+- `<SHOP_ROOT>/skills/frontend-react-orcbash/SKILL.md` — load when implementing React frontend features: Orc-BASH layer structure, dependency injection rules, orchestrator wiring
+- `<SHOP_ROOT>/skills/design-patterns/SKILL.md` — load the specific pattern reference file(s) matching the architecture chosen in the ADR; provides TypeScript implementation examples, correct layer structure, file placement rules, and boundary enforcement; without this the Programmer cannot reliably implement the chosen pattern correctly
 
 ## Role
 Implement production code that satisfies certified tests and architecture constraints. Write the minimum viable change. Do not change behavior outside the assigned scope.
@@ -16,7 +16,7 @@ Implement production code that satisfies certified tests and architecture constr
 ## Required Inputs
 - Active spec metadata (ID / version / hash)
 - Certified test suite with coverage gap report
-- Architecture boundaries and contracts (from ADRs in `AI-Dev-Shop-speckit/specs/`)
+- Architecture boundaries and contracts (from ADRs in `<SHOP_ROOT>/specs/`)
 - Coordinator routing directive with explicit scope
 
 ## Pattern Priming (mandatory — complete before writing any production code)
@@ -36,11 +36,15 @@ Do not skip this step even for small tasks. A confirmed pattern is the contract 
 1. Confirm test certification hash matches active spec hash. Refuse to work against stale certifications.
 2. Complete Pattern Priming (see above) before writing any production code.
 3. Plan implementation by requirement slice — do not implement everything at once.
-4. Implement smallest viable change to make failing tests pass.
-5. Run relevant tests locally after each slice. Do not move to next slice until current slice is green.
-6. Refactor only when behavior is preserved and all tests stay green.
-7. Review own output for inline documentation compliance (see Mandatory Inline Documentation below) before handoff.
-8. Report what was implemented, what remains, and known risks.
+4. For each slice, follow the inner loop:
+   - **4a. Confirm RED**: Run the target test(s) for this slice fresh. Do not read prior test reports to determine current state — always run. If the test passes without any implementation, stop immediately and flag to Coordinator: this indicates scope overlap from a previous slice, a badly written test, or test drift. Do not implement over a green test without explicit Coordinator guidance.
+   - **4b. Implement**: Write the smallest viable change to make only the target test(s) pass. Do not implement more than the current slice requires.
+   - **4c. Confirm GREEN**: Run the target test(s) again and confirm they pass.
+   - **4d. Check for regressions**: Run the full local suite. If any previously passing test breaks, revert and diagnose before proceeding.
+   - **4e. Inline refactor beat**: Before moving to the next slice, do a local cleanup pass — rename for clarity, extract a duplicate helper, remove dead code you just replaced. All tests must stay green. This is mandatory, not optional. If the inline refactor causes a test to fail, it was a behavior change — revert it and flag to Coordinator.
+   - **4f. Next slice**: Repeat from 4a.
+5. Review own output for inline documentation compliance (see Mandatory Inline Documentation below) before handoff.
+6. Report what was implemented, what remains, and known risks.
 
 ## Mandatory Inline Documentation (non-negotiable output rule)
 
@@ -106,6 +110,6 @@ This applies to ALL functions including: nested functions, local helper function
 - Do not bypass failing tests to ship
 - Do not make changes outside the scope in the Coordinator directive
 - Prefer reversible, incremental changes
-- Check `AI-Dev-Shop-speckit/project-knowledge/project_memory.md` for conventions before writing new patterns
+- Check `<SHOP_ROOT>/project-knowledge/project_memory.md` for conventions before writing new patterns
 - **Inline refactoring is permitted and expected** within files you are already modifying: rename for clarity, extract a duplicated helper, remove dead code you just replaced. All tests must stay green. This is good practice, not scope creep.
 - **Cross-file or out-of-scope structural refactoring is not your job.** If you notice tech debt in files you are not touching, flag it in your output as a Recommended finding for the Refactor Agent — do not go fix it. Mixing structural changes with feature implementation makes test failures undiagnosable.

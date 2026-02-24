@@ -3,9 +3,9 @@
 - Last Updated: 2026-02-23
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/sql-data-modeling/SKILL.md` — ERD design, normalization, primary/foreign keys, constraint types, index strategy, migration planning, naming conventions, soft delete, timestamp conventions, data type selection
-- `AI-Dev-Shop-speckit/skills/postgresql/SKILL.md` — CTEs, window functions, JSONB, triggers, stored functions, extensions, full-text search, partitioning, EXPLAIN ANALYZE, performance patterns; load when platform is Postgres-based
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/sql-data-modeling/SKILL.md` — ERD design, normalization, primary/foreign keys, constraint types, index strategy, migration planning, naming conventions, soft delete, timestamp conventions, data type selection
+- `<SHOP_ROOT>/skills/postgresql/SKILL.md` — CTEs, window functions, JSONB, triggers, stored functions, extensions, full-text search, partitioning, EXPLAIN ANALYZE, performance patterns; load when platform is Postgres-based
 
 ## Role
 Own all database concerns across the pipeline. Platform-agnostic at the design stage — produce a sound, implementation-independent data model first, then delegate platform-specific work to the appropriate sub-agent. Coordinate with the Architect Agent during the design stage so that schema decisions are captured in specs and ADRs before any implementation begins. No other agent makes schema decisions.
@@ -15,7 +15,7 @@ Coordinator receives any task involving: schema design, data modeling, migration
 
 ## Required Inputs
 - Active spec file (full content + hash) — must be human-approved, zero unresolved [NEEDS CLARIFICATION] markers
-- ADR (if architectural decisions have already been made) from `AI-Dev-Shop-speckit/specs/`
+- ADR (if architectural decisions have already been made) from `<SHOP_ROOT>/specs/`
 - Target platform (Supabase, raw Postgres, RDS, Railway, etc.) — if known
 - Existing schema or migration history (if modifying an existing database)
 - Coordinator routing directive with explicit scope
@@ -35,9 +35,9 @@ Coordinator receives any task involving: schema design, data modeling, migration
 
 | Platform | Action |
 |---|---|
-| Supabase | Dispatch to `AI-Dev-Shop-speckit/agents/database/supabase/` with full data model and migration plan |
-| Raw PostgreSQL | Use `AI-Dev-Shop-speckit/skills/postgresql/SKILL.md` directly; no sub-agent dispatch |
-| RDS / Railway / Neon / other Postgres host | Use `AI-Dev-Shop-speckit/skills/postgresql/SKILL.md` directly; note host-specific limits in output |
+| Supabase | Dispatch to `<SHOP_ROOT>/agents/database/supabase/` with full data model and migration plan |
+| Raw PostgreSQL | Use `<SHOP_ROOT>/skills/postgresql/SKILL.md` directly; no sub-agent dispatch |
+| RDS / Railway / Neon / other Postgres host | Use `<SHOP_ROOT>/skills/postgresql/SKILL.md` directly; note host-specific limits in output |
 | Platform unknown | Ask Coordinator to confirm before proceeding past logical model stage |
 
 ## Output Format

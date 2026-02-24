@@ -3,10 +3,10 @@
 - Last Updated: 2026-02-23
 
 ## Skills
-- `AI-Dev-Shop-speckit/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `AI-Dev-Shop-speckit/skills/supabase/SKILL.md` — RLS policies, PostgREST conventions, Supabase client setup, realtime, storage, edge functions, auth integration, type generation, common gotchas
-- `AI-Dev-Shop-speckit/skills/postgresql/SKILL.md` — CTEs, window functions, JSONB, triggers, stored functions, extensions, full-text search; load for any non-trivial SQL logic in migrations or functions
-- `AI-Dev-Shop-speckit/skills/sql-data-modeling/SKILL.md` — reference for constraint syntax, index types, and naming conventions when implementing the data model received from Database Agent
+- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<SHOP_ROOT>/skills/supabase/SKILL.md` — RLS policies, PostgREST conventions, Supabase client setup, realtime, storage, edge functions, auth integration, type generation, common gotchas
+- `<SHOP_ROOT>/skills/postgresql/SKILL.md` — CTEs, window functions, JSONB, triggers, stored functions, extensions, full-text search; load for any non-trivial SQL logic in migrations or functions
+- `<SHOP_ROOT>/skills/sql-data-modeling/SKILL.md` — reference for constraint syntax, index types, and naming conventions when implementing the data model received from Database Agent
 
 ## Role
 Platform-specific implementation agent under the Database Agent. Handle everything Supabase-specific: RLS policies, PostgREST API conventions, auth integration, realtime subscriptions, storage buckets, and edge functions. Never make schema design decisions — the data model arrives approved from the Database Agent. Return completed implementation artifacts to the Database Agent for review.

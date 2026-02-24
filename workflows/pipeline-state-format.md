@@ -13,7 +13,6 @@ Every pipeline run writes a `.pipeline-state.md` file to the active feature fold
 
 - run_id: <uuid or timestamp-based ID, e.g. 2026-02-22T14:30:00Z>
 - feature: <NNN>-<feature-name>
-- output_root: <absolute path to project-local output directory>
 - coordinator_mode: review | pipeline | direct
 - debug_mode: on | off
 - spec_version: <version>
@@ -27,7 +26,7 @@ Every pipeline run writes a `.pipeline-state.md` file to the active feature fold
 
 | Stage | Completed At | Output Artifact | Output Hash |
 |-------|-------------|-----------------|-------------|
-| spec | 2026-02-22T14:32:00Z | specs/001-feature/spec.md | sha256:abc... |
+| spec | 2026-02-22T14:32:00Z | specs/001-feature/feature.spec.md | sha256:abc... |
 | architect | 2026-02-22T15:10:00Z | specs/001-feature/adr.md | sha256:def... |
 | tasks | 2026-02-22T15:12:00Z | specs/001-feature/tasks.md | sha256:ghi... |
 
@@ -66,17 +65,7 @@ Every pipeline run writes a `.pipeline-state.md` file to the active feature fold
 
 ---
 
-## Field Reference: New Required and Optional Fields
-
-### `output_root` (required)
-
-```
-output_root: <absolute path to project-local output directory>
-```
-
-- Must be set before any artifact is written
-- Coordinator validates it is not inside `AI-Dev-Shop-speckit/`
-- All artifact paths in the pipeline are resolved relative to this root
+## Field Reference
 
 ### `coordinator_mode` (required)
 
@@ -129,7 +118,7 @@ When `on`, the Observer emits `[DEBUG]` trace entries at every dispatch, gate ch
 ## Read Rules
 
 - At session start, the Coordinator checks for `.pipeline-state.md` in the active feature folder.
-- If found and status is `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow the Recovery Playbook (`AI-Dev-Shop-speckit/workflows/recovery-playbook.md`).
+- If found and status is `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow the Recovery Playbook (`<SHOP_ROOT>/workflows/recovery-playbook.md`).
 - If found and status is `ABORTED`, treat as resumable — follow the Recovery Playbook.
 - If found and status is `COMPLETE`, `FAILED`, or `CANCELLED`, do not resume — start a new run or treat as reference only.
 - If not found, create a new one at the start of the spec stage.
@@ -143,7 +132,6 @@ When `on`, the Observer emits `[DEBUG]` trace entries at every dispatch, gate ch
 
 - run_id: 2026-02-22T14:30:00Z
 - feature: 003-csv-invoice-export
-- output_root: /Users/la/projects/my-app
 - coordinator_mode: pipeline
 - debug_mode: off
 - spec_version: 1.1.0
@@ -157,7 +145,7 @@ When `on`, the Observer emits `[DEBUG]` trace entries at every dispatch, gate ch
 
 | Stage | Completed At | Output Artifact | Output Hash |
 |-------|-------------|-----------------|-------------|
-| spec | 2026-02-22T14:32:00Z | specs/003-csv-invoice-export/spec.md | sha256:a3f8... |
+| spec | 2026-02-22T14:32:00Z | specs/003-csv-invoice-export/feature.spec.md | sha256:a3f8... |
 | red-team | 2026-02-22T14:55:00Z | specs/003-csv-invoice-export/red-team-findings.md | sha256:b1c4... |
 | architect | 2026-02-22T15:30:00Z | specs/003-csv-invoice-export/adr.md | sha256:b9e2... |
 | tasks | 2026-02-22T15:32:00Z | specs/003-csv-invoice-export/tasks.md | sha256:c7d3... |

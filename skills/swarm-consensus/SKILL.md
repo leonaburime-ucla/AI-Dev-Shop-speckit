@@ -50,7 +50,7 @@ From the output:
 - Skip any CLI that is not installed — do not error, just note it as absent in the report
 - Check for any user-saved model version preferences (e.g. from a prior "always use Opus for consensus" instruction) and apply them via CLI flags if the tool supports it
 
-A minimum viable swarm is **primary model + 1 peer**. If no peers are available, tell the user and stop — running consensus with only one model produces no value.
+A minimum viable swarm is **primary model + 1 peer**. If no peers are available, tell the user and stop — running consensus with only one model produces no value. **This is a graceful stop, not a pipeline failure.** If Swarm Consensus was invoked as part of a pipeline stage, that stage proceeds using the primary model's output alone — the pipeline is not blocked by missing peer CLIs.
 
 ---
 

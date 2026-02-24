@@ -37,8 +37,8 @@
 
 | # | Item | Status | Notes |
 |---|------|--------|-------|
-| A-01 | `spec.md` (feature.spec.md template) is present in the feature folder | | |
-| A-02 | `spec.md` is non-empty — all placeholder values have been replaced with real content | | |
+| A-01 | `feature.spec.md` is present in the feature folder | | |
+| A-02 | `feature.spec.md` is non-empty — all placeholder values have been replaced with real content | | |
 | A-03 | `api.spec.ts` is present (or explicitly marked NA with justification if feature has no API) | | |
 | A-04 | `state.spec.ts` is present (or explicitly marked NA with justification if feature has no state) | | |
 | A-05 | `orchestrator.spec.ts` is present (or explicitly marked NA with justification if feature has no orchestrator) | | |
@@ -56,7 +56,7 @@
 
 | # | Item | Status | Notes |
 |---|------|--------|-------|
-| B-01 | `spec_id` is assigned and unique (verified against existing `AI-Dev-Shop-speckit/specs/` folders) | | |
+| B-01 | `spec_id` is assigned and unique (verified against existing `<SHOP_ROOT>/specs/` folders) | | |
 | B-02 | `version` is set to correct semver (1.0.0 for new specs) | | |
 | B-03 | `status` is APPROVED (not DRAFT or IN-REVIEW) | | |
 | B-04 | `content_hash` is computed and recorded — matches sha256 of content below the header block | | |
@@ -67,7 +67,7 @@
 | B-09 | Problem Statement is present with Current state, Desired state, and Success signal | | |
 | B-10 | Scope: In-scope list is present and non-empty | | |
 | B-11 | Scope: Out-of-scope list is present and non-empty | | |
-| B-12 | Zero `[NEEDS CLARIFICATION]` markers remain anywhere in spec.md | | |
+| B-12 | Zero `[NEEDS CLARIFICATION]` markers remain anywhere in `feature.spec.md` | | |
 | B-13 | All Open Questions have an owner AND a resolution target date | | |
 | B-14 | Requirements section has at least one REQ-* item | | |
 | B-15 | All REQ-* items are observable and testable — no vague qualifiers ("fast", "robust", "intuitive", "seamless", "easy") | | |
@@ -86,7 +86,7 @@
 | B-28 | Dependencies table is complete — no blank Failure Mode or Fallback cells | | |
 | B-29 | Constitution Compliance table is complete — all 8 articles marked COMPLIES / EXCEPTION / N/A | | |
 | B-30 | Any EXCEPTION in the Constitution Compliance table has a note in this DoD or in the ADR | | |
-| B-31 | Implementation Readiness Gate checklist in spec.md is complete and shows PASS | | |
+| B-31 | Implementation Readiness Gate checklist in `feature.spec.md` is complete and shows PASS | | |
 
 ---
 

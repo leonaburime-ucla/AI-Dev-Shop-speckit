@@ -21,7 +21,7 @@ This folder contains a complete example of a feature run through the AI Dev Shop
 
 | Pipeline Stage | Agent | Artifact | Included Here |
 |---------------|-------|----------|--------------|
-| Spec | Spec Agent | `spec.md` | ✅ `spec.md` |
+| Spec | Spec Agent | `feature.spec.md` | ✅ `feature.spec.md` |
 | Red-Team | Red-Team Agent | findings report | ✅ `red-team-findings.md` |
 | Architect | Architect Agent | research summary + `adr.md` | ✅ `adr.md` (research embedded) |
 | Task generation | Coordinator | `tasks.md` | ✅ `tasks.md` |
