@@ -6,9 +6,9 @@
 
 All pipeline artifacts are written under `<SHOP_ROOT>` — the AI-Dev-Shop-speckit folder (default: `AI-Dev-Shop-speckit/`).
 
-- Specs and ADRs → `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`
-- Reports (analysis, test runs, reviews) → `<SHOP_ROOT>/reports/`
-- Pipeline state → `<SHOP_ROOT>/specs/<NNN>-<feature-name>/.pipeline-state.md`
+- Specs → user-specified location (Spec Agent asks before writing; `spec_path` recorded in pipeline state)
+- Pipeline artifacts (ADR, research, tasks, red-team findings, test certification, pipeline state) → `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`
+- Reports (analysis, test runs, code review, security) → `<SHOP_ROOT>/reports/` subfolders
 - **Read-only:** `agents/`, `skills/`, `templates/`, `workflows/` — never modify these
 
 ---
@@ -82,14 +82,14 @@ What the Coordinator must include in each agent dispatch. Include only what is l
 - `<SHOP_ROOT>/project-knowledge/constitution.md` (for constitution compliance check and [NEEDS CLARIFICATION] detection)
 - Relevant entries from `<SHOP_ROOT>/project-knowledge/project_memory.md` (domain conventions)
 - Last 3 entries from `<SHOP_ROOT>/project-knowledge/learnings.md` (recent failure patterns)
-- Existing specs in `<SHOP_ROOT>/specs/` (to avoid ID collisions, detect overlap, assign next FEAT number)
+- Existing FEAT folders in `<SHOP_ROOT>/reports/pipeline/` (to avoid ID collisions, detect overlap, assign next FEAT number)
 
 **Integration contracts:** If the spec depends on another feature's API, data schema, or event contract, the Spec Agent must include an `## Integration Contracts` section in the spec listing:
 - Which features this spec depends on (by SPEC-ID)
 - The exact interface boundary: endpoint signatures, data shapes, or event names
 - Which ACs require the integration to be live
 
-The Coordinator records these dependencies in `<SHOP_ROOT>/specs/<NNN>-<feature-name>/.pipeline-state.md`. When all referenced features reach Done, the Coordinator may trigger an optional Integration Verification run against the combined system.
+The Coordinator records these dependencies in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`. When all referenced features reach Done, the Coordinator may trigger an optional Integration Verification run against the combined system.
 
 ### Red-Team Agent (runs after Spec approval, before Architect dispatch)
 - Active spec (full content + hash) — must have zero [NEEDS CLARIFICATION] markers
@@ -106,7 +106,7 @@ The Coordinator records these dependencies in `<SHOP_ROOT>/specs/<NNN>-<feature-
 
 Coordinator cannot dispatch Architect until ALL of the following pass:
 
-- Full spec package exists at `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`:
+- Full spec package exists at the `spec_path` recorded in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`:
   - `feature.spec.md`
   - `api.spec.ts`
   - `state.spec.ts`
@@ -128,14 +128,14 @@ Reference: `<SHOP_ROOT>/project-knowledge/spec-definition-of-done.md`
 - Active spec file (full content + hash) — must be human-approved, zero unresolved [NEEDS CLARIFICATION] markers
 - Red-Team advisory findings (if any)
 - `<SHOP_ROOT>/project-knowledge/constitution.md` (for Step 0 constitution check)
-- Current system boundaries (existing ADRs in `<SHOP_ROOT>/specs/`)
+- Current system boundaries (existing ADRs in `<SHOP_ROOT>/reports/pipeline/`)
 - Non-functional constraints from spec
 - `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md`
 - Relevant `<SHOP_ROOT>/skills/design-patterns/references/` files (Coordinator selects based on system drivers in spec)
 
 **Architect outputs (in order):**
-1. `<SHOP_ROOT>/specs/<NNN>-<feature-name>/research.md` (if spec has technology choices) — using `<SHOP_ROOT>/templates/research-template.md`
-2. `<SHOP_ROOT>/specs/<NNN>-<feature-name>/adr.md` — using `<SHOP_ROOT>/templates/adr-template.md` (includes Constitution Check, Research Summary, Complexity Justification)
+1. `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/research.md` (if spec has technology choices) — using `<SHOP_ROOT>/templates/research-template.md`
+2. `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` — using `<SHOP_ROOT>/templates/adr-template.md` (includes Constitution Check, Research Summary, Complexity Justification)
 
 ### Database Agent (optional — dispatched alongside or immediately after Architect when spec involves data modeling)
 
@@ -151,7 +151,7 @@ When the spec involves data modeling or database operations:
 
 ### Coordinator: tasks.md Generation (after ADR human approval, before TDD dispatch)
 
-Coordinator generates `<SHOP_ROOT>/specs/<NNN>-<feature-name>/tasks.md` using `<SHOP_ROOT>/templates/tasks-template.md`:
+Coordinator generates `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md` using `<SHOP_ROOT>/templates/tasks-template.md`:
 - Phases and story order derived from the ADR's parallel delivery plan and AC priorities (P1 first)
 - `[P]` markers based on the ADR's independent module boundaries
 - Checkpoint annotation after Phase 1 and after each story phase
@@ -256,7 +256,7 @@ Before Programmer begins implementation:
 A feature reaches **Done** when all of the following are true:
 1. All three human checkpoints cleared: spec approval, architecture sign-off, security sign-off
 2. All tests pass against the certified spec hash
-3. All Critical/High security findings are resolved, or accepted with documented rationale in `<SHOP_ROOT>/specs/<NNN>-<feature-name>/.pipeline-state.md`
+3. All Critical/High security findings are resolved, or accepted with documented rationale in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`
 
 The Coordinator issues a **merge-ready summary** to the human:
 ```

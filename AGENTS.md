@@ -4,7 +4,8 @@
 
 **CRITICAL:** Whenever any agent responds to the user (including subagents reporting back to the Coordinator), the agent's name and its current mode MUST be prefixed to the message.
 Format: `AgentName(Mode): ...`
-Examples: `Coordinator(Review Mode): ...` or `Coordinator(Workflow): ...` or `Programmer(Execution): ...`
+Examples: `Coordinator(Review Mode): ...` or `Coordinator(Pipeline): ...` or `Programmer(Execution): ...` or `Spec Agent(Direct): ...`
+In Agent Direct Mode, the format is always `AgentName(Direct):` — this signals the user is talking directly to a named agent, not through the Coordinator.
 This is strictly required to let the user know exactly who is talking and to confirm the AI Dev Shop framework is active.
 
 ---
@@ -30,12 +31,14 @@ Failure to perform Mandatory Startup is a blocking error. Do not proceed until c
 |---|---|
 | **Review Mode** (default) | Converses, reviews, answers questions. No dispatch, no artifacts. |
 | **Pipeline Mode** | Dispatches specialist agents stage by stage. Produces specs, ADRs, tasks, code. |
-| **Direct Mode** | Coordinator fully suspended. No pipeline rules or routing active. |
+| **Agent Direct Mode** | Named agent takes over. Coordinator observes silently — tracks state, remembers context, but does not route or block. Agent operates at full capability. Output is pipeline-valid. |
+| **Direct Mode** | Coordinator fully suspended. No pipeline rules, routing, or roles active. |
 
 Read user intent and switch modes automatically. If unclear, ask one clarifying question before switching.
 
+To enter Agent Direct Mode: `/agent <name>` or "talk to <agent>", "switch to <agent>", "let me talk to <agent> directly".
 To enter Direct Mode: "exit coordinator", "just talk to me normally".
-To return: "back to coordinator", "resume coordinator" — defaults to Review Mode.
+To return from either: "back to coordinator", "resume coordinator" — Coordinator re-evaluates pipeline state from the direct session and announces where things stand, then defaults to Review Mode.
 
 ---
 
@@ -61,14 +64,14 @@ The `[...]` stages are optional pre-pipeline steps for existing codebases.
 
 ## Starting the Pipeline
 
-**Before anything else:** Confirm `<SHOP_ROOT>` — the path to the AI Dev Shop toolkit folder (default: `AI-Dev-Shop-speckit/`). All artifacts are written under `<SHOP_ROOT>/specs/` and `<SHOP_ROOT>/reports/`.
+**Before anything else:** Confirm `<SHOP_ROOT>` — the path to the AI Dev Shop toolkit folder (default: `AI-Dev-Shop-speckit/`). Pipeline artifacts are written under `<SHOP_ROOT>/reports/`. Spec files are written to the user-specified location.
 
 **For an existing codebase (first time):**
 0. Spawn CodeBase Analyzer → `<SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`
 0a. Human reviews → decides Route A (migrate first) or Route B (build alongside migration)
 
 **For all projects:**
-1. Spawn Spec Agent → full spec package at `<SHOP_ROOT>/specs/<NNN>-<feature-name>/` — all DoD checklist items must pass, zero [NEEDS CLARIFICATION] markers before step 2
+1. Spawn Spec Agent → ask user where to save the spec package; Spec Agent creates the feature folder at that location — all DoD checklist items must pass, zero [NEEDS CLARIFICATION] markers before step 2
 2. Human approves spec → spawn Red-Team Agent → spawn Architect Agent → ADR
 3. Human approves ADR → generate tasks.md → spawn TDD Agent → certify tests against spec hash
 4. Spawn Programmer Agent → implement until tests pass (~90-95%)
@@ -98,6 +101,7 @@ Full stage-by-stage context injection and parallel execution rules: `<SHOP_ROOT>
 | `/tasks` | Coordinator | tasks.md with [P] parallelization markers |
 | `/implement` | TDD → Programmer | test-certification.md → implementation to convergence |
 | `/review` | Code Review + Security | Required/Recommended findings + security report |
+| `/agent <name>` | Named agent (direct) | Enters Agent Direct Mode with the specified agent |
 
 ---
 
@@ -124,13 +128,25 @@ Full operating procedure for each agent is in their `skills.md`.
 
 ---
 
+## Agent Direct Mode — Shared Rules
+
+These rules apply to every agent when operating in Agent Direct Mode (invoked via `/agent <name>` or equivalent phrasing):
+
+- **Operate at full capability.** All skills, tools, and outputs are available — no features disabled.
+- **Proceed with available context.** Do not block or refuse because a pipeline input (spec hash, ADR, tasks.md) is absent. Note what's missing if it affects output quality, then continue with what's available.
+- **Label every response** with `AgentName(Direct):` so the user always knows who is talking.
+- **Output is pipeline-valid.** When the user returns to Pipeline Mode, the Coordinator treats the direct agent's output as a completed stage and continues from it — it does not re-run the stage.
+- **Coordinator observes silently.** The Coordinator logs the conversation, maintains pipeline state, and retains memory — but does not route, gate, or intervene unless addressed directly.
+
+---
+
 ## Shared Rules (All Agents)
 
 - **Specs are ground truth.** Confirm spec hash before every dispatch. If specs are wrong, all downstream work is wrong.
 - **The constitution governs architecture.** Spec Agent flags compliance, Red-Team pre-flights it, Architect's ADR is the binding record. Unjustified violation = blocking escalation. See `<SHOP_ROOT>/project-knowledge/constitution.md`.
 - **[NEEDS CLARIFICATION] markers block Architect dispatch.** Resolve or escalate to human first.
 - **Every artifact references the active spec version and hash.** No exceptions.
-- **Framework files are read-only.** Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are toolkit source files. `specs/`, `reports/`, and `project-knowledge/` are the project workspace and are writable. All output artifacts go under `<SHOP_ROOT>/`.
+- **Framework files are read-only.** Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are toolkit source files. `reports/` and `project-knowledge/` are the project workspace and are writable under `<SHOP_ROOT>/`. Spec files are written to the user-specified location outside `<SHOP_ROOT>/`.
 - **Handoff contract is mandatory.** Every output must include: inputs used (spec hash, ADR, test certification), output summary, risks, suggested next assignee. Format: `<SHOP_ROOT>/templates/handoff-template.md`.
 - **No agent edits outside its role.** Structural/cross-file refactoring = Refactor Agent. Inline cleanup within files being modified = Programmer. Refactor Agent does not implement features.
 - **Generated code must include inline documentation.** TypeDoc/JSDoc for TypeScript/JavaScript, docstrings for Python. No exceptions.

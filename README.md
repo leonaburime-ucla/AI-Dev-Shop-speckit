@@ -18,6 +18,8 @@ Read `<SHOP_ROOT>/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
 ```
 
 **Gemini CLI / OpenAI Codex** — add to `GEMINI.md` (Gemini) or `AGENTS.md` (Codex) at your project root. Paste the following into your root file:
+
+> **Note (Codex):** Codex has shown reliability issues running multi-agent workflows — agents may fail to maintain pipeline state, drop context between stages, or not follow routing rules consistently. If you encounter this, Claude Code or Gemini CLI are more reliable choices for this system.
 ```
 Read `<SHOP_ROOT>/AGENTS.md` for the AI Dev Shop multi-agent pipeline.
 
@@ -99,7 +101,7 @@ This toolkit deeply integrates concepts from [GitHub's spec-kit](https://github.
 - **Constitution framework** — `project-knowledge/constitution.md` with 8 governance articles. Every spec and ADR must comply. Violations are blocking escalations.
 - **[NEEDS CLARIFICATION] markers** — inline ambiguity flags in specs, with a structured `/clarify` command to resolve them before Architect dispatch.
 - **Quality checklist gate** — Spec Agent generates `checklists/requirements.md` per feature and validates the spec against it before handoff.
-- **Per-feature artifact folders** — all artifacts for a feature (spec, ADR, research, tasks, checklists) live in `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`, matching spec-kit's directory convention.
+- **Per-feature artifact folders** — spec files live at the user-specified location in `<NNN>-<feature-name>/`; pipeline artifacts (ADR, research, tasks, test-certification, red-team findings, pipeline state) live in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. The `spec_path` field in `.pipeline-state.md` links the two.
 - **Slash commands** — `/spec`, `/clarify`, `/plan`, `/tasks`, `/implement`, `/review`, `/consensus` as executable commands (see `templates/commands/`).
 - **Research artifact** — Architect produces `research.md` before the ADR when technology choices are involved.
 - **tasks.md with [P] markers** — parallelizable task list generated from the ADR, with story phases ordered by AC priority.
@@ -212,6 +214,8 @@ AGENTS.md                          ← Full operating manual for all agents and 
 ## Swarm Consensus
 
 **OFF by default.** Any agent can invoke the Swarm Consensus skill when explicitly instructed. It dispatches the same prompt to all available peer LLM CLIs (`claude`, `gemini`, `codex` — whichever are installed), collates independent responses, and synthesizes a `consensus-report.md`. The running model is always the primary; peers are subprocesses. Use `/consensus [question]` or tell any agent to use swarm consensus for a specific task.
+
+> **Note:** Codex has shown reliability issues in multi-agent workflows and may not be a dependable peer for consensus runs. Claude Code and Gemini CLI are the recommended primary and peer models.
 
 ## Methodology
 

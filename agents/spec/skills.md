@@ -18,11 +18,12 @@ Convert product intent into precise, versioned, testable specifications that bec
 ## Workflow
 1. Normalize request into clear scope and explicit non-goals.
 2. Read `<SHOP_ROOT>/project-knowledge/constitution.md`. For any requirement that conflicts with or is ambiguous against a constitution article, inline a `[NEEDS CLARIFICATION: Article <N> — <specific question>]` marker in the requirement text.
-3. Assign FEAT number by scanning existing feature folders in `<SHOP_ROOT>/specs/` (format: `NNN-feature-name/`). Derive a short feature name (2-4 words, lowercase-hyphenated). Create folder: `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`.
-4. Write or revise spec to `<SHOP_ROOT>/specs/<NNN>-<feature-name>/feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
+3. Assign FEAT number by scanning existing feature folders in `<SHOP_ROOT>/reports/pipeline/` (format: `NNN-feature-name/`). Derive a short feature name (2-4 words, lowercase-hyphenated).
+4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/` and its `checklists/` subfolder. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path: <user-specified>/<NNN>-<feature-name>/` in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`.
+5. Write or revise spec to `<user-specified>/<NNN>-<feature-name>/feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
 5. Complete the Constitution Compliance table. Mark each article COMPLIES, EXCEPTION, or N/A.
 6. Assign/update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
-7. Generate the spec quality checklist at `<SHOP_ROOT>/specs/<NNN>-<feature-name>/checklists/requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
+7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/checklists/requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
 8. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<SHOP_ROOT>/templates/commands/clarify.md` for the presentation format.
 9. Once checklist fully passes: recompute hash, publish spec delta summary (what changed and why), hand off to Architect via Coordinator.
 
@@ -48,16 +49,16 @@ Convert product intent into precise, versioned, testable specifications that bec
 - The FEAT number must be assigned before handoff — never reuse an existing FEAT number
 
 ## Strict Mode — Spec Package Output
-In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL of these files:
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/feature.spec.md` — canonical spec (use templates/spec-system/feature.spec.md)
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/api.spec.ts` — typed API contracts
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/state.spec.ts` — state shapes and transitions
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/orchestrator.spec.ts` — orchestrator output model
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/ui.spec.ts` — UI component contracts
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/errors.spec.ts` — error code registry
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/behavior.spec.md` — deterministic behavior rules
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/traceability.spec.md` — REQ-to-function-to-test matrix
-- `<SHOP_ROOT>/specs/<NNN>-<feature-name>/checklists/spec-dod.md` — filled DoD checklist with evidence
+In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL applicable files at the user-specified location (`<user-specified>/<NNN>-<feature-name>/`):
+- `feature.spec.md` — canonical spec (use templates/spec-system/feature.spec.md)
+- `api.spec.ts` — typed API contracts (if applicable)
+- `state.spec.ts` — state shapes and transitions (if applicable)
+- `orchestrator.spec.ts` — orchestrator output model (if applicable)
+- `ui.spec.ts` — UI component contracts (if applicable)
+- `errors.spec.ts` — error code registry (if applicable)
+- `behavior.spec.md` — deterministic behavior rules (if applicable)
+- `traceability.spec.md` — REQ-to-function-to-test matrix
+- `checklists/spec-dod.md` — filled DoD checklist with evidence
 
 ## Spec Definition of Done Gate
 Before signaling handoff readiness:
@@ -68,5 +69,18 @@ Before signaling handoff readiness:
 5. Implementation-readiness self-check: "Can a new developer implement this feature from these specs alone?" If no, continue working.
 6. Reference: project-knowledge/spec-definition-of-done.md
 
+## Spec Placement
+
+Specs are written wherever the user specifies. No hardcoded output location.
+
+- If the user specifies a path, write there
+- If the user does not specify a path, ask before writing
+- Always create a named subfolder at the target location — never write spec files flat into an existing directory
+- Name the subfolder after the feature or file: `data/` for `data.py`, `invoice-export/` for an invoice export feature
+- Only produce applicable spec files — see the applicability table in `<SHOP_ROOT>/skills/spec-writing/SKILL.md`
+- Include a `spec-manifest.md` in every spec folder listing what was produced and what was omitted, with one-line justification per omission
+
+There is no default location — always ask if the user has not specified one.
+
 ## Output Path Rule
-All spec artifacts must be written to `<SHOP_ROOT>/specs/`. Never modify `agents/`, `skills/`, `templates/`, or `workflows/`.
+Write spec artifacts to the user-specified location. Never modify `agents/`, `skills/`, `templates/`, or `workflows/`.

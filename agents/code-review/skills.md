@@ -17,7 +17,7 @@ Assess correctness beyond green tests: spec alignment, architecture adherence, c
 ## Required Inputs
 - Diff and changed files
 - Active spec metadata (ID / version / hash)
-- Architecture constraints (relevant ADRs from `<SHOP_ROOT>/specs/`)
+- Architecture constraints (relevant ADRs from `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`)
 - Test certification evidence
 
 ## Workflow

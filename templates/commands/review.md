@@ -6,8 +6,8 @@ Implementation has reached the convergence threshold. Run Code Review and Securi
 
 **Code Review Agent** — dispatch with:
 - Full diff of changed files
-- Spec: `<SHOP_ROOT>/specs/<NNN>-<feature-name>/feature.spec.md` (for alignment check)
-- ADR: `<SHOP_ROOT>/specs/<NNN>-<feature-name>/adr.md` (for architecture compliance)
+- Spec: path from `spec_path` in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` (for alignment check)
+- ADR: `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (for architecture compliance)
 - Skills: `<SHOP_ROOT>/skills/code-review/SKILL.md`, `<SHOP_ROOT>/skills/security-review/SKILL.md`
 - Previous Code Review findings (to detect recurrence)
 - Output: findings classified as **Required** (blocks advance) or **Recommended** (non-blocking)

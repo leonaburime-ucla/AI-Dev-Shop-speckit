@@ -171,8 +171,8 @@ A spec is ready when:
 
 | Content | Location |
 |---|---|
-| Requirements, acceptance criteria, invariants, edge cases | Spec file |
-| Architecture decisions and pattern choices | ADR in `<SHOP_ROOT>/specs/` — see `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` |
+| Requirements, acceptance criteria, invariants, edge cases | Spec file — at user-specified location |
+| Architecture decisions and pattern choices | ADR — see `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` |
 | Project conventions and tribal knowledge | `<SHOP_ROOT>/project-knowledge/project_memory.md` |
 | Lessons learned from past mistakes | `<SHOP_ROOT>/project-knowledge/learnings.md` |
 | Open questions and parking lot items | `<SHOP_ROOT>/project-knowledge/project_notes.md` |
@@ -230,6 +230,45 @@ The Out of Scope section must name adjacent legacy modules that are not being ch
 **Failure mode to avoid**: A spec that starts with "The existing system currently does X, Y, and Z..." is already in SpecFall. Stop. Delete everything before the first REQ line and start with the new feature's requirements only.
 
 ---
+
+## Spec Placement and File Selection
+
+### Placement
+
+Specs go where the user specifies. Ask if not specified. Always create a named subfolder at the target location — never write spec files flat. Name the subfolder after the feature or source file.
+
+Example: user says "create specs for `data.py` in `__specs__`" →
+
+```
+pytorch/
+├── data.py
+└── __specs__/
+    └── data/
+        ├── feature.spec.md
+        ├── behavior.spec.md
+        └── spec-manifest.md
+```
+
+### Applicability Assessment
+
+Before writing any file, assess what the target (feature or source file) actually contains. Only produce what applies:
+
+| Target contains | Produce |
+|---|---|
+| Any domain logic, functions, or classes | `feature.spec.md` — always |
+| Non-trivial ordering, branching, or state machine | `behavior.spec.md` |
+| API endpoints or HTTP handlers | `api.spec.ts` |
+| State management or data store logic | `state.spec.ts` |
+| Orchestrator / coordinator / hook layer | `orchestrator.spec.ts` |
+| UI components | `ui.spec.ts` |
+| Error definitions or structured error handling | `errors.spec.ts` |
+| REQ-to-function traceability needed | `traceability.spec.md` |
+
+Always include `spec-manifest.md` documenting what was produced and what was omitted with justification.
+
+### Speccing Existing Code
+
+When creating specs for existing code, write requirements from the observable behavior — what the code *does*, not what you wish it did. If the code has bugs or design problems, note them in a `## Known Issues` section rather than speccing desired behavior as if it exists. Reference other files by name — do not restate what they do.
 
 ## Spec Change Protocol
 

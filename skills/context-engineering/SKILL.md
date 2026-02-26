@@ -79,7 +79,7 @@ Getting this wrong turns knowledge files into junk drawers, which degrades every
 | Content Type | Correct Location |
 |---|---|
 | Requirements, acceptance criteria | Spec files |
-| Architecture pattern choices | ADRs in `<SHOP_ROOT>/specs/` |
+| Architecture pattern choices | ADRs in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` |
 | Reusable domain knowledge | `<SHOP_ROOT>/skills/` files |
 | Project-specific conventions | `project_memory.md` |
 | Lessons from past failures | `learnings.md` |

@@ -13,7 +13,7 @@ The task is NOT complete until the full spec package is present and the DoD chec
 
 ### Required spec-package files
 
-All files below must be created under `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`:
+All files below must be created under the user-specified location (`<user-specified>/<NNN>-<feature-name>/`). Ask the user for this location before writing if not already provided:
 
 | File | Template | Required? |
 |------|----------|-----------|
@@ -36,9 +36,9 @@ All files below must be created under `<SHOP_ROOT>/specs/<NNN>-<feature-name>/`:
 ## Workflow
 
 1. Read `<SHOP_ROOT>/project-knowledge/constitution.md`.
-2. Determine the next FEAT number by scanning `<SHOP_ROOT>/specs/` for existing feature folders (format: `NNN-feature-name/`). Use the next available three-digit number.
+2. Determine the next FEAT number by scanning `<SHOP_ROOT>/reports/pipeline/` for existing feature folders (format: `NNN-feature-name/`). Use the next available three-digit number.
 3. Derive a short feature name (2-4 words, action-noun format, lowercase-hyphenated) from the description. Example: "add user auth", "export csv report".
-4. Create the feature folder: `<SHOP_ROOT>/specs/<NNN>-<feature-name>/` and the `checklists/` subfolder.
+4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/` and its `checklists/` subfolder. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path` in `.pipeline-state.md`.
 5. Determine which spec-package files apply to this feature (see table above). Document which files you are creating and which you are omitting, with justification for each omission.
 6. Write `feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
 7. Write all applicable TypeScript contract files (`api.spec.ts`, `state.spec.ts`, `orchestrator.spec.ts`, `ui.spec.ts`, `errors.spec.ts`) using the corresponding templates in `<SHOP_ROOT>/templates/spec-system/`.

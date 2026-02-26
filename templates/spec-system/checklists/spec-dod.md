@@ -56,7 +56,7 @@
 
 | # | Item | Status | Notes |
 |---|------|--------|-------|
-| B-01 | `spec_id` is assigned and unique (verified against existing `<SHOP_ROOT>/specs/` folders) | | |
+| B-01 | `spec_id` is assigned and unique (verified against existing `<SHOP_ROOT>/reports/pipeline/` folders) | | |
 | B-02 | `version` is set to correct semver (1.0.0 for new specs) | | |
 | B-03 | `status` is APPROVED (not DRAFT or IN-REVIEW) | | |
 | B-04 | `content_hash` is computed and recorded — matches sha256 of content below the header block | | |

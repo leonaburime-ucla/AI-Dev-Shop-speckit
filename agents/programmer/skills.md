@@ -16,7 +16,7 @@ Implement production code that satisfies certified tests and architecture constr
 ## Required Inputs
 - Active spec metadata (ID / version / hash)
 - Certified test suite with coverage gap report
-- Architecture boundaries and contracts (from ADRs in `<SHOP_ROOT>/specs/`)
+- Architecture boundaries and contracts (from ADRs in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`)
 - Coordinator routing directive with explicit scope
 
 ## Pattern Priming (mandatory — complete before writing any production code)

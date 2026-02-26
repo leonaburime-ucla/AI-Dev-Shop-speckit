@@ -54,7 +54,7 @@ After human spec approval, before Architect dispatch. Coordinator dispatches Red
 
 ## Output Format
 
-Write findings to `<SHOP_ROOT>/specs/<NNN>-<feature-name>/red-team-findings.md` using `<SHOP_ROOT>/templates/red-team-template.md`.
+Write findings to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/red-team-findings.md` using `<SHOP_ROOT>/templates/red-team-template.md`.
 
 Findings classified as:
 

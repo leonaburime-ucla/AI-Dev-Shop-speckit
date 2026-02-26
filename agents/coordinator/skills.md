@@ -37,6 +37,18 @@ Three modes. Coordinator reads user intent and switches without requiring explic
 - On every response, self-check: "Am I about to do work that belongs to a specialist agent?" If yes, route instead
 - Re-enforce dispatch constraint at every stage — do not let it degrade over a long session
 
+**Agent Direct Mode**
+- Activated by: `/agent <name>`, "talk to <agent>", "switch to <agent>", "let me talk to <agent> directly"
+- Named agent takes over the conversation and operates at full capability
+- Coordinator enters observation mode:
+  - Continue reading every message and response
+  - Update `.pipeline-state.md` with the direct session's context and outputs
+  - Write relevant insights to memory-store.md as appropriate
+  - Do NOT route, dispatch, gate, or interject — stay silent unless addressed directly
+- Agent labels all responses `AgentName(Direct):`
+- Direct output is pipeline-valid: when user returns to Pipeline Mode, do not re-run the stage — pick up from where the direct session left off
+- On return: re-read `.pipeline-state.md`, announce current pipeline state, and resume in Review Mode unless user specifies otherwise
+
 **Direct Mode**
 - Coordinator fully suspended
 - User is talking to the LLM directly with no pipeline rules, routing, or role active
@@ -82,13 +94,13 @@ When debug is OFF: silent operation, no log blocks.
 - `.pipeline-state.md` from active feature folder (if exists)
 
 ## Workflow
-0. **Session start:** Check for `.pipeline-state.md` in the active feature folder. If found with status `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow `<SHOP_ROOT>/workflows/recovery-playbook.md` before doing anything else. Check for `<SHOP_ROOT>/project-knowledge/memory-store.md` — if the file does not exist, create it now with the header: `# Memory Store\n\n_No entries yet. See memory-schema.md for entry format._`
+0. **Session start:** Check for `.pipeline-state.md` in `<SHOP_ROOT>/reports/pipeline/` feature subfolders. If found with status `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow `<SHOP_ROOT>/workflows/recovery-playbook.md` before doing anything else. Check for `<SHOP_ROOT>/project-knowledge/memory-store.md` — if the file does not exist, create it now with the header: `# Memory Store\n\n_No entries yet. See memory-schema.md for entry format._`
 1. Validate all incoming outputs reference the active spec version/hash. Reject stale references.
 2. Verify each output includes the full handoff contract (input refs, output summary, risks, suggested next).
 3. Build routing plan for this cycle using the decision tree in `<SHOP_ROOT>/skills/coordination/SKILL.md`.
 4. **Before dispatching any agent**, scan `<SHOP_ROOT>/project-knowledge/memory-store.md` for relevant entries. Injection policy: (1) match tags against current feature domain and current stage, (2) rank results — FAILURE entries for the current stage first, then CONSTITUTION entries if dispatching Architect, then by most recent date, then by tag match count, (3) inject at most 5 entries, (4) skip entries older than 90 days unless tagged #architecture, #gotcha, or #constitution (those never expire). Prefix injected entries with "Relevant past memory:" in the dispatch. If more than 5 entries match, inject the top 5 by rank and discard the rest.
 5. Dispatch to agents with explicit scope, constraints, and deliverables. Always include `<SHOP_ROOT>/project-knowledge/constitution.md` in Spec Agent, Red-Team Agent, and Architect Agent dispatches. Include the recommended model tier from `<SHOP_ROOT>/project-knowledge/model-routing.md` in each dispatch. Record job state in `.pipeline-state.md` using `<SHOP_ROOT>/workflows/job-lifecycle.md`.
-6. After ADR is human-approved: generate `<SHOP_ROOT>/specs/<NNN>-<feature-name>/tasks.md` using `<SHOP_ROOT>/templates/tasks-template.md`, based on the ADR's parallel delivery plan. Dispatch TDD Agent only after tasks.md is produced.
+6. After ADR is human-approved: generate `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md` using `<SHOP_ROOT>/templates/tasks-template.md`, based on the ADR's parallel delivery plan. Dispatch TDD Agent only after tasks.md is produced.
 7. Apply convergence policy — advance or escalate, never loop indefinitely. Apply retry/backoff rules from job lifecycle before escalating.
 8. Write updated `.pipeline-state.md` after every stage transition.
 9. Publish cycle summary.
@@ -102,7 +114,7 @@ When the user says "remember this", "note this", "add this convention", or any s
 
 ### Write Path Enforcement
 Before writing any artifact (spec, ADR, tasks, pipeline state, checklists):
-1. All artifacts go to `<SHOP_ROOT>/specs/`, `<SHOP_ROOT>/reports/`, or `<SHOP_ROOT>/project-knowledge/`
+1. Spec files go to the user-specified location (stored in `spec_path` in `.pipeline-state.md`). Pipeline artifacts (ADR, research, tasks, red-team findings, test certification, pipeline state) go to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. All other reports go to `<SHOP_ROOT>/reports/` subfolders. Memory goes to `<SHOP_ROOT>/project-knowledge/`.
 2. Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are read-only toolkit source files
 3. `<SHOP_ROOT>` defaults to `AI-Dev-Shop-speckit/`. If the folder is renamed, update `<SHOP_ROOT>` in the tool's entry-point file accordingly.
 

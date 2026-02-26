@@ -228,7 +228,7 @@ These terms appear throughout architecture discussions. Precision matters.
 
 Every significant architecture choice must be recorded. Use `<SHOP_ROOT>/templates/adr-template.md` — it includes all required sections: Context, Decision, Rationale, Pattern Evaluation, Consequences, Module/Service Boundaries, API/Event Contract Summary, Enforcement, and Related Decisions.
 
-ADRs live in `<SHOP_ROOT>/specs/`. They are inputs to the Programmer Agent and Code Review Agent — architectural violations are violations of a recorded ADR.
+ADRs live in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. They are inputs to the Programmer Agent and Code Review Agent — architectural violations are violations of a recorded ADR.
 
 ## Principles That Always Apply
 

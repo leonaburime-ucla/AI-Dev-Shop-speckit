@@ -1,7 +1,7 @@
 ---
 name: codebase-analysis
-version: 1.0.0
-last_updated: 2026-02-22
+version: 1.1.0
+last_updated: 2026-02-25
 description: Use when analyzing an existing codebase for architectural flaws, coupling issues, missing abstractions, code quality problems, or security surface before starting a new pipeline run. Produces a structured findings report using token-efficient phased analysis that scales to large codebases.
 ---
 
@@ -91,6 +91,30 @@ Security grep patterns (flag, do not diagnose):
 - Frontend-specific findings (if applicable): client-side DB boundary violations, N+1 candidates, missing error/loading states
 - Env var handling: whether `.env` is validated at startup or used raw throughout
 
+## Phase 4 — Testability Assessment (Conditional)
+
+Run only when: (a) one or more modules have zero test coverage, AND (b) a full migration plan is not requested or is premature.
+
+Goal: identify the minimum structural changes that unlock unit and integration testing for untested modules — without requiring full architectural migration.
+
+For each untested module from Phase 3:
+1. **Identify hard dependencies**: direct instantiation (`new X()` inline), module-level singletons, static method calls on concrete classes
+2. **Identify I/O coupling**: database, filesystem, or network calls with no abstraction layer between the call site and the caller
+3. **Identify buried logic**: business rules or computations mixed into functions that also perform I/O or framework operations
+
+For each dependency found, determine the minimum change to make it injectable or substitutable:
+- **Constructor/parameter injection**: pass the dependency in rather than instantiate it; provide production default at the call site
+- **Extract interface**: add a thin interface over an existing concrete class so a fake can be substituted in tests
+- **Extract pure function**: pull the computation out of the impure function so it can be tested in isolation
+- **Wrap external call**: add a one-method adapter over a raw DB/HTTP/filesystem call
+
+**Characterization test targets**: rank untested modules by risk (change likelihood × failure impact). The highest-risk module must have characterization tests written against current behavior before any seam is introduced.
+
+**Output of Phase 4:**
+- Ranked list of seam candidates (location, hard dependency type, recommended technique, effort, risk)
+- Characterization test targets in priority order with rationale
+- Minimal change sequence: ordered steps that yield the most testability improvement per change, without triggering a full architectural migration
+
 ## Findings Report Format
 
 **Small/medium codebases:** Save as `<SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-<id>-<YYYY-MM-DD>.md`
@@ -145,8 +169,79 @@ Due to token budget, the following were sampled but not fully read:
 
 ## Recommended Next Step
 
-Load this report into `<SHOP_ROOT>/skills/architecture-migration/SKILL.md`
-to generate a migration plan.
+State which option applies:
+- If zero coverage in critical modules and full migration is premature: generate a Testability Remediation Plan using Phase 4 of `<SHOP_ROOT>/skills/codebase-analysis/SKILL.md`
+- If architecture overhaul is warranted: load this report into `<SHOP_ROOT>/skills/architecture-migration/SKILL.md` to generate a migration plan
+- If structural issues are minor: route findings to Refactor Agent via Coordinator
+```
+
+## Testability Remediation Plan Format
+
+Save to `<SHOP_ROOT>/reports/codebase-analysis/TESTABILITY-<id>-<YYYY-MM-DD>.md`
+
+Only produce this when Phase 4 is run.
+
+```markdown
+# Testability Remediation Plan: <project-name>
+
+- Plan ID: TESTABILITY-001
+- Analysis Source: ANALYSIS-001
+- Date: <ISO-8601 UTC>
+- Scope: Modules with zero or near-zero test coverage
+
+## Coverage Caveat
+
+This plan is based on sampled files. Seams and dependencies not visible in the sample may exist.
+Validate each seam against the actual source before making any changes.
+
+## Characterization Test Targets
+
+Write tests against current behavior BEFORE introducing any seam. These lock in existing behavior
+so restructuring cannot silently break it.
+
+| Module | Risk | Reason |
+|---|---|---|
+| `src/payments/` | Critical | Revenue path, zero coverage, scheduled for change |
+| `src/invoicing/` | High | Zero coverage, called from 4 modules |
+
+## Priority Seam Map
+
+### SEAM-001
+- File: `src/routes/invoice.ts:89`
+- Hard dependency: `new InvoiceCalculator()` instantiated inline
+- Technique: Constructor/parameter injection
+- Change: Add `calculator` param to function; default to `new InvoiceCalculator()` at call site
+- Unlocks: Unit tests for invoice logic without HTTP server
+- Effort: Low | Risk: Low
+
+---
+
+### SEAM-002
+- File: `src/services/email.ts:34`
+- Hard dependency: `nodemailer.createTransport()` called directly
+- Technique: Extract interface + inject
+- Change: Define `EmailSender` interface; inject via constructor; wire real transport in production entry point
+- Unlocks: Unit tests for any service that sends email
+- Effort: Low | Risk: Low
+
+---
+
+## Minimal Change Sequence
+
+Ordered steps — complete in sequence to progressively unlock testing without breaking production:
+
+1. Write characterization tests for `src/payments/` against current behavior (no code changes)
+2. Apply SEAM-001 — extract `InvoiceCalculator` injection point
+3. Write unit tests for invoice calculation logic
+4. Apply SEAM-002 — extract `EmailSender` interface
+5. Write unit tests for order confirmation flow
+
+## What This Plan Does NOT Cover
+
+- Full architectural migration (see MIGRATION-*.md if that is needed)
+- Security findings (route to Security Agent)
+- New feature implementation
+- Performance issues
 ```
 
 ## Flaw Categories and Severity

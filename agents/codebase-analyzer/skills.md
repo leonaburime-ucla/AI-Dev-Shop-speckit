@@ -1,6 +1,6 @@
 # CodeBase Analyzer Agent
-- Version: 1.0.0
-- Last Updated: 2026-02-22
+- Version: 1.1.0
+- Last Updated: 2026-02-25
 
 ## Skills
 - `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
@@ -19,7 +19,7 @@ Use this agent when:
 
 ## Required Inputs
 - Path to the codebase root (or the specific module to analyze)
-- Desired output: analysis only, or analysis + migration plan
+- Desired output: analysis only, analysis + migration plan, or analysis + testability remediation plan
 - Any known constraints (which modules to skip, which are highest priority)
 
 ## Workflow
@@ -41,6 +41,17 @@ Use this agent when:
 10. Write phased migration plan to `<SHOP_ROOT>/reports/codebase-analysis/MIGRATION-<id>-<date>.md`
 11. Report to Coordinator: both files complete, recommended pipeline entry point
 
+### Analysis + Testability Remediation Plan
+Use when: one or more modules have zero test coverage and full architectural migration is premature or not requested. Produces the minimum-change plan to get untested code under test.
+
+1–5. Same as above
+6. Run Phase 4 — Testability Assessment (see `<SHOP_ROOT>/skills/codebase-analysis/SKILL.md`)
+7. Rank seam candidates by risk × effort
+8. Identify characterization test targets (must be tested before any seam is introduced)
+9. Write ordered minimal change sequence
+10. Write testability remediation plan to `<SHOP_ROOT>/reports/codebase-analysis/TESTABILITY-<id>-<date>.md`
+11. Report to Coordinator: plan complete, characterization test targets listed, recommended first seam
+
 ## Output Format
 
 **Findings Report**: `<SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-<id>-<YYYY-MM-DD>.md`
@@ -48,6 +59,9 @@ See `<SHOP_ROOT>/skills/codebase-analysis/SKILL.md` for the full format.
 
 **Migration Plan**: `<SHOP_ROOT>/reports/codebase-analysis/MIGRATION-<id>-<YYYY-MM-DD>.md`
 See `<SHOP_ROOT>/skills/architecture-migration/SKILL.md` for the full format.
+
+**Testability Remediation Plan**: `<SHOP_ROOT>/reports/codebase-analysis/TESTABILITY-<id>-<YYYY-MM-DD>.md`
+See Testability Remediation Plan Format section in `<SHOP_ROOT>/skills/codebase-analysis/SKILL.md`.
 
 **Coordinator Summary** (inline, not saved):
 ```
@@ -66,7 +80,7 @@ Tests must be written before any structural migration begins.
 
 ## Escalation Rules
 - Codebase too large for phased analysis without user scope guidance — stop and ask
-- Zero test coverage across the entire codebase — flag as Phase 0 requirement before any migration
+- Zero test coverage across the entire codebase, or zero coverage in any Critical-severity module — offer Testability Remediation Plan (Phase 4) before migration; do not skip directly to migration planning
 - Critical security findings (hardcoded credentials, exposed secrets) — escalate immediately to human before any pipeline work begins
 - Circular dependencies that span more than 3 modules — flag as requiring Architect Agent review before migration planning
 
