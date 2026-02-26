@@ -108,11 +108,11 @@ Coordinator cannot dispatch Architect until ALL of the following pass:
 
 - Full spec package exists at the `spec_path` recorded in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`:
   - `feature.spec.md`
-  - `api.spec.ts`
-  - `state.spec.ts`
-  - `orchestrator.spec.ts`
-  - `ui.spec.ts`
-  - `errors.spec.ts`
+  - `api.spec.md`
+  - `state.spec.md`
+  - `orchestrator.spec.md`
+  - `ui.spec.md`
+  - `errors.spec.md`
   - `behavior.spec.md`
   - `traceability.spec.md`
   - `spec-dod.md`

@@ -181,7 +181,7 @@ The Spec Agent completes this. The Coordinator verifies before routing.
 - [ ] Constitution Compliance table complete — all 8 articles marked COMPLIES / EXCEPTION / N/A
 - [ ] Scope: in-scope list present and non-empty
 - [ ] Scope: out-of-scope list present and non-empty
-- [ ] Full spec-system package present: api.spec.ts, state.spec.ts, ui.spec.ts, errors.spec.ts (as applicable)
+- [ ] Full spec-system package present: api.spec.md, state.spec.md, ui.spec.md, errors.spec.md (as applicable)
 - [ ] behavior.spec.md complete (if feature has non-trivial ordering or precedence rules)
 - [ ] traceability.spec.md complete (after implementation — or marked "pending implementation")
 - [ ] spec-dod.md filled and all items PASS

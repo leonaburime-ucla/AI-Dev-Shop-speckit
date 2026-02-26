@@ -39,11 +39,11 @@
 |---|------|--------|-------|
 | A-01 | `feature.spec.md` is present in the feature folder | | |
 | A-02 | `feature.spec.md` is non-empty — all placeholder values have been replaced with real content | | |
-| A-03 | `api.spec.ts` is present (or explicitly marked NA with justification if feature has no API) | | |
-| A-04 | `state.spec.ts` is present (or explicitly marked NA with justification if feature has no state) | | |
-| A-05 | `orchestrator.spec.ts` is present (or explicitly marked NA with justification if feature has no orchestrator) | | |
-| A-06 | `ui.spec.ts` is present (or explicitly marked NA with justification if feature has no UI) | | |
-| A-07 | `errors.spec.ts` is present (or explicitly marked NA with justification if feature defines no error codes) | | |
+| A-03 | `api.spec.md` is present (or explicitly marked NA with justification if feature has no API) | | |
+| A-04 | `state.spec.md` is present (or explicitly marked NA with justification if feature has no state) | | |
+| A-05 | `orchestrator.spec.md` is present (or explicitly marked NA with justification if feature has no orchestrator) | | |
+| A-06 | `ui.spec.md` is present (or explicitly marked NA with justification if feature has no UI) | | |
+| A-07 | `errors.spec.md` is present (or explicitly marked NA with justification if feature defines no error codes) | | |
 | A-08 | `behavior.spec.md` is present (or explicitly marked NA with justification if feature has no ordering/precedence/dedup rules) | | |
 | A-09 | `traceability.spec.md` is present and all REQ-* and AC-* rows are populated (may be "pending implementation") | | |
 | A-10 | `requirements.md` (legacy checklist) is present and filled | | |
@@ -92,7 +92,7 @@
 
 ## Section C: Typed Contract Quality
 
-*Verifies typed contract files are complete and well-formed. Contract files are language-specific: `.spec.ts` for TypeScript projects, or equivalent typed contracts in the project's language (e.g., Pydantic models, dataclasses, JSON Schema). Mark entire section NA if the feature has no typed contract files — justify per file in Section A.*
+*Verifies typed contract files are complete and well-formed. Contract files use language-neutral `.spec.md` format. Mark entire section NA if the feature has no typed contract files — justify per file in Section A.*
 
 | # | Item | Status | Notes |
 |---|------|--------|-------|
@@ -148,7 +148,7 @@
 | E-03 | Every AC-* from feature.spec.md appears in traceability.spec.md Section 1 | | |
 | E-04 | Every INV-* from feature.spec.md appears in traceability.spec.md Section 2 | | |
 | E-05 | Every EC-* from feature.spec.md appears in traceability.spec.md Section 3 | | |
-| E-06 | Every error code from errors.spec.ts appears in traceability.spec.md Section 4 | | |
+| E-06 | Every error code from errors.spec.md appears in traceability.spec.md Section 4 | | |
 | E-07 | Rows with "pending" status are acceptable at spec stage (before TDD) — no FAIL for pending rows | | |
 | E-08 | Section 7 (Untraced Requirements) is empty | | |
 
@@ -160,12 +160,12 @@
 
 | # | Item | Status | Notes |
 |---|------|--------|-------|
-| F-01 | Error codes in api.spec.ts match (are a subset of or equal to) error codes in errors.spec.ts | | |
-| F-02 | Resource status types in api.spec.ts, state.spec.ts, orchestrator.spec.ts, and ui.spec.ts are consistent (same values, same spelling) | | |
-| F-03 | OrchestratorItem fields in orchestrator.spec.ts are a valid projection of FeatureItem in state.spec.ts (no field contradiction) | | |
-| F-04 | ItemSummary fields in ui.spec.ts are a valid projection of OrchestratorItem in orchestrator.spec.ts | | |
-| F-05 | Default values in orchestrator.spec.ts InputProps match the Default Values table in behavior.spec.md | | |
-| F-06 | Rate limit values in api.spec.ts match the Limits and Bounds table in behavior.spec.md | | |
+| F-01 | Error codes in api.spec.md match (are a subset of or equal to) error codes in errors.spec.md | | |
+| F-02 | Resource status types in api.spec.md, state.spec.md, orchestrator.spec.md, and ui.spec.md are consistent (same values, same spelling) | | |
+| F-03 | OrchestratorItem fields in orchestrator.spec.md are a valid projection of FeatureItem in state.spec.md (no field contradiction) | | |
+| F-04 | ItemSummary fields in ui.spec.md are a valid projection of OrchestratorItem in orchestrator.spec.md | | |
+| F-05 | Default values in orchestrator.spec.md InputProps match the Default Values table in behavior.spec.md | | |
+| F-06 | Rate limit values in api.spec.md match the Limits and Bounds table in behavior.spec.md | | |
 | F-07 | All spec files reference the same spec_id and feature_name | | |
 | F-08 | All spec files have consistent version numbers (all match, or minor differences are documented) | | |
 
@@ -182,9 +182,9 @@
 | G-03 | Article III (Simplicity Gate): every module referenced in contract files traces to a requirement in feature.spec.md | | |
 | G-04 | Article IV (Anti-Abstraction Gate): no speculative abstractions in contract files (no types/interfaces with only one current consumer unless it is a defined contract boundary) | | |
 | G-05 | Article V (Integration-First Testing): every P1 AC has a corresponding integration test row in traceability.spec.md (or "pending" if TDD has not run) | | |
-| G-06 | Article VI (Security-by-Default): api.spec.ts auth requirements are present for all endpoints; no endpoint is unauthenticated without explicit NA justification | | |
+| G-06 | Article VI (Security-by-Default): api.spec.md auth requirements are present for all endpoints; no endpoint is unauthenticated without explicit NA justification | | |
 | G-07 | Article VII (Spec Integrity): spec_id and content_hash are present and correct in all spec files | | |
-| G-08 | Article VIII (Observability): errors.spec.ts defines structured error payloads with correlationId for all server-side errors | | |
+| G-08 | Article VIII (Observability): errors.spec.md defines structured error payloads with correlationId for all server-side errors | | |
 
 ---
 

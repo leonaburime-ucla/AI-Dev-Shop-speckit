@@ -27,9 +27,9 @@ Convert product intent into precise, versioned, testable specifications that bec
 
    > Spec files can be named two ways:
    >
-   > **Prefixed** (recommended): every file is named `<feature-name>.<type>` — e.g., `csv-invoice-export.feature.spec.md`, `csv-invoice-export.api.spec.ts`. When you have multiple spec folders open in an IDE, each file carries the feature name so fuzzy search and tab bars immediately tell you which feature you're looking at.
+   > **Prefixed** (recommended): every file is named `<feature-name>.<type>` — e.g., `csv-invoice-export.feature.spec.md`, `csv-invoice-export.api.spec.md`. When you have multiple spec folders open in an IDE, each file carries the feature name so fuzzy search and tab bars immediately tell you which feature you're looking at.
    >
-   > **Standard**: generic names — `feature.spec.md`, `api.spec.ts`. The folder name provides context.
+   > **Standard**: generic names — `feature.spec.md`, `api.spec.md`. The folder name provides context.
    >
    > Which do you prefer?
 
@@ -66,11 +66,11 @@ Convert product intent into precise, versioned, testable specifications that bec
 ## Strict Mode — Spec Package Output
 In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL applicable files at the user-specified location (`<user-specified>/<NNN>-<feature-name>/`). File names below show the base suffix — prepend `<feature-name>.` for prefixed naming (e.g., `csv-invoice-export.feature.spec.md`):
 - `feature.spec.md` — canonical spec (use templates/spec-system/feature.spec.md)
-- `api.spec.ts` — typed API contracts (if applicable)
-- `state.spec.ts` — state shapes and transitions (if applicable)
-- `orchestrator.spec.ts` — orchestrator output model (if applicable)
-- `ui.spec.ts` — UI component contracts (if applicable)
-- `errors.spec.ts` — error code registry (if applicable)
+- `api.spec.md` — typed API contracts (if applicable)
+- `state.spec.md` — state shapes and transitions (if applicable)
+- `orchestrator.spec.md` — orchestrator output model (if applicable)
+- `ui.spec.md` — UI component contracts (if applicable)
+- `errors.spec.md` — error code registry (if applicable)
 - `behavior.spec.md` — deterministic behavior rules (if applicable)
 - `traceability.spec.md` — REQ-to-function-to-test matrix
 - `spec-dod.md` — filled DoD checklist with evidence

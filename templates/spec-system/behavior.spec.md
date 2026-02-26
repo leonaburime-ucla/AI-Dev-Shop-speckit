@@ -172,7 +172,7 @@ The "Why" column must explain the rationale — not just restate the value. -->
 | Maximum retry attempts | 5 | API | Values above 5 are rejected. Values below 0 are rejected. 0 means no retries. |
 | Minimum retry attempts | 0 | API | |
 | Maximum items in a single response | 100 | API | Determined by max pageSize. |
-| Rate limit: write operations | 30 req / 60s per user | API | See api.spec.ts for full rate limit policy. |
+| Rate limit: write operations | 30 req / 60s per user | API | See api.spec.md for full rate limit policy. |
 | Rate limit: read operations | 300 req / 60s per user | API | |
 | Idempotency key TTL | 86400 seconds (24 hours) | API | After TTL expires, the same Idempotency-Key may produce a new result. |
 | `<constraint>` | `<value>` | `<enforcement>` | `<notes>` |

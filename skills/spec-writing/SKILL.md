@@ -187,11 +187,11 @@ In strict mode, a spec is a PACKAGE, not a single file. A feature that enters th
 | File | Purpose |
 |---|---|
 | `feature.spec.md` | Core spec: goals, requirements, acceptance criteria, invariants, edge cases |
-| `api.spec.ts` | Typed API contracts: request/response shapes, error envelopes (TypeScript — use equivalent for other languages) |
-| `state.spec.ts` | State machine definitions, valid transitions, invariants expressed as types |
-| `orchestrator.spec.ts` | Orchestration contracts: what the coordinator/service layer receives, calls, and returns |
-| `ui.spec.ts` | UI component contracts: props, events, and observable behavior |
-| `errors.spec.ts` | All error types, codes, messages, and the conditions that produce them |
+| `api.spec.md` | Typed API contracts: request/response shapes, error envelopes (TypeScript — use equivalent for other languages) |
+| `state.spec.md` | State machine definitions, valid transitions, invariants expressed as types |
+| `orchestrator.spec.md` | Orchestration contracts: what the coordinator/service layer receives, calls, and returns |
+| `ui.spec.md` | UI component contracts: props, events, and observable behavior |
+| `errors.spec.md` | All error types, codes, messages, and the conditions that produce them |
 | `behavior.spec.md` | Behavioral narratives: end-to-end user journeys and system behavior in plain language |
 | `traceability.spec.md` | Requirement-to-test mapping: each REQ/AC traced to the test(s) that verify it |
 | `spec-dod.md` | Definition-of-Done checklist with evidence (not just checked boxes) |
@@ -258,11 +258,11 @@ Before writing any file, assess what the target (feature or source file) actuall
 |---|---|
 | Any domain logic, functions, or classes | `feature.spec.md` — always |
 | Non-trivial ordering, branching, or state machine | `behavior.spec.md` |
-| API endpoints or HTTP handlers | `api.spec.ts` |
-| State management or data store logic | `state.spec.ts` |
-| Orchestrator / coordinator / hook layer | `orchestrator.spec.ts` |
-| UI components | `ui.spec.ts` |
-| Error definitions or structured error handling | `errors.spec.ts` |
+| API endpoints or HTTP handlers | `api.spec.md` |
+| State management or data store logic | `state.spec.md` |
+| Orchestrator / coordinator / hook layer | `orchestrator.spec.md` |
+| UI components | `ui.spec.md` |
+| Error definitions or structured error handling | `errors.spec.md` |
 | REQ-to-function traceability needed | `traceability.spec.md` |
 
 Always include `spec-manifest.md` documenting what was produced and what was omitted with justification.

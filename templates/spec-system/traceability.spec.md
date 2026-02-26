@@ -86,7 +86,7 @@ add a note explaining why. Do not delete rows — deferred requirements are stil
 
 ## 4. Error Code Traceability
 
-<!-- Maps each error code from errors.spec.ts to the test that produces it. -->
+<!-- Maps each error code from errors.spec.md to the test that produces it. -->
 
 | Error Code | Produced By (file/function) | Test File | Test ID | Status |
 |------------|-----------------------------|-----------|---------|--------|
@@ -100,7 +100,7 @@ add a note explaining why. Do not delete rows — deferred requirements are stil
 | RATE_LIMIT_EXCEEDED | pending | pending | pending | PENDING |
 | INTERNAL_ERROR | pending | pending | pending | PENDING |
 
-<!-- Add or remove rows to match the error codes defined in errors.spec.ts. -->
+<!-- Add or remove rows to match the error codes defined in errors.spec.md. -->
 
 ---
 
@@ -181,7 +181,7 @@ This checklist must be completed before the feature ships.
 - [ ] All AC-* from feature.spec.md appear in the Section 1 matrix
 - [ ] All INV-* from feature.spec.md appear in the Section 2 matrix
 - [ ] All EC-* from feature.spec.md appear in the Section 3 matrix
-- [ ] All error codes from errors.spec.ts appear in the Section 4 matrix
+- [ ] All error codes from errors.spec.md appear in the Section 4 matrix
 - [ ] All behavior rules from behavior.spec.md appear in the Section 5 matrix (if applicable)
 - [ ] Section 6.1 (unimplemented) is empty or all entries are DEFERRED with approval
 - [ ] Section 6.2 (untested) is empty or all entries are DEFERRED with approval

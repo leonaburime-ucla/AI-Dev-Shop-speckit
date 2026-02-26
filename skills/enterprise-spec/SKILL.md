@@ -46,7 +46,7 @@ Program-level spec location: `<SHOP_ROOT>/specs/programs/<program-id>/<feature-s
 After the program-level spec is approved, the Architect Agent decomposes it into repository-specific sub-specs — one per affected repository or service. The decomposition is the Architect's first deliverable, and it is itself a gated checkpoint: the Coordinator must confirm the decomposition is complete and non-overlapping before sub-spec work begins.
 
 Each sub-spec:
-- Uses the same strict-mode spec package format defined in `spec-writing` (feature.spec.md, api.spec.ts, state.spec.ts, etc.) but scoped to that repository's boundary
+- Uses the same strict-mode spec package format defined in `spec-writing` (feature.spec.md, api.spec.md, state.spec.md, etc.) but scoped to that repository's boundary
 - Covers only what that repository owns; behavior owned by another repository is referenced, not redefined
 - References the program-level spec by `SPEC-ID` — it does not duplicate requirements, only imports them by reference
 

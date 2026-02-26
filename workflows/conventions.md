@@ -23,11 +23,11 @@ Spec files live at the **user-specified location**, in a named subfolder:
 ```
 <user-specified>/<NNN>-<feature-name>/
   feature.spec.md          (canonical spec — use templates/spec-system/feature.spec.md)
-  api.spec.ts              (typed API contracts — if applicable)
-  state.spec.ts            (state shapes and transitions — if applicable)
-  orchestrator.spec.ts     (orchestrator output model — if applicable)
-  ui.spec.ts               (UI component contracts — if applicable)
-  errors.spec.ts           (error code registry — if applicable)
+  api.spec.md              (typed API contracts — if applicable)
+  state.spec.md            (state shapes and transitions — if applicable)
+  orchestrator.spec.md     (orchestrator output model — if applicable)
+  ui.spec.md               (UI component contracts — if applicable)
+  errors.spec.md           (error code registry — if applicable)
   behavior.spec.md         (deterministic behavior rules — if applicable)
   traceability.spec.md     (REQ-to-function-to-test matrix)
   spec-dod.md              (DoD checklist — must pass before Architect dispatch)
@@ -78,5 +78,5 @@ All agent reports live under a single centralized folder. This is the single sou
 - All agents write reports here — do not scatter report files elsewhere
 - Test run reports are timestamped and never overwritten — each run is a separate audit artifact
 - The Programmer reads test state by running tests fresh, not by reading reports — reports are audit trail only
-- Spec files (feature.spec.md and .spec.ts contracts) live at the user-specified location, not in reports/
+- Spec files (feature.spec.md and .spec.md contract files) live at the user-specified location, not in reports/
 - Pipeline artifacts (adr.md, tasks.md, test-certification.md, red-team-findings.md) live in `reports/pipeline/<NNN>-<feature-name>/`, not scattered elsewhere

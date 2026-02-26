@@ -18,11 +18,11 @@ All files below must be created under the user-specified location (`<user-specif
 | File | Template | Required? |
 |------|----------|-----------|
 | `feature.spec.md` | `<SHOP_ROOT>/templates/spec-system/feature.spec.md` | Always |
-| `api.spec.ts` | `<SHOP_ROOT>/templates/spec-system/api.spec.ts` | If feature exposes or consumes an API |
-| `state.spec.ts` | `<SHOP_ROOT>/templates/spec-system/state.spec.ts` | If feature manages stateful data |
-| `orchestrator.spec.ts` | `<SHOP_ROOT>/templates/spec-system/orchestrator.spec.ts` | If feature has a coordinator/orchestrator layer |
-| `ui.spec.ts` | `<SHOP_ROOT>/templates/spec-system/ui.spec.ts` | If feature has a UI component |
-| `errors.spec.ts` | `<SHOP_ROOT>/templates/spec-system/errors.spec.ts` | If feature defines error codes or recovery paths |
+| `api.spec.md` | `<SHOP_ROOT>/templates/spec-system/api.spec.md` | If feature exposes or consumes an API |
+| `state.spec.md` | `<SHOP_ROOT>/templates/spec-system/state.spec.md` | If feature manages stateful data |
+| `orchestrator.spec.md` | `<SHOP_ROOT>/templates/spec-system/orchestrator.spec.md` | If feature has a coordinator/orchestrator layer |
+| `ui.spec.md` | `<SHOP_ROOT>/templates/spec-system/ui.spec.md` | If feature has a UI component |
+| `errors.spec.md` | `<SHOP_ROOT>/templates/spec-system/errors.spec.md` | If feature defines error codes or recovery paths |
 | `behavior.spec.md` | `<SHOP_ROOT>/templates/spec-system/behavior.spec.md` | If feature has non-trivial ordering, precedence, or deduplication rules |
 | `traceability.spec.md` | `<SHOP_ROOT>/templates/spec-system/traceability.spec.md` | Always (may be marked "pending implementation" before TDD) |
 | `requirements.md` | `<SHOP_ROOT>/templates/checklist-template.md` | Always |
@@ -47,16 +47,16 @@ All files below must be created under the user-specified location (`<user-specif
 
    > Spec files can be named two ways:
    >
-   > **Prefixed** (recommended): every file is named `<feature-name>.<type>` — e.g., `csv-invoice-export.feature.spec.md`, `csv-invoice-export.api.spec.ts`. When you have multiple spec folders open in an IDE, each file carries the feature name so fuzzy search and open tabs immediately tell you which feature you're looking at.
+   > **Prefixed** (recommended): every file is named `<feature-name>.<type>` — e.g., `csv-invoice-export.feature.spec.md`, `csv-invoice-export.api.spec.md`. When you have multiple spec folders open in an IDE, each file carries the feature name so fuzzy search and open tabs immediately tell you which feature you're looking at.
    >
-   > **Standard**: generic names — `feature.spec.md`, `api.spec.ts`. The folder name provides context.
+   > **Standard**: generic names — `feature.spec.md`, `api.spec.md`. The folder name provides context.
    >
    > Which do you prefer?
 
    Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. Record both `spec_path` and `spec_naming: prefixed | standard` in `.pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
 5. Determine which spec-package files apply to this feature (see table above). Document which files you are creating and which you are omitting, with justification for each omission.
 6. Write `feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
-7. Write all applicable TypeScript contract files (`api.spec.ts`, `state.spec.ts`, `orchestrator.spec.ts`, `ui.spec.ts`, `errors.spec.ts`) using the corresponding templates in `<SHOP_ROOT>/templates/spec-system/`.
+7. Write all applicable contract files (`api.spec.md`, `state.spec.md`, `orchestrator.spec.md`, `ui.spec.md`, `errors.spec.md`) using the corresponding templates in `<SHOP_ROOT>/templates/spec-system/`.
 8. Write `behavior.spec.md` using `<SHOP_ROOT>/templates/spec-system/behavior.spec.md` if the feature has ordering, precedence, tie-break, or deduplication rules.
 9. Write `traceability.spec.md` using `<SHOP_ROOT>/templates/spec-system/traceability.spec.md`. Mark REQ-* rows as "pending implementation" if TDD has not yet run.
 10. Inline `[NEEDS CLARIFICATION: <specific question>]` markers for any requirement that is ambiguous. Maximum 3 markers — make informed guesses for anything else.

@@ -25,16 +25,16 @@ A complete spec for feature `NNN-feature-name` requires ALL of the following fil
 | File | Location | Purpose |
 |---|---|---|
 | `feature.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Human-readable spec: problem, scope, requirements, ACs, invariants, edge cases, dependencies, open questions, constitution compliance |
-| `api.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed API contracts: request/response schemas, HTTP methods, status codes, error payloads (TypeScript or equivalent for your stack) |
-| `state.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed state shapes: before/after for every mutation, initial state, derived state |
-| `orchestrator.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed orchestration contracts: which services/repos are called, in what order, what they return, what errors they surface |
-| `ui.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed UI contracts: component props, events emitted, loading/error/empty states, accessibility requirements |
-| `errors.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Exhaustive error catalog: every error code, exact payload shape, HTTP status, user-facing message, retry behavior |
+| `api.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed API contracts: request/response schemas, HTTP methods, status codes, error payloads (TypeScript or equivalent for your stack) |
+| `state.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed state shapes: before/after for every mutation, initial state, derived state |
+| `orchestrator.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed orchestration contracts: which services/repos are called, in what order, what they return, what errors they surface |
+| `ui.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed UI contracts: component props, events emitted, loading/error/empty states, accessibility requirements |
+| `errors.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Exhaustive error catalog: every error code, exact payload shape, HTTP status, user-facing message, retry behavior |
 | `behavior.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Deterministic behavior rules: precedence, ordering, defaults, limits, deduplication, tie-break logic — anything not expressible in types |
 | `traceability.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Traceability matrix: REQ-* to function/component, REQ-* to test IDs |
 | `spec-dod.md` | `<user-specified>/<NNN>-<feature-name>/` | This DoD checklist, completed with pass/fail status for this spec |
 
-The existing `spec.md` (from `spec-template.md`) is renamed to `feature.spec.md` or kept as `spec.md` — either is valid as long as the file contains all required sections. The typed contract files (`api.spec.ts`, `state.spec.ts`, etc.) are additive and required in addition to it.
+The existing `spec.md` (from `spec-template.md`) is renamed to `feature.spec.md` or kept as `spec.md` — either is valid as long as the file contains all required sections. The typed contract files (`api.spec.md`, `state.spec.md`, etc.) are additive and required in addition to it.
 
 ---
 
@@ -53,9 +53,9 @@ The content hash MUST be recomputed every time any content below the metadata bl
 
 ---
 
-## Typed I/O Contracts (api.spec.ts)
+## Typed I/O Contracts (api.spec.md)
 
-`api.spec.ts` is not done until ALL of the following are present for every endpoint or external interface this feature exposes or consumes.
+`api.spec.md` is not done until ALL of the following are present for every endpoint or external interface this feature exposes or consumes.
 
 ### Per Endpoint
 
@@ -84,7 +84,7 @@ export interface AddCartItemResponse {
 }
 
 // HTTP 200: AddCartItemResponse
-// HTTP 400: ErrorPayload (see errors.spec.ts) — CART_ITEM_INVALID_QUANTITY, CART_ITEM_PRODUCT_NOT_FOUND
+// HTTP 400: ErrorPayload (see errors.spec.md) — CART_ITEM_INVALID_QUANTITY, CART_ITEM_PRODUCT_NOT_FOUND
 // HTTP 409: ErrorPayload — CART_ITEM_DUPLICATE
 // HTTP 422: ErrorPayload — CART_ITEM_EXCEEDS_STOCK
 // HTTP 500: ErrorPayload — INTERNAL_ERROR
@@ -95,13 +95,13 @@ export interface AddCartItemResponse {
 - "Returns a cart object" — not a typed contract
 - `response: object` — no type information
 - Missing error status codes — if the implementation can return a 409, the spec must define it
-- Schemas described only in prose — prose descriptions in `feature.spec.md` are supplementary; the `.spec.ts` file is the authoritative typed contract
+- Schemas described only in prose — prose descriptions in `feature.spec.md` are supplementary; the `.spec.md` contract file is the authoritative typed contract
 
 ---
 
-## Typed State Contracts (state.spec.ts)
+## Typed State Contracts (state.spec.md)
 
-`state.spec.ts` is not done until ALL of the following are present.
+`state.spec.md` is not done until ALL of the following are present.
 
 - Initial state shape — typed
 - Every possible state transition — documented as before/after snapshots with typed shapes
@@ -136,14 +136,14 @@ export const CART_INITIAL_STATE: CartState = {
 
 ---
 
-## Typed Orchestrator Contracts (orchestrator.spec.ts)
+## Typed Orchestrator Contracts (orchestrator.spec.md)
 
-`orchestrator.spec.ts` is not done until the following are specified for every use-case or orchestration flow in the feature.
+`orchestrator.spec.md` is not done until the following are specified for every use-case or orchestration flow in the feature.
 
 - The services or repositories called, in order — typed as method signatures
 - What each call receives — typed
 - What each call returns on success — typed
-- What each call returns on failure — typed (use the error catalog from `errors.spec.ts`)
+- What each call returns on failure — typed (use the error catalog from `errors.spec.md`)
 - Conditional branching — documented with the condition and both branches
 - Transaction boundaries — explicitly annotated (what is atomic, what is compensating)
 
@@ -162,9 +162,9 @@ export const CART_INITIAL_STATE: CartState = {
 
 ---
 
-## Error Codes and Payloads (errors.spec.ts)
+## Error Codes and Payloads (errors.spec.md)
 
-`errors.spec.ts` is not done until EVERY error the feature can produce is cataloged with ALL of the following fields.
+`errors.spec.md` is not done until EVERY error the feature can produce is cataloged with ALL of the following fields.
 
 | Field | Required | Example |
 |---|---|---|
@@ -321,7 +321,7 @@ The Coordinator MUST NOT dispatch the Architect Agent unless ALL of the followin
 | 4 | `status` is `APPROVED` | Metadata block parsed; human has explicitly approved |
 | 5 | `content_hash` is present and matches the current file content | Recompute sha256; compare to stored hash |
 | 6 | Zero unresolved `[NEEDS CLARIFICATION]` markers in the spec | Grep the spec file for `[NEEDS CLARIFICATION]`; count must be 0 |
-| 7 | All required typed contract files exist and are non-empty | File system check for `api.spec.ts`, `state.spec.ts`, `orchestrator.spec.ts`, `ui.spec.ts`, `errors.spec.ts` |
+| 7 | All required typed contract files exist and are non-empty | File system check for `api.spec.md`, `state.spec.md`, `orchestrator.spec.md`, `ui.spec.md`, `errors.spec.md` |
 | 8 | `behavior.spec.md` exists and all six required sections are present | File exists; section headers checked |
 | 9 | `traceability.spec.md` exists with Table 1 populated | Every REQ-* has at least one implementation target |
 | 10 | `spec-dod.md` exists and all items are marked PASS | No items marked FAIL or TODO |
@@ -376,11 +376,11 @@ The file `spec-dod.md` must be generated for each spec and completed before Arch
 
 ## Package Completeness
 - [ ] feature.spec.md exists and all sections populated
-- [ ] api.spec.ts exists and all endpoints typed
-- [ ] state.spec.ts exists and all state shapes typed
-- [ ] orchestrator.spec.ts exists and all flows documented
-- [ ] ui.spec.ts exists and all component contracts typed
-- [ ] errors.spec.ts exists and all error codes cataloged
+- [ ] api.spec.md exists and all endpoints typed
+- [ ] state.spec.md exists and all state shapes typed
+- [ ] orchestrator.spec.md exists and all flows documented
+- [ ] ui.spec.md exists and all component contracts typed
+- [ ] errors.spec.md exists and all error codes cataloged
 - [ ] behavior.spec.md exists and all six sections present
 - [ ] traceability.spec.md exists and Table 1 populated
 - [ ] spec-dod.md (this file) exists

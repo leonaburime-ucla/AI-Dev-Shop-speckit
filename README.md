@@ -167,11 +167,11 @@ AGENTS.md                          ← Full operating manual for all agents and 
 │   ├── tasks-template.md
 │   ├── spec-system/               ← Strict-mode 9-file spec package templates
 │   │   ├── feature.spec.md        ← Canonical spec (goals, REQs, ACs, invariants, edge cases)
-│   │   ├── api.spec.ts            ← Typed API contracts
-│   │   ├── state.spec.ts          ← State shapes and transitions
-│   │   ├── orchestrator.spec.ts   ← Orchestrator output model
-│   │   ├── ui.spec.ts             ← UI component contracts
-│   │   ├── errors.spec.ts         ← Error code registry
+│   │   ├── api.spec.md            ← Typed API contracts
+│   │   ├── state.spec.md          ← State shapes and transitions
+│   │   ├── orchestrator.spec.md   ← Orchestrator output model
+│   │   ├── ui.spec.md             ← UI component contracts
+│   │   ├── errors.spec.md         ← Error code registry
 │   │   ├── behavior.spec.md       ← Deterministic behavior rules (EARS syntax)
 │   │   ├── traceability.spec.md   ← REQ-to-function-to-test mapping
 │   │   ├── spec-dod.md            ← DoD checklist (must pass before Architect dispatch)
