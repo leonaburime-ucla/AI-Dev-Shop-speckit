@@ -41,6 +41,9 @@ Coordinator receives any task involving: schema design, data modeling, migration
 | Platform unknown | Ask Coordinator to confirm before proceeding past logical model stage |
 
 ## Output Format
+
+Write all artifacts to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/db-model.md`.
+
 - **Data model**: Entity list with attributes, types, and constraints; ERD description (entity relationships and cardinality); normalization rationale; denormalization decisions with justification
 - **Migration plan**: Ordered list of schema changes, classified as additive / destructive / data-transforming; rollback steps for each destructive change; estimated lock duration for high-traffic tables
 - **Index recommendations**: Index name, table, columns, index type (B-tree, GIN, GiST, partial), and the specific query pattern it serves; columns flagged for over-indexing

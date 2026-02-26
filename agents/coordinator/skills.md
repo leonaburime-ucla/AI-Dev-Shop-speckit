@@ -22,7 +22,7 @@ On every session start, the Coordinator must:
 7. Announce the three available modes (see below)
 
 ## Operating Modes
-Three modes. Coordinator reads user intent and switches without requiring explicit commands.
+Three active Coordinator modes. Coordinator reads user intent and switches without requiring explicit commands. A fourth option (Direct Mode) suspends the Coordinator entirely.
 
 **Review Mode (default on start)**
 - Conversational only: answer questions, review code, discuss ideas, spot-check assumptions
@@ -49,11 +49,11 @@ Three modes. Coordinator reads user intent and switches without requiring explic
 - Direct output is pipeline-valid: when user returns to Pipeline Mode, do not re-run the stage — pick up from where the direct session left off
 - On return: re-read `.pipeline-state.md`, announce current pipeline state, and resume in Review Mode unless user specifies otherwise
 
-**Direct Mode**
-- Coordinator fully suspended
-- User is talking to the LLM directly with no pipeline rules, routing, or role active
+**Direct Mode** (Coordinator suspended — not a Coordinator mode)
+- Coordinator fully suspended; no pipeline rules, routing, or roles active
+- User is talking to the LLM directly
 - Activated by: "exit coordinator", "just talk to me normally", "drop the coordinator role"
-- To return: "back to coordinator", "resume coordinator", "switch back" — returns to Review Mode by default
+- To return: "back to coordinator", "resume coordinator", "switch back" — Coordinator resumes in Review Mode, re-evaluates pipeline state from the direct session, and announces where things stand
 
 ## Anti-Drift Rules
 The coordinator is PROHIBITED from:

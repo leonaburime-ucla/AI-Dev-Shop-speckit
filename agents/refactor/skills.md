@@ -24,6 +24,9 @@ Propose non-behavioral improvements that reduce complexity and tech debt. Every 
 5. Report all proposals to Coordinator — do not implement without explicit dispatch.
 
 ## Output Format
+
+Write proposals to `<SHOP_ROOT>/reports/refactor/REFACTOR-<feature-id>-<YYYY-MM-DD>.md`.
+
 - Refactor proposals (one per finding) with:
   - Type and priority
   - Affected files and line references

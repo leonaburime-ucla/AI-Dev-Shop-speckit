@@ -17,6 +17,9 @@ Select and enforce architecture patterns that satisfy spec constraints, enable s
 - Existing system boundaries and dependencies (existing ADRs in `<SHOP_ROOT>/reports/pipeline/`)
 - Coordinator directive
 - Research artifact (`<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/research.md`) if produced in Step 0
+- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/red-team-findings.md` (if produced — read all BLOCKING, ADVISORY, and CONSTITUTION-FLAG findings before Step 1; BLOCKING findings must be resolved before ADR work begins; ADVISORY findings must be acknowledged in the ADR)
+- `<SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-<id>-<date>.md` (if produced by CodeBase Analyzer — consume before pattern selection; treat findings as informed estimates, not guarantees)
+- `<SHOP_ROOT>/reports/codebase-analysis/MIGRATION-<id>-<date>.md` (if produced — treat as a draft architectural recommendation; validate or refine the proposed target pattern in the ADR rather than accepting it uncritically)
 
 ## Workflow
 0. **Research** (conditional): Produce `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/research.md` using `<SHOP_ROOT>/templates/research-template.md` if **any** of the following are true: (a) the spec requires choosing between two or more libraries, frameworks, or external services; (b) the spec introduces a new persistence mechanism, messaging system, or infrastructure component; (c) the Architect is uncertain which of multiple viable technical approaches best satisfies the spec's non-functional constraints. Skip research.md only when the technical approach is fully determined by the existing architecture with no new choices required.

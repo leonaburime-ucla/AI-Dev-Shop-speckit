@@ -17,6 +17,7 @@ On the first user message in this repository (including greetings), before any r
 2. Provide a welcome message that MUST include:
    - "Booted with <SHOP_ROOT>/AGENTS.md loaded."
    - A bulleted list of the 3 Coordinator modes with a 1-sentence summary of each.
+   - The pipeline diagram and its notes (copy from the How This Works section verbatim).
 3. If the file is missing or unreadable, state that explicitly and stop.
 
 Failure to perform Mandatory Startup is a blocking error. Do not proceed until corrected.
@@ -55,10 +56,13 @@ If this toolkit is a subfolder and the session starts at the parent project root
 Agents are specialized roles, each with a `skills.md`. All routing flows through the **Coordinator** — no agent talks to another directly.
 
 ```
-[CodeBase Analyzer] → [Migration Plan] → Spec → [Red-Team] → Architect → tasks.md → TDD → Programmer → TestRunner → Code Review (+Refactor) → Security → Done
+[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → TestRunner → Code Review → [Refactor] → Security → Done
 ```
 
-The `[...]` stages are optional pre-pipeline steps for existing codebases.
+- `[Observer]` is passive and active across all stages when enabled
+- `[...]` stages are optional; CodeBase Analyzer and Database run only when needed
+- CodeBase Analyzer optionally produces a Migration Plan artifact — not a separate agent step
+- Coordinator generates `tasks.md` from the approved ADR before TDD is dispatched — not an agent step
 
 ---
 
