@@ -13,7 +13,7 @@ The task is NOT complete until the full spec package is present and the DoD chec
 
 ### Required spec-package files
 
-All files below must be created under the user-specified location (`<user-specified>/<NNN>-<feature-name>/`). Ask the user for this location before writing if not already provided:
+All files below must be created under the user-specified location (`<user-specified>/<NNN>-<feature-name>/`). Ask the user for this location and their preferred naming convention before writing (see step 4). File names in the table below are base suffixes — prepend `<feature-name>.` for prefixed naming:
 
 | File | Template | Required? |
 |------|----------|-----------|
@@ -27,6 +27,7 @@ All files below must be created under the user-specified location (`<user-specif
 | `traceability.spec.md` | `<SHOP_ROOT>/templates/spec-system/traceability.spec.md` | Always (may be marked "pending implementation" before TDD) |
 | `requirements.md` | `<SHOP_ROOT>/templates/checklist-template.md` | Always |
 | `spec-dod.md` | `<SHOP_ROOT>/templates/spec-system/spec-dod.md` | Always — HARD GATE |
+| `spec-manifest.md` | _(generated)_ | Always — lists actual filenames, omissions, and `spec_naming` used |
 
 > NOTE: `templates/spec-template.md` is the LEGACY single-file format. Do NOT use it for new specs.
 > Always use `templates/spec-system/feature.spec.md` as the primary spec template.
@@ -38,7 +39,21 @@ All files below must be created under the user-specified location (`<user-specif
 1. Read `<SHOP_ROOT>/project-knowledge/constitution.md`.
 2. Determine the next FEAT number by scanning `<SHOP_ROOT>/reports/pipeline/` for existing feature folders (format: `NNN-feature-name/`). Use the next available three-digit number.
 3. Derive a short feature name (2-4 words, action-noun format, lowercase-hyphenated) from the description. Example: "add user auth", "export csv report".
-4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path` in `.pipeline-state.md`.
+4. Ask the user two questions before writing anything:
+
+   **a) Where to save the spec package** (if not already specified).
+
+   **b) File naming convention:**
+
+   > Spec files can be named two ways:
+   >
+   > **Prefixed** (recommended): every file is named `<feature-name>.<type>` — e.g., `csv-invoice-export.feature.spec.md`, `csv-invoice-export.api.spec.ts`. When you have multiple spec folders open in an IDE, each file carries the feature name so fuzzy search and open tabs immediately tell you which feature you're looking at.
+   >
+   > **Standard**: generic names — `feature.spec.md`, `api.spec.ts`. The folder name provides context.
+   >
+   > Which do you prefer?
+
+   Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. Record both `spec_path` and `spec_naming: prefixed | standard` in `.pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
 5. Determine which spec-package files apply to this feature (see table above). Document which files you are creating and which you are omitting, with justification for each omission.
 6. Write `feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
 7. Write all applicable TypeScript contract files (`api.spec.ts`, `state.spec.ts`, `orchestrator.spec.ts`, `ui.spec.ts`, `errors.spec.ts`) using the corresponding templates in `<SHOP_ROOT>/templates/spec-system/`.

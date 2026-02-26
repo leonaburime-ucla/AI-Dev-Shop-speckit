@@ -19,8 +19,23 @@ Convert product intent into precise, versioned, testable specifications that bec
 1. Normalize request into clear scope and explicit non-goals.
 2. Read `<SHOP_ROOT>/project-knowledge/constitution.md`. For any requirement that conflicts with or is ambiguous against a constitution article, inline a `[NEEDS CLARIFICATION: Article <N> — <specific question>]` marker in the requirement text.
 3. Assign FEAT number by scanning existing feature folders in `<SHOP_ROOT>/reports/pipeline/` (format: `NNN-feature-name/`). Derive a short feature name (2-4 words, lowercase-hyphenated).
-4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path: <user-specified>/<NNN>-<feature-name>/` in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`.
-5. Write or revise spec to `<user-specified>/<NNN>-<feature-name>/feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
+4. Ask the user two questions before writing anything:
+
+   **a) Where to save the spec package** (if not already specified).
+
+   **b) File naming convention:**
+
+   > Spec files can be named two ways:
+   >
+   > **Prefixed** (recommended): every file is named `<feature-name>.<type>` — e.g., `csv-invoice-export.feature.spec.md`, `csv-invoice-export.api.spec.ts`. When you have multiple spec folders open in an IDE, each file carries the feature name so fuzzy search and tab bars immediately tell you which feature you're looking at.
+   >
+   > **Standard**: generic names — `feature.spec.md`, `api.spec.ts`. The folder name provides context.
+   >
+   > Which do you prefer?
+
+   Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record both `spec_path: <user-specified>/<NNN>-<feature-name>/` and `spec_naming: prefixed | standard` in `.pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
+
+5. Write or revise spec to `<user-specified>/<NNN>-<feature-name>/[<feature-name>.]feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
 5. Complete the Constitution Compliance table. Mark each article COMPLIES, EXCEPTION, or N/A.
 6. Assign/update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
 7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
@@ -49,7 +64,7 @@ Convert product intent into precise, versioned, testable specifications that bec
 - The FEAT number must be assigned before handoff — never reuse an existing FEAT number
 
 ## Strict Mode — Spec Package Output
-In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL applicable files at the user-specified location (`<user-specified>/<NNN>-<feature-name>/`):
+In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL applicable files at the user-specified location (`<user-specified>/<NNN>-<feature-name>/`). File names below show the base suffix — prepend `<feature-name>.` for prefixed naming (e.g., `csv-invoice-export.feature.spec.md`):
 - `feature.spec.md` — canonical spec (use templates/spec-system/feature.spec.md)
 - `api.spec.ts` — typed API contracts (if applicable)
 - `state.spec.ts` — state shapes and transitions (if applicable)
@@ -59,6 +74,7 @@ In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL applicable 
 - `behavior.spec.md` — deterministic behavior rules (if applicable)
 - `traceability.spec.md` — REQ-to-function-to-test matrix
 - `spec-dod.md` — filled DoD checklist with evidence
+- `spec-manifest.md` — lists every file produced with its actual filename, omitted files with justification, and `spec_naming` choice used
 
 ## Spec Definition of Done Gate
 Before signaling handoff readiness:
