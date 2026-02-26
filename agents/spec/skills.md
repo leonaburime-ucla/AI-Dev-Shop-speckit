@@ -19,11 +19,11 @@ Convert product intent into precise, versioned, testable specifications that bec
 1. Normalize request into clear scope and explicit non-goals.
 2. Read `<SHOP_ROOT>/project-knowledge/constitution.md`. For any requirement that conflicts with or is ambiguous against a constitution article, inline a `[NEEDS CLARIFICATION: Article <N> — <specific question>]` marker in the requirement text.
 3. Assign FEAT number by scanning existing feature folders in `<SHOP_ROOT>/reports/pipeline/` (format: `NNN-feature-name/`). Derive a short feature name (2-4 words, lowercase-hyphenated).
-4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/` and its `checklists/` subfolder. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path: <user-specified>/<NNN>-<feature-name>/` in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`.
+4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path: <user-specified>/<NNN>-<feature-name>/` in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`.
 5. Write or revise spec to `<user-specified>/<NNN>-<feature-name>/feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
 5. Complete the Constitution Compliance table. Mark each article COMPLIES, EXCEPTION, or N/A.
 6. Assign/update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
-7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/checklists/requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
+7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
 8. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<SHOP_ROOT>/templates/commands/clarify.md` for the presentation format.
 9. Once checklist fully passes: recompute hash, publish spec delta summary (what changed and why), hand off to Architect via Coordinator.
 
@@ -58,12 +58,12 @@ In strict mode, a spec is a PACKAGE. The Spec Agent must produce ALL applicable 
 - `errors.spec.ts` — error code registry (if applicable)
 - `behavior.spec.md` — deterministic behavior rules (if applicable)
 - `traceability.spec.md` — REQ-to-function-to-test matrix
-- `checklists/spec-dod.md` — filled DoD checklist with evidence
+- `spec-dod.md` — filled DoD checklist with evidence
 
 ## Spec Definition of Done Gate
 Before signaling handoff readiness:
 1. Every file in the spec package must exist
-2. Fill out checklists/spec-dod.md — every item must be PASS or NA with a reason
+2. Fill out spec-dod.md — every item must be PASS or NA with a reason
 3. Zero unresolved [NEEDS CLARIFICATION] markers
 4. No banned vague language (see project-knowledge/spec-definition-of-done.md for banned list)
 5. Implementation-readiness self-check: "Can a new developer implement this feature from these specs alone?" If no, continue working.

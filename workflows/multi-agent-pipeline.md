@@ -115,8 +115,8 @@ Coordinator cannot dispatch Architect until ALL of the following pass:
   - `errors.spec.ts`
   - `behavior.spec.md`
   - `traceability.spec.md`
-  - `checklists/spec-dod.md`
-- `checklists/spec-dod.md`: all items PASS or NA
+  - `spec-dod.md`
+- `spec-dod.md`: all items PASS or NA
 - Zero unresolved [NEEDS CLARIFICATION] markers
 - No banned vague language violations
 - Traceability matrix has no gaps

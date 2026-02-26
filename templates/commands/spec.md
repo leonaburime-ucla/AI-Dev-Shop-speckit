@@ -25,8 +25,8 @@ All files below must be created under the user-specified location (`<user-specif
 | `errors.spec.ts` | `<SHOP_ROOT>/templates/spec-system/errors.spec.ts` | If feature defines error codes or recovery paths |
 | `behavior.spec.md` | `<SHOP_ROOT>/templates/spec-system/behavior.spec.md` | If feature has non-trivial ordering, precedence, or deduplication rules |
 | `traceability.spec.md` | `<SHOP_ROOT>/templates/spec-system/traceability.spec.md` | Always (may be marked "pending implementation" before TDD) |
-| `checklists/requirements.md` | `<SHOP_ROOT>/templates/checklist-template.md` | Always |
-| `checklists/spec-dod.md` | `<SHOP_ROOT>/templates/spec-system/checklists/spec-dod.md` | Always — HARD GATE |
+| `requirements.md` | `<SHOP_ROOT>/templates/checklist-template.md` | Always |
+| `spec-dod.md` | `<SHOP_ROOT>/templates/spec-system/spec-dod.md` | Always — HARD GATE |
 
 > NOTE: `templates/spec-template.md` is the LEGACY single-file format. Do NOT use it for new specs.
 > Always use `templates/spec-system/feature.spec.md` as the primary spec template.
@@ -38,7 +38,7 @@ All files below must be created under the user-specified location (`<user-specif
 1. Read `<SHOP_ROOT>/project-knowledge/constitution.md`.
 2. Determine the next FEAT number by scanning `<SHOP_ROOT>/reports/pipeline/` for existing feature folders (format: `NNN-feature-name/`). Use the next available three-digit number.
 3. Derive a short feature name (2-4 words, action-noun format, lowercase-hyphenated) from the description. Example: "add user auth", "export csv report".
-4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/` and its `checklists/` subfolder. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path` in `.pipeline-state.md`.
+4. Ask the user where to save the spec package if not already specified. Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record `spec_path` in `.pipeline-state.md`.
 5. Determine which spec-package files apply to this feature (see table above). Document which files you are creating and which you are omitting, with justification for each omission.
 6. Write `feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
 7. Write all applicable TypeScript contract files (`api.spec.ts`, `state.spec.ts`, `orchestrator.spec.ts`, `ui.spec.ts`, `errors.spec.ts`) using the corresponding templates in `<SHOP_ROOT>/templates/spec-system/`.
@@ -46,8 +46,8 @@ All files below must be created under the user-specified location (`<user-specif
 9. Write `traceability.spec.md` using `<SHOP_ROOT>/templates/spec-system/traceability.spec.md`. Mark REQ-* rows as "pending implementation" if TDD has not yet run.
 10. Inline `[NEEDS CLARIFICATION: <specific question>]` markers for any requirement that is ambiguous. Maximum 3 markers — make informed guesses for anything else.
 11. Complete the Constitution Compliance table for all 8 articles in `feature.spec.md`.
-12. Generate `checklists/requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate `feature.spec.md` against every item and record pass/fail status.
-13. Fill `checklists/spec-dod.md` using `<SHOP_ROOT>/templates/spec-system/checklists/spec-dod.md`. Every item must be PASS or NA with justification. Any FAIL blocks handoff — fix the issue before proceeding.
+12. Generate `requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate `feature.spec.md` against every item and record pass/fail status.
+13. Fill `spec-dod.md` using `<SHOP_ROOT>/templates/spec-system/spec-dod.md`. Every item must be PASS or NA with justification. Any FAIL blocks handoff — fix the issue before proceeding.
 14. If `[NEEDS CLARIFICATION]` markers remain, present them as structured questions with A/B/C options. Wait for human answers before finalizing. Use `/clarify` if the human wants to handle clarifications in a dedicated pass.
 15. Compute the content hash for `feature.spec.md` (sha256 of all content below the header metadata block) and record it in the spec header.
 16. Once all DoD items are PASS or NA: assign FEAT number, output the spec package path and readiness for `/plan`.
@@ -57,10 +57,10 @@ All files below must be created under the user-specified location (`<user-specif
 ## HARD GATE
 
 **The spec task is NOT complete until:**
-1. `checklists/spec-dod.md` is filled out with a status (PASS / FAIL / NA) for every item.
-2. Every item in `checklists/spec-dod.md` is either PASS or NA (with written justification for each NA).
+1. `spec-dod.md` is filled out with a status (PASS / FAIL / NA) for every item.
+2. Every item in `spec-dod.md` is either PASS or NA (with written justification for each NA).
 3. Zero items are FAIL or blank.
-4. The sign-off block at the bottom of `checklists/spec-dod.md` is completed.
+4. The sign-off block at the bottom of `spec-dod.md` is completed.
 
 Do not output "spec complete" or hand off to `/plan` until this gate is cleared. If any DoD item cannot be brought to PASS after two revision attempts, escalate to human with the specific blocking item and the reason it cannot pass.
 

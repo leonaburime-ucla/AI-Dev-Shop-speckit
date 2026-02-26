@@ -505,7 +505,7 @@ export const DISPLAY_CONDITIONS = {
 /**
  * Mandatory accessibility requirements for each component.
  * All requirements must be verified by the TDD Agent using accessibility testing tools.
- * Any deviation requires human sign-off and a note in checklists/spec-dod.md.
+ * Any deviation requires human sign-off and a note in spec-dod.md.
  */
 export const ACCESSIBILITY_REQUIREMENTS = {
   FeatureContainer: {

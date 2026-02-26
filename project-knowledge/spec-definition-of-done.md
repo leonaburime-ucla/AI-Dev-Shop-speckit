@@ -30,7 +30,7 @@ A complete spec for feature `NNN-feature-name` requires ALL of the following fil
 | `errors.spec.ts` | `specs/NNN-feature-name/` | Exhaustive error catalog: every error code, exact payload shape, HTTP status, user-facing message, retry behavior |
 | `behavior.spec.md` | `specs/NNN-feature-name/` | Deterministic behavior rules: precedence, ordering, defaults, limits, deduplication, tie-break logic — anything not expressible in types |
 | `traceability.spec.md` | `specs/NNN-feature-name/` | Traceability matrix: REQ-* to function/component, REQ-* to test IDs |
-| `checklists/spec-dod.md` | `specs/NNN-feature-name/checklists/` | This DoD checklist, completed with pass/fail status for this spec |
+| `spec-dod.md` | `<user-specified>/<NNN>-<feature-name>/` | This DoD checklist, completed with pass/fail status for this spec |
 
 The existing `spec.md` (from `spec-template.md`) is renamed to `feature.spec.md` or kept as `spec.md` — either is valid as long as the file contains all required sections. The typed contract files (`api.spec.ts`, `state.spec.ts`, etc.) are additive and required in addition to it.
 
@@ -322,7 +322,7 @@ The Coordinator MUST NOT dispatch the Architect Agent unless ALL of the followin
 | 7 | All required typed contract files exist and are non-empty | File system check for `api.spec.ts`, `state.spec.ts`, `orchestrator.spec.ts`, `ui.spec.ts`, `errors.spec.ts` |
 | 8 | `behavior.spec.md` exists and all six required sections are present | File exists; section headers checked |
 | 9 | `traceability.spec.md` exists with Table 1 populated | Every REQ-* has at least one implementation target |
-| 10 | `checklists/spec-dod.md` exists and all items are marked PASS | No items marked FAIL or TODO |
+| 10 | `spec-dod.md` exists and all items are marked PASS | No items marked FAIL or TODO |
 | 11 | Constitution Compliance table in `feature.spec.md` is complete | Every article marked COMPLIES, EXCEPTION, or N/A; no blanks |
 | 12 | Every EXCEPTION in the Constitution table has a justification noted | Justification column is non-empty for all EXCEPTION rows |
 | 13 | Every acceptance scenario uses concrete inputs and exact expected outputs | Manual review; no vague qualifiers (see Banned Language section) |
@@ -362,7 +362,7 @@ The following phrases are FORBIDDEN in any spec file unless they are immediately
 
 ## DoD Checklist Template
 
-The file `checklists/spec-dod.md` must be generated for each spec and completed before Architect dispatch. Template:
+The file `spec-dod.md` must be generated for each spec and completed before Architect dispatch. Template:
 
 ```markdown
 # Spec DoD Checklist — SPEC-NNN
@@ -381,7 +381,7 @@ The file `checklists/spec-dod.md` must be generated for each spec and completed 
 - [ ] errors.spec.ts exists and all error codes cataloged
 - [ ] behavior.spec.md exists and all six sections present
 - [ ] traceability.spec.md exists and Table 1 populated
-- [ ] checklists/spec-dod.md (this file) exists
+- [ ] spec-dod.md (this file) exists
 
 ## Metadata
 - [ ] spec_id set to SPEC-NNN format

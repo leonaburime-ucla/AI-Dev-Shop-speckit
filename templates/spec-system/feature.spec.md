@@ -184,7 +184,7 @@ The Spec Agent completes this. The Coordinator verifies before routing.
 - [ ] Full spec-system package present: api.spec.ts, state.spec.ts, ui.spec.ts, errors.spec.ts (as applicable)
 - [ ] behavior.spec.md complete (if feature has non-trivial ordering or precedence rules)
 - [ ] traceability.spec.md complete (after implementation — or marked "pending implementation")
-- [ ] checklists/spec-dod.md filled and all items PASS
+- [ ] spec-dod.md filled and all items PASS
 
 **Gate result:** PASS / FAIL — <summary if FAIL>
 

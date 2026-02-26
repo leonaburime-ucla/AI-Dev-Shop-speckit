@@ -28,6 +28,6 @@ $ARGUMENTS
 
 6. Present all questions together. Wait for the human to respond (e.g., "Q1: A, Q2: Custom — [details]").
 7. For each answer: replace the `[NEEDS CLARIFICATION: ...]` marker in the spec with the resolved text.
-8. Re-validate the spec against `<spec_path>/checklists/requirements.md`. Update checklist pass/fail status.
+8. Re-validate the spec against `<spec_path>/requirements.md`. Update checklist pass/fail status.
 9. Recompute the spec content hash.
 10. Output: updated spec path, list of resolved markers, updated checklist status, readiness for `/plan`.

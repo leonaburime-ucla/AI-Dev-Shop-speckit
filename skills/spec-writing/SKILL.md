@@ -193,7 +193,7 @@ In strict mode, a spec is a PACKAGE, not a single file. A feature that enters th
 | `errors.spec.ts` | All error types, codes, messages, and the conditions that produce them |
 | `behavior.spec.md` | Behavioral narratives: end-to-end user journeys and system behavior in plain language |
 | `traceability.spec.md` | Requirement-to-test mapping: each REQ/AC traced to the test(s) that verify it |
-| `checklists/spec-dod.md` | Definition-of-Done checklist with evidence (not just checked boxes) |
+| `spec-dod.md` | Definition-of-Done checklist with evidence (not just checked boxes) |
 
 **DoD checklist requirement**: Each item in `spec-dod.md` must include evidence of completion — a reference to the specific requirement, test name, or artifact that satisfies it. Checked boxes with no evidence are not accepted.
 

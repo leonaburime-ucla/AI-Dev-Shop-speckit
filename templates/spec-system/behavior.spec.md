@@ -26,7 +26,7 @@
 - Deduplication rules that affect what the system stores
 - Tie-break logic that affects which item "wins"
 
-**When to omit this file:** If the feature has no ordering rules, no precedence rules, all default values are obvious (e.g., `null`), no deduplication, and no tie-break logic — document "N/A" in each section and note this in `checklists/spec-dod.md`.
+**When to omit this file:** If the feature has no ordering rules, no precedence rules, all default values are obvious (e.g., `null`), no deduplication, and no tie-break logic — document "N/A" in each section and note this in `spec-dod.md`.
 
 ---
 

@@ -1,6 +1,6 @@
 # Spec Definition of Done (DoD) Checklist: <feature-name>
 
-<!-- SPEC PACKAGE FILE: templates/spec-system/checklists/spec-dod.md -->
+<!-- SPEC PACKAGE FILE: templates/spec-system/spec-dod.md -->
 <!-- Part of the spec-system package. See templates/spec-system/ for all required files. -->
 
 ---
@@ -46,7 +46,7 @@
 | A-07 | `errors.spec.ts` is present (or explicitly marked NA with justification if feature defines no error codes) | | |
 | A-08 | `behavior.spec.md` is present (or explicitly marked NA with justification if feature has no ordering/precedence/dedup rules) | | |
 | A-09 | `traceability.spec.md` is present and all REQ-* and AC-* rows are populated (may be "pending implementation") | | |
-| A-10 | `checklists/requirements.md` (legacy checklist) is present and filled | | |
+| A-10 | `requirements.md` (legacy checklist) is present and filled | | |
 
 ---
 
