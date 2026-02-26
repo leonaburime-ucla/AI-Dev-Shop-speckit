@@ -4,6 +4,8 @@
 - Last Updated: 2026-02-23
 - Authority: A spec is INVALID and MUST NOT advance past the Spec Agent unless it passes every gate in this document. The Coordinator enforces this before dispatching the Architect Agent.
 
+> **Language note:** Code examples in this document use TypeScript syntax for illustration. Adapt them to your project's type system — Pydantic models, dataclasses, Go structs, Rust types, etc. The contracts are language-agnostic; the examples are not.
+
 ---
 
 ## Gate 0 — Implementation-Readiness Test (Applied Last, Enforced First)
@@ -22,14 +24,14 @@ A complete spec for feature `NNN-feature-name` requires ALL of the following fil
 
 | File | Location | Purpose |
 |---|---|---|
-| `feature.spec.md` | `specs/NNN-feature-name/` | Human-readable spec: problem, scope, requirements, ACs, invariants, edge cases, dependencies, open questions, constitution compliance |
-| `api.spec.ts` | `specs/NNN-feature-name/` | TypeScript-typed API contracts: request/response schemas, HTTP methods, status codes, error payloads |
-| `state.spec.ts` | `specs/NNN-feature-name/` | TypeScript-typed state shapes: before/after for every mutation, initial state, derived state |
-| `orchestrator.spec.ts` | `specs/NNN-feature-name/` | Typed orchestration contracts: which services/repos are called, in what order, what they return, what errors they surface |
-| `ui.spec.ts` | `specs/NNN-feature-name/` | Typed UI contracts: component props, events emitted, loading/error/empty states, accessibility requirements |
-| `errors.spec.ts` | `specs/NNN-feature-name/` | Exhaustive error catalog: every error code, exact payload shape, HTTP status, user-facing message, retry behavior |
-| `behavior.spec.md` | `specs/NNN-feature-name/` | Deterministic behavior rules: precedence, ordering, defaults, limits, deduplication, tie-break logic — anything not expressible in types |
-| `traceability.spec.md` | `specs/NNN-feature-name/` | Traceability matrix: REQ-* to function/component, REQ-* to test IDs |
+| `feature.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Human-readable spec: problem, scope, requirements, ACs, invariants, edge cases, dependencies, open questions, constitution compliance |
+| `api.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed API contracts: request/response schemas, HTTP methods, status codes, error payloads (TypeScript or equivalent for your stack) |
+| `state.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed state shapes: before/after for every mutation, initial state, derived state |
+| `orchestrator.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed orchestration contracts: which services/repos are called, in what order, what they return, what errors they surface |
+| `ui.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Typed UI contracts: component props, events emitted, loading/error/empty states, accessibility requirements |
+| `errors.spec.ts` | `<user-specified>/<NNN>-<feature-name>/` | Exhaustive error catalog: every error code, exact payload shape, HTTP status, user-facing message, retry behavior |
+| `behavior.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Deterministic behavior rules: precedence, ordering, defaults, limits, deduplication, tie-break logic — anything not expressible in types |
+| `traceability.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Traceability matrix: REQ-* to function/component, REQ-* to test IDs |
 | `spec-dod.md` | `<user-specified>/<NNN>-<feature-name>/` | This DoD checklist, completed with pass/fail status for this spec |
 
 The existing `spec.md` (from `spec-template.md`) is renamed to `feature.spec.md` or kept as `spec.md` — either is valid as long as the file contains all required sections. The typed contract files (`api.spec.ts`, `state.spec.ts`, etc.) are additive and required in addition to it.
@@ -58,7 +60,7 @@ The content hash MUST be recomputed every time any content below the metadata bl
 ### Per Endpoint
 
 - HTTP method, path, and path parameters — typed
-- Request body schema — typed as a TypeScript interface or type alias; no `any`, no `unknown` without an explicit narrowing strategy documented in a comment
+- Request body schema — typed using the language's type system; no untyped escape hatches without an explicit narrowing strategy documented in a comment
 - Response body schema for every HTTP status code this endpoint can return — typed
 - Query parameter schema — typed; required vs optional explicit
 - Header requirements (auth headers, content-type, correlation IDs) — documented as inline comments

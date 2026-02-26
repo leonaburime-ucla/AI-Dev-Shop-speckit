@@ -136,7 +136,7 @@ Each part is self-contained. `architecture-migration` can load individual parts 
 
 ## Executive Summary
 
-- Language/Framework: TypeScript / Express
+- Language/Framework: <detected language / framework>
 - Apparent Pattern Intent: Layered Architecture
 - Files Analyzed: 47 of 312 total (excluded: node_modules, dist)
 - Severity Counts: Critical: 2 | High: 5 | Medium: 8 | Low: 4

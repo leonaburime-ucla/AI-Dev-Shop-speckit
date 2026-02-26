@@ -94,7 +94,8 @@ For requirements involving interfaces, data shapes, or API contracts, a single c
 
 **With example (precise):**
 > REQ-04: The invoice creation endpoint must accept a request body matching this shape:
-> ```typescript
+> ```
+> // Example in TypeScript — use your project's type system
 > interface CreateInvoiceRequest {
 >   customerId: string;
 >   lineItems: Array<{
