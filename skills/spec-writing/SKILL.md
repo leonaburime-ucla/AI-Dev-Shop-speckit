@@ -165,7 +165,7 @@ A spec is ready when:
 
 **Narrative fluff**: Long prose paragraphs explaining context belong in project_notes.md. The spec should be dense with requirements, not background.
 
-**Interface described in prose**: Any requirement describing a data shape, API contract, or interface that could be expressed as a TypeScript interface or JSON example should be. Prose descriptions generate more interpretation variance across agents.
+**Interface described in prose**: Any requirement describing a data shape, API contract, or interface that could be expressed as a typed definition or JSON example should be. Prose descriptions generate more interpretation variance across agents.
 
 ## What Belongs Where
 
@@ -186,10 +186,10 @@ In strict mode, a spec is a PACKAGE, not a single file. A feature that enters th
 | File | Purpose |
 |---|---|
 | `feature.spec.md` | Core spec: goals, requirements, acceptance criteria, invariants, edge cases |
-| `api.spec.ts` | TypeScript interfaces and types for all API contracts (request/response shapes, error envelopes) |
+| `api.spec.ts` | Typed API contracts: request/response shapes, error envelopes (TypeScript — use equivalent for other languages) |
 | `state.spec.ts` | State machine definitions, valid transitions, invariants expressed as types |
-| `orchestrator.spec.ts` | Orchestration contracts: what the orchestrator receives, calls, and returns |
-| `ui.spec.ts` | UI component contracts, props, events, and observable behavior |
+| `orchestrator.spec.ts` | Orchestration contracts: what the coordinator/service layer receives, calls, and returns |
+| `ui.spec.ts` | UI component contracts: props, events, and observable behavior |
 | `errors.spec.ts` | All error types, codes, messages, and the conditions that produce them |
 | `behavior.spec.md` | Behavioral narratives: end-to-end user journeys and system behavior in plain language |
 | `traceability.spec.md` | Requirement-to-test mapping: each REQ/AC traced to the test(s) that verify it |

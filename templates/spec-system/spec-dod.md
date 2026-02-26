@@ -90,31 +90,31 @@
 
 ---
 
-## Section C: TypeScript Contract Quality (api.spec.ts, state.spec.ts, orchestrator.spec.ts, ui.spec.ts, errors.spec.ts)
+## Section C: Typed Contract Quality
 
-*Verifies TypeScript spec files are properly typed and complete. Mark entire section NA if no TypeScript spec files were required.*
+*Verifies typed contract files are complete and well-formed. Contract files are language-specific: `.spec.ts` for TypeScript projects, or equivalent typed contracts in the project's language (e.g., Pydantic models, dataclasses, JSON Schema). Mark entire section NA if the feature has no typed contract files — justify per file in Section A.*
 
 | # | Item | Status | Notes |
 |---|------|--------|-------|
-| C-01 | All TypeScript files use TypeScript interfaces/types — no behavior defined only in comments | | |
-| C-02 | All public interfaces and types have JSDoc comments | | |
-| C-03 | All optional fields are explicitly marked with `?` — no fields are implicitly optional | | |
-| C-04 | Nullable fields are typed as `T \| null`, not `T \| undefined` (nullable intent is explicit) | | |
-| C-05 | No `any` types — all types are specific | | |
-| C-06 | Const objects that should not be mutated use `as const` | | |
-| C-07 | api.spec.ts: All endpoints are in API_ENDPOINTS registry | | |
-| C-08 | api.spec.ts: All error codes are in API_ERROR_HTTP_STATUS mapping | | |
-| C-09 | api.spec.ts: All endpoints have auth requirements in API_AUTH_REQUIREMENTS | | |
-| C-10 | state.spec.ts: INITIAL_FEATURE_STATE covers all fields in FeatureState | | |
-| C-11 | state.spec.ts: STATE_TRANSITIONS covers all action types in the FeatureAction union | | |
-| C-12 | state.spec.ts: STATE_INVARIANTS are falsifiable statements | | |
-| C-13 | orchestrator.spec.ts: All async output functions return OrchestratorResult<T> — not void or naked Promise | | |
-| C-14 | orchestrator.spec.ts: ORCHESTRATOR_INVARIANTS are falsifiable statements | | |
-| C-15 | ui.spec.ts: All components in FeatureComponentRegistry have a corresponding Props interface | | |
-| C-16 | ui.spec.ts: DISPLAY_CONDITIONS covers show/hide/disabled state for every interactive component | | |
-| C-17 | ui.spec.ts: ACCESSIBILITY_REQUIREMENTS covers all components | | |
-| C-18 | errors.spec.ts: All error codes in ERROR_CODES have entries in ERROR_HTTP_STATUS, ERROR_RETRY_ELIGIBILITY, ERROR_OWNERSHIP, ERROR_MESSAGE_GUIDANCE | | |
-| C-19 | errors.spec.ts: No error code is missing from ERROR_COVERAGE_REQUIREMENTS | | |
+| C-01 | All contract files use the language's type system — no behavior defined only in comments | | |
+| C-02 | All public interfaces and types have doc comments | | |
+| C-03 | All optional fields are explicitly marked as optional — no implicitly optional fields | | |
+| C-04 | Nullable fields have explicit nullable typing — nullable intent is not implicit | | |
+| C-05 | No untyped / `any` / `object` escape hatches — all types are specific | | |
+| C-06 | Immutable constants are marked as such in the language's idiom (`as const`, `Final`, etc.) | | |
+| C-07 | API contract: all endpoints are registered in a single registry constant | | |
+| C-08 | API contract: all error codes have an HTTP status mapping | | |
+| C-09 | API contract: all endpoints have explicit auth requirements | | |
+| C-10 | State contract: initial state covers all fields | | |
+| C-11 | State contract: transitions/actions cover all state-changing operations | | |
+| C-12 | State contract: invariants are falsifiable statements | | |
+| C-13 | Orchestrator contract: all async outputs have an explicit result type — not void or untyped | | |
+| C-14 | Orchestrator contract: invariants are falsifiable statements | | |
+| C-15 | UI contract: all components have a typed props/params definition | | |
+| C-16 | UI contract: display conditions cover show/hide/disabled state for every interactive element | | |
+| C-17 | UI contract: accessibility requirements cover all components | | |
+| C-18 | Error contract: all error codes have entries for HTTP status, retry eligibility, ownership, and user message guidance | | |
+| C-19 | Error contract: no error code is missing from coverage requirements | | |
 
 ---
 
@@ -179,8 +179,8 @@
 |---|------|--------|-------|
 | G-01 | Article I (Library-First): spec does not specify custom implementations where libraries exist | | |
 | G-02 | Article II (Test-First): spec makes no assumptions about implementation order — TDD will run first | | |
-| G-03 | Article III (Simplicity Gate): every module referenced in TypeScript specs traces to a requirement in feature.spec.md | | |
-| G-04 | Article IV (Anti-Abstraction Gate): no speculative abstractions in TypeScript specs (no interfaces with only one current consumer unless it is a defined contract boundary) | | |
+| G-03 | Article III (Simplicity Gate): every module referenced in contract files traces to a requirement in feature.spec.md | | |
+| G-04 | Article IV (Anti-Abstraction Gate): no speculative abstractions in contract files (no types/interfaces with only one current consumer unless it is a defined contract boundary) | | |
 | G-05 | Article V (Integration-First Testing): every P1 AC has a corresponding integration test row in traceability.spec.md (or "pending" if TDD has not run) | | |
 | G-06 | Article VI (Security-by-Default): api.spec.ts auth requirements are present for all endpoints; no endpoint is unauthenticated without explicit NA justification | | |
 | G-07 | Article VII (Spec Integrity): spec_id and content_hash are present and correct in all spec files | | |
@@ -204,7 +204,7 @@
 |---------|-------|---------|---------|-----|
 | A: Package Completeness | 10 | | | |
 | B: feature.spec.md Quality | 31 | | | |
-| C: TypeScript Contract Quality | 19 | | | |
+| C: Typed Contract Quality | 19 | | | |
 | D: Behavior Rules Quality | 10 | | | |
 | E: Traceability Quality | 8 | | | |
 | F: Internal Consistency | 8 | | | |
