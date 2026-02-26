@@ -61,8 +61,6 @@ Agents are specialized roles, each with a `skills.md`. All routing flows through
 
 - `[Observer]` is passive and active across all stages when enabled
 - `[...]` stages are optional; CodeBase Analyzer and Database run only when needed
-- CodeBase Analyzer optionally produces a Migration Plan artifact — not a separate agent step
-- Coordinator generates `tasks.md` from the approved ADR before TDD is dispatched — not an agent step
 
 ---
 
