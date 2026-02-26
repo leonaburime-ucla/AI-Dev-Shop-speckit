@@ -10,7 +10,7 @@
 
 **Reference files:**
 - Design doc: `docs/plans/2026-02-22-speckit-integration-design.md`
-- Source inspiration: `/Users/la/Desktop/Multi-Agent Swarm Foundation/spec-kit/templates/`
+- Source inspiration: `<spec-kit>/templates/` (GitHub's spec-kit repo)
 
 ---
 
@@ -146,8 +146,8 @@ Open `templates/constitution-template.md` and confirm:
 **Step 3: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add templates/constitution-template.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add constitution-template.md"
+git add templates/constitution-template.md
+git commit -m "feat: add constitution-template.md"
 ```
 
 ---
@@ -276,8 +276,8 @@ Open `project-knowledge/constitution.md` and confirm:
 **Step 3: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add project-knowledge/constitution.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add default project constitution"
+git add project-knowledge/constitution.md
+git commit -m "feat: add default project constitution"
 ```
 
 ---
@@ -371,8 +371,8 @@ Open `templates/research-template.md` and confirm:
 **Step 3: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add templates/research-template.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add research-template.md"
+git add templates/research-template.md
+git commit -m "feat: add research-template.md"
 ```
 
 ---
@@ -492,8 +492,8 @@ Open `templates/tasks-template.md` and confirm:
 **Step 3: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add templates/tasks-template.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add tasks-template.md with [P] parallelization markers"
+git add templates/tasks-template.md
+git commit -m "feat: add tasks-template.md with [P] parallelization markers"
 ```
 
 ---
@@ -596,8 +596,8 @@ Read `templates/spec-template.md` and confirm all three additions are present.
 **Step 5: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add templates/spec-template.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: enhance spec-template with FEAT number, [NEEDS CLARIFICATION], P1/P2/P3, constitution compliance"
+git add templates/spec-template.md
+git commit -m "feat: enhance spec-template with FEAT number, [NEEDS CLARIFICATION], P1/P2/P3, constitution compliance"
 ```
 
 ---
@@ -671,8 +671,8 @@ Read `templates/adr-template.md` and confirm:
 **Step 4: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add templates/adr-template.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: enhance adr-template with constitution check gate, complexity justification, research summary"
+git add templates/adr-template.md
+git commit -m "feat: enhance adr-template with constitution check gate, complexity justification, research summary"
 ```
 
 ---
@@ -739,8 +739,8 @@ Read `agents/spec/skills.md` and confirm both Workflow and Guardrails sections a
 **Step 4: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add agents/spec/skills.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add constitution check and [NEEDS CLARIFICATION] to Spec Agent workflow"
+git add agents/spec/skills.md
+git commit -m "feat: add constitution check and [NEEDS CLARIFICATION] to Spec Agent workflow"
 ```
 
 ---
@@ -835,8 +835,8 @@ Read `agents/architect/skills.md` and confirm Step 0 (research) and Step 1 (cons
 **Step 5: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add agents/architect/skills.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add research artifact and constitution check to Architect Agent workflow"
+git add agents/architect/skills.md
+git commit -m "feat: add research artifact and constitution check to Architect Agent workflow"
 ```
 
 ---
@@ -907,8 +907,8 @@ Read `agents/coordinator/skills.md` and confirm:
 **Step 4: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add agents/coordinator/skills.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add constitution injection, tasks.md generation, and constitution violation escalation to Coordinator"
+git add agents/coordinator/skills.md
+git commit -m "feat: add constitution injection, tasks.md generation, and constitution violation escalation to Coordinator"
 ```
 
 ---
@@ -1031,8 +1031,8 @@ Read `workflows/multi-agent-pipeline.md` and confirm all five edits are present.
 **Step 7: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add workflows/multi-agent-pipeline.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: update pipeline with constitution, research.md, tasks.md generation step"
+git add workflows/multi-agent-pipeline.md
+git commit -m "feat: update pipeline with constitution, research.md, tasks.md generation step"
 ```
 
 ---
@@ -1084,8 +1084,8 @@ Read `CLAUDE.md` and confirm the slash commands table and example flow are prese
 **Step 3: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add CLAUDE.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add slash commands to CLAUDE.md"
+git add CLAUDE.md
+git commit -m "feat: add slash commands to CLAUDE.md"
 ```
 
 ---
@@ -1163,8 +1163,8 @@ Read `AGENTS.md` and confirm all three additions are present.
 **Step 5: Commit**
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" add AGENTS.md
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" commit -m "feat: add slash commands, updated pipeline, constitution rules to AGENTS.md"
+git add AGENTS.md
+git commit -m "feat: add slash commands, updated pipeline, constitution rules to AGENTS.md"
 ```
 
 ---
@@ -1174,15 +1174,15 @@ git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" comm
 After all 12 tasks, verify the full set of changes:
 
 ```bash
-git -C "/Users/la/Desktop/Multi-Agent Swarm Foundation/AI-Dev-Shop-speckit" log --oneline -12
+git log --oneline -12
 ```
 
 Expected: 12 commits, one per task.
 
 Confirm new files exist:
 ```bash
-ls "/Users/la/Desktop/Multi-Agent Swarm Foundation/<SHOP_ROOT>/templates/"
-ls "/Users/la/Desktop/Multi-Agent Swarm Foundation/<SHOP_ROOT>/project-knowledge/"
+ls "<SHOP_ROOT>/templates/"
+ls "<SHOP_ROOT>/project-knowledge/"
 ```
 
 Expected in templates: `constitution-template.md`, `research-template.md`, `tasks-template.md` (alongside existing `spec-template.md`, `adr-template.md`, `test-certification-template.md`)
