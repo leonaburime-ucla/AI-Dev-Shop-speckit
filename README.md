@@ -231,7 +231,7 @@ AGENTS.md                          ← Full operating manual for all agents and 
 
 ## Swarm Consensus
 
-**OFF by default.** Any agent can invoke the Swarm Consensus skill when explicitly instructed. It dispatches the same prompt to all available peer LLM CLIs (`claude`, `gemini`, `codex` — whichever are installed), collates independent responses, and synthesizes a `consensus-report.md`. The running model is always the primary; peers are subprocesses. Use `/consensus [question]` or tell any agent to use swarm consensus for a specific task.
+**To be Implemented** Any agent can invoke the Swarm Consensus skill when explicitly instructed. It dispatches the same prompt to all available peer LLM CLIs (`claude`, `gemini`, `codex` — whichever are installed), collates independent responses, and synthesizes a `consensus-report.md`. The running model is always the primary; peers are subprocesses. Use `/consensus [question]` or tell any agent to use swarm consensus for a specific task.
 
 > **Note:** Codex has shown reliability issues in multi-agent workflows and may not be a dependable peer for consensus runs. Claude Code is the recommended reliable choice.
 
