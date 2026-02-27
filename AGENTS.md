@@ -23,9 +23,8 @@ On the first user message in this repository (including greetings), before any r
 
 **slash-commands-setup** (skip if dismissed):
 Show: "Would you like to enable slash commands (`/spec`, `/plan`, `/consensus`, and more)? Say **yes** and I'll walk you through it."
-If the user says yes: read the `## slash-commands-setup` section in `reminders.md`, detect the host (see Host Detection in that section), and show ONLY the instructions for the detected host.
+If the user says yes: read the `## slash-commands-setup` section in `reminders.md`, detect the host, and follow the instructions there.
 If the user says "skip" / "don't show again" / "dismiss": append `- slash-commands-setup` to the Dismissed section in `reminders.md` and confirm: "Dismissed. Say 're-enable reminder: slash-commands-setup' anytime to bring it back."
-If the user says "set up slash commands" (Claude Code only): run `cp -r <SHOP_ROOT>/templates/commands/ .claude/commands/`, confirm success, then offer to dismiss.
 
 Failure to perform Mandatory Startup is a blocking error. Do not proceed until corrected.
 

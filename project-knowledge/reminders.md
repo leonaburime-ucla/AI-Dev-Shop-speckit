@@ -20,11 +20,12 @@ Available commands: `/spec` `/plan` `/tasks` `/implement` `/review` `/clarify` `
 
 ### Claude Code
 
-Run once:
+If the user says "yes" or "set up slash commands", run this via Bash:
 ```bash
 cp -r <SHOP_ROOT>/templates/commands/ .claude/commands/
 ```
-Then type `/spec`, `/plan`, `/consensus`, etc. directly in chat.
+Confirm success, then offer to dismiss the reminder.
+After setup, `/spec`, `/plan`, `/consensus`, etc. work directly in chat.
 
 ### Gemini CLI
 
