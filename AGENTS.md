@@ -62,9 +62,10 @@ If this toolkit is a subfolder and the session starts at the parent project root
 Agents are specialized roles, each with a `skills.md`. All routing flows through the **Coordinator** — no agent talks to another directly.
 
 ```
-[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
+[VibeCoder] → [CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
 ```
 
+- `[VibeCoder]` is an optional starting point — say "switch to vibecoder" or `/agent vibecoder` to prototype fast, then promote to the full pipeline when ready
 - `[Observer]` is passive and active across all stages when enabled
 - `[...]` stages are optional; dispatched by Coordinator when spec/ADR triggers them or when you specifically ask for them
 
@@ -110,6 +111,7 @@ Full stage-by-stage context injection and parallel execution rules: `<SHOP_ROOT>
 | `/implement` | TDD → Programmer | test-certification.md → implementation to convergence |
 | `/review` | Code Review + Security | Required/Recommended findings + security report |
 | `/agent <name>` | Named agent (direct) | Enters Agent Direct Mode with the specified agent |
+| `/agent vibecoder` | VibeCoder Agent (direct, optional) | Quick-and-dirty prototype output with minimal structure |
 
 ---
 
@@ -119,6 +121,7 @@ Full operating procedure for each agent is in their `skills.md`.
 
 | Agent | Role | File |
 |---|---|---|
+| VibeCoder (optional) | Fast exploratory prototyping — optional on-ramp before the structured pipeline | `agents/vibecoder/skills.md` |
 | Coordinator | Pipeline orchestration, routing, convergence, human escalation | `agents/coordinator/skills.md` |
 | Spec | Converts intent into versioned, testable spec packages | `agents/spec/skills.md` |
 | Architect | Selects patterns, defines boundaries, produces ADR | `agents/architect/skills.md` |
@@ -145,8 +148,10 @@ These rules apply to every agent when operating in Agent Direct Mode (invoked vi
 
 - **Operate at full capability.** All skills, tools, and outputs are available — no features disabled.
 - **Proceed with available context.** Do not block or refuse because a pipeline input (spec hash, ADR, tasks.md) is absent. Note what's missing if it affects output quality, then continue with what's available.
+- **Cross-agent clarification is allowed in Agent Direct Mode.** A direct agent may request clarification context from another non-Coordinator agent when needed; the Coordinator still does not route or gate this exchange while Direct Mode is active.
 - **Label every response** with `AgentName(Direct):` so the user always knows who is talking.
 - **Output is pipeline-valid.** When the user returns to Pipeline Mode, the Coordinator treats the direct agent's output as a completed stage and continues from it — it does not re-run the stage.
+- **VibeCoder exception:** VibeCoder outputs are exploratory by default and are not treated as completed pipeline stages unless explicitly promoted by the user/Coordinator.
 - **Coordinator observes silently.** The Coordinator logs the conversation, maintains pipeline state, and retains memory — but does not route, gate, or intervene unless addressed directly.
 
 ---

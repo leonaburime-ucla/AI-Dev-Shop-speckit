@@ -83,14 +83,10 @@ The Coordinator will route between agents, enforce convergence, and stop at huma
 A structured multi-agent pipeline converts product intent into production code through specialized agents, each with a defined role, versioned operating procedure, and handoff contract.
 
 ```
-[CodeBase Analyzer] → [Architecture Migration Plan]
-       ↓
-Spec → [Red-Team] → Architect (research → constitution check → ADR)
-       ↓
-[Database Agent] → tasks.md → TDD → Programmer → TestRunner → Code Review (+Refactor) → Security → Done
+[VibeCoder] → [CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
 ```
 
-`[...]` stages are optional but recommended. The Database Agent is dispatched by the Coordinator whenever schema design, migrations, or data modeling are involved. The Coordinator owns all routing. Agents never talk to each other directly. Specs are ground truth — everything downstream is traceable to a spec version and hash.
+`[VibeCoder]` is an optional starting point for fast prototyping before the structured pipeline. `[...]` stages are optional; dispatched by Coordinator when spec/ADR triggers them or when you specifically ask for them. The Coordinator owns all routing. Agents never talk to each other directly. Specs are ground truth — everything downstream is traceable to a spec version and hash.
 
 Full operating manual: **`<SHOP_ROOT>/AGENTS.md`**
 
@@ -126,6 +122,7 @@ AGENTS.md                          ← Full operating manual for all agents and 
 │   ├── security/
 │   ├── devops/
 │   ├── docs/
+│   ├── vibecoder/                ← VibeCoder Agent (optional, Agent Direct Mode)
 │   ├── observer/
 │   ├── database/                  ← Database Agent (domain head: schema, migrations, queries)
 │   │   └── supabase/              ← Supabase Sub-Agent (RLS, PostgREST, realtime, storage)
@@ -149,6 +146,16 @@ AGENTS.md                          ← Full operating manual for all agents and 
 │   ├── postgresql/SKILL.md        ← CTEs, window functions, JSONB, triggers, FTS
 │   ├── supabase/SKILL.md          ← RLS, PostgREST, realtime, storage, edge functions
 │   ├── frontend-react-orcbash/SKILL.md ← Orc-BASH hexagonal pattern for React
+│   ├── observability-implementation/SKILL.md ← Structured logging, metrics, tracing
+│   ├── devops-delivery/SKILL.md   ← CI/CD, Docker, deployment strategies
+│   ├── performance-engineering/SKILL.md ← Load testing, pass/fail criteria
+│   ├── api-contracts/SKILL.md     ← Contract completeness, versioning, backward compat
+│   ├── frontend-accessibility/SKILL.md ← WCAG 2.1 AA checklist
+│   ├── e2e-test-architecture/SKILL.md ← Playwright patterns, anti-flake rules
+│   ├── rag-ai-integration/SKILL.md ← RAG pipelines, vector DB, LLM integration
+│   ├── change-management/SKILL.md ← Feature flags, dual writes, expand-contract
+│   ├── infrastructure-as-code/SKILL.md ← IaC declaration patterns
+│   ├── vibe-coding/SKILL.md       ← Fast exploratory prototyping (VibeCoder)
 │   └── design-patterns/           ← 19+ patterns with TypeScript examples
 │       ├── SKILL.md               ← index + pattern selection guide
 │       └── references/            ← individual pattern files
@@ -195,10 +202,11 @@ AGENTS.md                          ← Full operating manual for all agents and 
     └── trace-schema.md            ← Agent trace and debug log format
 ```
 
-## The Seventeen Agents
+## The Eighteen Agents
 
 | Agent | Role |
 |---|---|
+| VibeCoder (optional) | Fast exploratory prototyping — optional on-ramp before the structured pipeline |
 | CodeBase Analyzer | Pre-pipeline: analyzes existing codebases, produces findings reports and migration plans |
 | Coordinator | Routes between agents, owns convergence, escalates to human. Starts in Review Mode. |
 | Spec | Converts product intent into precise, versioned, testable specs (strict mode: 9-file package) |

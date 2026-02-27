@@ -41,6 +41,7 @@ All agents draw from `<SHOP_ROOT>/skills/`. Do not duplicate skill content in ag
 | `skills/rag-ai-integration/SKILL.md` | Architect, Programmer, Database Agent |
 | `skills/change-management/SKILL.md` | Programmer, DevOps Agent, Architect, Database Agent |
 | `skills/infrastructure-as-code/SKILL.md` | DevOps Agent, Architect |
+| `skills/vibe-coding/SKILL.md` | VibeCoder Agent (optional, Agent Direct Mode) |
 | `project-knowledge/tool-permission-policy.md` | All agents (security guardrails) |
 | `project-knowledge/data-classification.md` | All agents (PII and secret handling) |
 | `project-knowledge/model-routing.md` | Coordinator (dispatch tier selection) |

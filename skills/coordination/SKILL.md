@@ -26,6 +26,10 @@ When an agent returns output, classify findings and route accordingly:
 ```
 Agent output received
 │
+├─ User asks for quick prototype / "vibe coding" without structured pipeline?
+│   └─ Route to: VibeCoder Agent (Agent Direct Mode, optional lane)
+│       Context: plain-language goal, preferred stack (if any), timebox
+│
 ├─ Spec human-approved?
 │   └─ Route to: Red-Team Agent
 │       Context: full spec, spec hash, constitution.md
