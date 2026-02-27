@@ -19,6 +19,36 @@ On the first user message in this repository (including greetings), before any r
    - A bulleted list of the 3 Coordinator modes with a 1-sentence summary of each.
    - The pipeline diagram and its notes (copy from the How This Works section verbatim).
 3. If the file is missing or unreadable, state that explicitly and stop.
+4. Read `<SHOP_ROOT>/project-knowledge/reminders.md`. For each reminder NOT listed under Dismissed, show it after the welcome message.
+
+**Reminder: slash-commands-setup** (show unless `slash-commands-setup` is in the Dismissed list)
+
+---
+**Slash commands are available for this pipeline.** Would you like to set them up?
+
+Commands: `/spec` `/plan` `/tasks` `/implement` `/review` `/clarify` `/agent` `/consensus`
+
+**Claude Code** (full native support):
+Run this once in your terminal, then commands work directly in chat:
+```bash
+cp -r <SHOP_ROOT>/templates/commands/ .claude/commands/
+```
+
+**Claude.ai (web) · Gemini CLI · Codex CLI · Other:**
+Slash commands are not natively supported on your host. Use Option B instead:
+paste the contents of `<SHOP_ROOT>/templates/commands/<command>.md` directly as your message.
+
+Reply **"set up slash commands"** and I'll run the setup for you (Claude Code only).
+Reply **"skip"** or **"don't show again"** to dismiss this permanently.
+You can re-enable it anytime — just say **"re-enable reminder: slash-commands-setup"** and I'll update `project-knowledge/reminders.md`.
+
+---
+
+**Handling dismiss:** If the user replies with any of "skip", "don't show again", "dismiss", or "dismiss slash-commands-setup" — append `- slash-commands-setup` under the Dismissed section in `<SHOP_ROOT>/project-knowledge/reminders.md` and confirm: "Got it — I've dismissed the slash commands reminder. To bring it back, say 're-enable reminder: slash-commands-setup'."
+
+**Handling re-enable:** If the user says "re-enable reminder: slash-commands-setup" — remove `- slash-commands-setup` from the Dismissed list in `<SHOP_ROOT>/project-knowledge/reminders.md` and confirm it will show on next startup.
+
+**Handling setup (Claude Code):** If the user replies "set up slash commands" — run `cp -r <SHOP_ROOT>/templates/commands/ .claude/commands/` via Bash tool, confirm success, and offer to dismiss the reminder now that setup is done.
 
 Failure to perform Mandatory Startup is a blocking error. Do not proceed until corrected.
 
