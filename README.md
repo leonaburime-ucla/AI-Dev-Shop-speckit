@@ -119,10 +119,13 @@ AGENTS.md                          ← Full operating manual for all agents and 
 │   ├── architect/
 │   ├── tdd/
 │   ├── programmer/
+│   ├── qa-e2e/
 │   ├── testrunner/
 │   ├── code-review/
 │   ├── refactor/
 │   ├── security/
+│   ├── devops/
+│   ├── docs/
 │   ├── observer/
 │   ├── database/                  ← Database Agent (domain head: schema, migrations, queries)
 │   │   └── supabase/              ← Supabase Sub-Agent (RLS, PostgREST, realtime, storage)
@@ -192,7 +195,7 @@ AGENTS.md                          ← Full operating manual for all agents and 
     └── trace-schema.md            ← Agent trace and debug log format
 ```
 
-## The Fourteen Agents
+## The Seventeen Agents
 
 | Agent | Role |
 |---|---|
@@ -203,10 +206,13 @@ AGENTS.md                          ← Full operating manual for all agents and 
 | Architect | Selects architecture patterns, writes ADRs, defines module boundaries |
 | TDD | Writes tests against the spec before any implementation |
 | Programmer | Implements code to make certified tests pass |
+| QA/E2E | Writes browser-level Playwright tests from user journeys |
 | TestRunner | Executes tests and reports evidence — no interpretation |
 | Code Review | Reviews spec alignment, architecture, test quality, security surface |
 | Refactor | Proposes (never implements) non-behavioral improvements |
 | Security | Analyzes threat surface; Critical/High findings require human sign-off |
+| DevOps | Produces Dockerfiles, CI/CD pipeline configs, IaC declarations |
+| Docs | Produces OpenAPI specs, user guides, changelogs, release notes |
 | Observer | Watches the pipeline, surfaces systemic patterns, recommends improvements |
 | Database Agent | Domain head: schema design, data modeling, migrations, query review, indexing strategy |
 | Supabase Sub-Agent | Supabase-specific implementation: RLS, PostgREST, realtime, storage, edge functions, auth |

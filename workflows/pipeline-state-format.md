@@ -98,9 +98,12 @@ When `on`, the Observer emits `[DEBUG]` trace entries at every dispatch, gate ch
 | `tasks` | Coordinator generating tasks.md |
 | `tdd` | TDD Agent writing and certifying tests |
 | `programmer` | Programmer Agent implementing |
+| `qa-e2e` | QA/E2E Agent writing browser tests |
 | `testrunner` | TestRunner Agent verifying pass rate |
 | `code-review` | Code Review Agent classifying findings |
 | `security` | Security Agent reviewing threat surface |
+| `devops` | DevOps Agent producing IaC/CI/deployment configs |
+| `docs` | Docs Agent generating user-facing documentation |
 | `refactor` | Refactor Agent proposing improvements |
 | `done` | Pipeline complete, artifacts shipped |
 

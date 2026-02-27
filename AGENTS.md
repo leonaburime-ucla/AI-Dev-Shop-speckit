@@ -62,11 +62,11 @@ If this toolkit is a subfolder and the session starts at the parent project root
 Agents are specialized roles, each with a `skills.md`. All routing flows through the **Coordinator** — no agent talks to another directly.
 
 ```
-[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → TestRunner → Code Review → [Refactor] → Security → Done
+[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
 ```
 
 - `[Observer]` is passive and active across all stages when enabled
-- `[...]` stages are optional; CodeBase Analyzer and Database run only when needed
+- `[...]` stages are optional; dispatched by Coordinator when spec/ADR triggers them or when you specifically ask for them
 
 ---
 
@@ -124,10 +124,13 @@ Full operating procedure for each agent is in their `skills.md`.
 | Architect | Selects patterns, defines boundaries, produces ADR | `agents/architect/skills.md` |
 | TDD | Writes certified test suite before implementation | `agents/tdd/skills.md` |
 | Programmer | Implements code to satisfy certified tests | `agents/programmer/skills.md` |
+| QA/E2E | Writes browser-level tests that validate user journeys and frontend ACs | `agents/qa-e2e/skills.md` |
 | TestRunner | Executes test suite, reports pass/fail evidence | `agents/testrunner/skills.md` |
 | Code Review | Reviews spec alignment, architecture, test quality, security surface | `agents/code-review/skills.md` |
 | Refactor | Proposes non-behavioral structural improvements post-review | `agents/refactor/skills.md` |
 | Security | Analyzes threat surface, classifies findings, blocks Critical/High | `agents/security/skills.md` |
+| DevOps | Produces Dockerfiles, CI/CD configs, IaC, and deployment runbooks | `agents/devops/skills.md` |
+| Docs | Publishes OpenAPI specs, writes user guides, and produces release notes | `agents/docs/skills.md` |
 | Observer (optional) | Watches pipeline, detects patterns, produces system improvements | `agents/observer/skills.md` |
 | Red-Team | Adversarially probes approved specs before Architect dispatch | `agents/red-team/skills.md` |
 | CodeBase Analyzer | Analyzes existing codebase before pipeline begins | `agents/codebase-analyzer/skills.md` |

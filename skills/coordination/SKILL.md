@@ -75,6 +75,22 @@ Agent output received
 │   └─ Route to: Spec Agent (if spec is wrong) or Programmer Agent (if code is wrong)
 │       Context: which requirement, what the code does vs what the spec says
 │
+├─ MIGRATION-*.md exists and human approved execution?
+│   └─ Route to: Programmer Agent (in migration execution mode)
+│       Context: migration plan, ADR, db-model.md, authorized phase number
+│
+├─ Spec has user-journey ACs or frontend interactions?
+│   └─ Route to: QA/E2E Agent (after Programmer completes)
+│       Context: spec, ADR, test-certification.md, which ACs need E2E coverage
+│
+├─ Pipeline complete, feature has infrastructure requirements (new services, deployment changes)?
+│   └─ Route to: DevOps Agent
+│       Context: ADR, security findings, spec NFR section, existing CI/CD configs
+│
+├─ Pipeline complete, feature is user-facing (not internal tooling only)?
+│   └─ Route to: Docs Agent
+│       Context: spec, ADR, security findings, CHANGELOG.md
+│
 └─ All checks pass?
     └─ Advance to next pipeline stage
 ```

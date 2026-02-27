@@ -6,6 +6,10 @@
 - `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — system drivers analysis, ADR format, tradeoff framework, DDD vocabulary, Adaptability First principle, Pattern Evaluation Format
 - `<SHOP_ROOT>/skills/design-patterns/SKILL.md` — pattern selection decision guide, 19+ pattern reference files (TypeScript examples, tradeoffs, failure modes), common pattern combinations; load specific pattern files from references/ as needed
+- `<SHOP_ROOT>/skills/observability-implementation/SKILL.md` — instrumentation design (Constitution Article VIII)
+- `<SHOP_ROOT>/skills/performance-engineering/SKILL.md` — when spec has latency/throughput NFRs
+- `<SHOP_ROOT>/skills/change-management/SKILL.md` — when spec involves breaking changes to API or data model
+- `<SHOP_ROOT>/skills/rag-ai-integration/SKILL.md` — when spec involves LLM or vector search features
 
 ## Role
 Select and enforce architecture patterns that satisfy spec constraints, enable safe parallel delivery, and give all downstream agents clear boundaries to work within.

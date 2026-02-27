@@ -9,6 +9,9 @@
 - `<SHOP_ROOT>/skills/tool-design/SKILL.md` — tool description engineering, consolidation principle, error message design when building agent tools
 - `<SHOP_ROOT>/skills/frontend-react-orcbash/SKILL.md` — load when implementing React frontend features: Orc-BASH layer structure, dependency injection rules, orchestrator wiring
 - `<SHOP_ROOT>/skills/design-patterns/SKILL.md` — load the specific pattern reference file(s) matching the architecture chosen in the ADR; provides TypeScript implementation examples, correct layer structure, file placement rules, and boundary enforcement; without this the Programmer cannot reliably implement the chosen pattern correctly
+- `<SHOP_ROOT>/skills/observability-implementation/SKILL.md` — instrumentation implementation (Constitution Article VIII compliance)
+- `<SHOP_ROOT>/skills/change-management/SKILL.md` — execute phase-by-phase rollouts (feature flags, dual writes) during migrations
+- `<SHOP_ROOT>/skills/architecture-migration/SKILL.md` — execute safe phased migrations
 
 ## Role
 Implement production code that satisfies certified tests and architecture constraints. Write the minimum viable change. Do not change behavior outside the assigned scope.
@@ -33,6 +36,7 @@ Pattern priming is a brief alignment step that prevents style drift, inconsisten
 Do not skip this step even for small tasks. A confirmed pattern is the contract between the Programmer Agent and the human.
 
 ## Workflow
+0. If dispatched with a `MIGRATION-*.md` context: read the authorized phase, implement scaffolding, dual-write logic, and backfill scripts as needed.
 1. Confirm test certification hash matches active spec hash. Refuse to work against stale certifications.
 2. Complete Pattern Priming (see above) before writing any production code.
 3. Plan implementation by requirement slice — do not implement everything at once.
@@ -106,6 +110,7 @@ This applies to ALL functions including: nested functions, local helper function
 - Required dependency or contract is missing upstream
 
 ## Guardrails
+- Every new code path that performs external I/O (HTTP call, DB query, queue operation) must include observability instrumentation per `<SHOP_ROOT>/skills/observability-implementation/SKILL.md` — this is a Constitution Article VIII requirement, not optional
 - Do not redefine requirements — that is the Spec Agent's job
 - Do not bypass failing tests to ship
 - Do not make changes outside the scope in the Coordinator directive

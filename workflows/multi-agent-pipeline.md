@@ -16,7 +16,7 @@ All pipeline artifacts are written under `<SHOP_ROOT>` — the AI-Dev-Shop-speck
 ## Full Path (Existing Codebase)
 
 ```
-[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → TestRunner → Code Review → [Refactor] → Security → Done
+[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
 ```
 
 - CodeBase Analyzer optionally produces a Migration Plan artifact — not a separate agent step
@@ -25,7 +25,7 @@ All pipeline artifacts are written under `<SHOP_ROOT>` — the AI-Dev-Shop-speck
 ## Ideal Path (Greenfield)
 
 ```
-Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → TestRunner → Code Review → [Refactor] → Security → Done
+Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
 ```
 
 - Coordinator generates `tasks.md` from the approved ADR before TDD dispatch — not an agent step
@@ -212,6 +212,29 @@ Before Programmer begins implementation:
 - Spec (for business logic abuse vector analysis)
 - List of changed auth/payment/data paths (Coordinator identifies these from the diff)
 - `<SHOP_ROOT>/skills/security-review/SKILL.md`
+
+### QA/E2E Agent (runs after Programmer)
+- Active spec (full content + hash)
+- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
+- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/test-certification.md`
+- `<SHOP_ROOT>/skills/e2e-test-architecture/SKILL.md`
+- Coordinator directive specifying which ACs require E2E coverage
+
+### DevOps Agent (runs after Security, before Docs)
+- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
+- `<SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md`
+- Active spec NFR section
+- `<SHOP_ROOT>/skills/devops-delivery/SKILL.md`
+- `<SHOP_ROOT>/skills/infrastructure-as-code/SKILL.md`
+- Coordinator directive specifying scope (new infra / CI update / runbook only / full)
+
+### Docs Agent (runs after DevOps, before Done)
+- Active spec: `feature.spec.md`, `api.spec.md`
+- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
+- `<SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md`
+- Existing `CHANGELOG.md`
+- `<SHOP_ROOT>/skills/api-contracts/SKILL.md`
+- Coordinator directive specifying doc deliverables required
 
 ### Observer Agent (runs alongside, not in sequence)
 - All agent outputs from the current cycle (summaries, not full sessions)

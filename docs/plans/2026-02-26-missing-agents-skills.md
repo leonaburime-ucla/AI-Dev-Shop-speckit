@@ -18,7 +18,7 @@ is listed under "Existing Files to Update."
 ## Updated Pipeline (target state)
 
 ```
-[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [API Contract] → [Database] → [Migration Executor] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
+[CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
 ```
 
 - `[Observer]` passive across all stages when enabled
@@ -125,7 +125,7 @@ and flaky test prevention rules. Does not replace TDD unit/integration tests —
 4. Write E2E tests using Playwright following patterns in `e2e-test-architecture` skill
 5. Apply anti-flake rules from the skill — no hard waits, proper selectors, isolated contexts
 6. Tag each test with the AC it covers
-7. Verify tests fail without the implementation (red phase) — do not deliver green tests against a broken app
+7. Verify tests pass against the current implementation. If a test fails, determine whether the cause is a spec gap, a bug in the implementation, or a test error — report each accordingly
 8. Write E2E strategy document summarizing coverage, fixture approach, and flaky test policy for this feature
 9. Report to Coordinator with test count per AC and any ACs that cannot be E2E tested (with reason)
 
@@ -155,9 +155,9 @@ and flaky test prevention rules. Does not replace TDD unit/integration tests —
 
 **Folder:** `agents/docs/`
 
-**Pipeline position:** After Security, before Done. Dispatched by Coordinator on every
-pipeline completion unless Coordinator explicitly marks documentation as N/A (internal
-tooling only).
+**Pipeline position:** After DevOps (or after Security if DevOps is skipped), before Done.
+Dispatched by Coordinator on every pipeline completion unless Coordinator explicitly marks
+documentation as N/A (internal tooling only).
 
 **Skills to list:**
 - `<SHOP_ROOT>/skills/api-contracts/SKILL.md` (for OpenAPI generation)
@@ -199,121 +199,6 @@ notes from the ADR and spec. Does not write implementation code or specs.
 - Never include internal system details (ADR trade-offs, implementation decisions) in user-facing docs
 - Never include secrets, PII, or SENSITIVE-BUSINESS data in any doc output
 - CHANGELOG entries must follow Keep a Changelog format exactly
-
----
-
-### 4. API Contract Agent
-
-**Folder:** `agents/api-contract/`
-
-**Pipeline position:** After Architect, before Database/TDD dispatch. Also runs before merge
-as a backward-compatibility gate when the spec modifies existing API endpoints.
-
-**Skills to list:**
-- `<SHOP_ROOT>/skills/api-contracts/SKILL.md`
-- `<SHOP_ROOT>/skills/spec-writing/SKILL.md` (for reading api.spec.md correctly)
-- `<SHOP_ROOT>/skills/security-review/SKILL.md` (for auth contract validation)
-
-**Role:** Owns API contract governance. Validates that api.spec.md is a valid, complete,
-and backward-compatible contract. Generates OpenAPI schema from spec for downstream use.
-Checks consumer-driven contract compatibility before merge when existing consumers exist.
-
-**Required Inputs:**
-- `api.spec.md` from the active spec package
-- Existing OpenAPI spec for the project (if any)
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (API layer decisions)
-- List of known API consumers and their contract expectations (from Coordinator)
-
-**Workflow:**
-1. Read api.spec.md — validate completeness: every endpoint has method, path, request shape, response shapes (success and error), auth requirements, and rate limit notes
-2. Flag any `[NEEDS CLARIFICATION]` gaps (missing status codes, undefined error shapes, missing auth spec)
-3. Generate OpenAPI 3.x YAML from api.spec.md
-4. If existing OpenAPI spec exists: diff against it and classify each change as additive, non-breaking, or breaking
-5. Breaking changes require a version increment in the spec and a migration path documented in the ADR
-6. If consumer contract tests exist (Pact): run compatibility check and report failures
-7. Write contract report and route to Coordinator
-
-**Output Format:**
-Write to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/api-contract.md`.
-
-Contents:
-- Completeness check result (pass/fail per endpoint)
-- Generated OpenAPI YAML path
-- Backward compatibility assessment (additive / non-breaking / breaking — with diff)
-- Breaking changes requiring human decision (list with migration options)
-- Consumer contract test results (if applicable)
-- Recommended version bump (patch / minor / major) with rationale
-
-**Escalation Rules:**
-- Breaking change with no migration path documented → block Architect sign-off, escalate to human
-- api.spec.md missing required fields for more than 20% of endpoints → route back to Spec Agent
-- Consumer contract test failure → block merge, escalate to human
-
-**Guardrails:**
-- Never modify api.spec.md directly — report gaps and route back to Spec Agent
-- Never approve a breaking change without human sign-off
-- OpenAPI output must be valid per OpenAPI 3.x specification — validate before writing
-
----
-
-### 5. Migration Executor Agent
-
-**Folder:** `agents/migration-executor/`
-
-**Pipeline position:** Activated by Coordinator when a `MIGRATION-*.md` plan exists and the
-human has approved execution. Runs after Database Agent on the migration path, parallel to
-or before the feature delivery pipeline.
-
-**Skills to list:**
-- `<SHOP_ROOT>/skills/change-management/SKILL.md`
-- `<SHOP_ROOT>/skills/architecture-migration/SKILL.md`
-- `<SHOP_ROOT>/skills/sql-data-modeling/SKILL.md`
-- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md`
-
-**Role:** Executes phased migrations safely. Owns the implementation of feature flags, dual
-writes, backfills, and cutover gates described in a migration plan. Does NOT own migration
-planning (that is CodeBase Analyzer + Architect). Owns safe, reversible execution with
-explicit gate checks between phases.
-
-**Required Inputs:**
-- `<SHOP_ROOT>/reports/codebase-analysis/MIGRATION-<id>-<date>.md` (approved migration plan)
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (architectural target)
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/db-model.md` (schema targets, if database migration)
-- Coordinator directive specifying which migration phase to execute
-- Human approval confirming which phase is authorized to run
-
-**Workflow:**
-1. Read migration plan — identify phases, gates, and rollback triggers for the authorized phase
-2. Implement feature flag scaffolding for the phase (if required by the plan)
-3. Implement dual-write logic (if required) — new and old paths must both be active during transition
-4. Write backfill script or migration job (if required) — must be idempotent and resumable
-5. Define and document the gate check for this phase: what observable condition must be true before the next phase can proceed
-6. Write rollback procedure for this phase: exact steps to revert if gate check fails
-7. Hand off to TDD Agent for test coverage of migration paths before Programmer implements
-8. Report to Coordinator with phase completion summary and gate check criteria
-
-**Output Format:**
-Write to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/migration-execution.md`.
-
-Contents per phase executed:
-- Phase number and description
-- Feature flags introduced (name, default value, rollout plan)
-- Dual-write scope (which writes go to both old and new paths)
-- Backfill job description (idempotency guarantee, estimated row count, resumption mechanism)
-- Gate check criteria (observable condition, how to measure, pass threshold)
-- Rollback procedure (ordered steps, estimated duration)
-- Phase completion status
-
-**Escalation Rules:**
-- Gate check cannot be automated → escalate to human with manual check instructions
-- Rollback procedure would cause data loss → block phase, escalate to human immediately
-- Migration plan conflicts with current ADR → route to Architect before proceeding
-
-**Guardrails:**
-- Never execute a phase without explicit Coordinator dispatch referencing human approval
-- Every phase must have a documented rollback procedure before execution begins
-- Backfill jobs must be idempotent — running twice must produce the same result as running once
-- Never drop columns, tables, or indexes in the same phase that stops writing to them — always a separate phase after traffic has moved
 
 ---
 
@@ -478,8 +363,7 @@ unchanged. This skill provides the how-to guidance that the harness references.
 
 **Folder:** `skills/api-contracts/`
 
-**Consumed by:** API Contract Agent, Spec Agent (when writing api.spec.md), Docs Agent
-(when generating OpenAPI)
+**Consumed by:** Spec Agent (when validating api.spec.md), Code Review Agent (backward compatibility check), Docs Agent (when generating OpenAPI)
 
 **Purpose:** Governs API contract design, completeness, versioning, and backward
 compatibility. Covers what the existing api-patterns.md design reference does not: contract
@@ -722,8 +606,7 @@ targets an AI dev shop audience but currently has no skill for building AI featu
 
 **Folder:** `skills/change-management/`
 
-**Consumed by:** Migration Executor Agent, DevOps Agent, Architect (when spec involves
-breaking changes to data model or API)
+**Consumed by:** Programmer Agent (migration mode), DevOps Agent, Architect (when spec involves breaking changes to data model or API)
 
 **Purpose:** Safe patterns for shipping breaking changes: feature flags, dual writes,
 backfills, and cutover gates.
@@ -850,11 +733,13 @@ Add to Workflow, after existing step 2 (test execution):
 Add to Skills section:
 ```
 - `<SHOP_ROOT>/skills/frontend-accessibility/SKILL.md` — WCAG 2.1 AA checklist (activated when diff includes frontend components)
+- `<SHOP_ROOT>/skills/api-contracts/SKILL.md` — backward compatibility and contract validation
 ```
 
 Add to Workflow, after existing security surface step:
 ```
 X. If diff includes frontend components: review against `<SHOP_ROOT>/skills/frontend-accessibility/SKILL.md` WCAG 2.1 AA checklist. Flag violations as Required (Critical/Serious axe-core severity) or Recommended (Moderate severity).
+Y. If diff includes API changes: run OpenAPI backward compatibility diff and consumer-driven contract checks (if applicable).
 ```
 
 ---
@@ -874,6 +759,13 @@ Add to Skills section:
 Add to Skills section:
 ```
 - `<SHOP_ROOT>/skills/observability-implementation/SKILL.md` — instrumentation implementation (Constitution Article VIII compliance)
+- `<SHOP_ROOT>/skills/change-management/SKILL.md` — execute phase-by-phase rollouts (feature flags, dual writes) during migrations
+- `<SHOP_ROOT>/skills/architecture-migration/SKILL.md` — execute safe phased migrations
+```
+
+Add to Workflow, before Step 1:
+```
+0. If dispatched with a `MIGRATION-*.md` context: read the authorized phase, implement scaffolding, dual-write logic, and backfill scripts as needed.
 ```
 
 Add to Guardrails:
@@ -886,7 +778,12 @@ Add to Guardrails:
 ### agents/spec/skills.md
 Add to Skills section:
 ```
-- `<SHOP_ROOT>/skills/api-contracts/SKILL.md` — for writing complete api.spec.md per the contract completeness checklist
+- `<SHOP_ROOT>/skills/api-contracts/SKILL.md` — for validating api.spec.md completeness per the contract checklist
+```
+
+Add to Workflow, after existing DoD checklist step:
+```
+X. Validate `api.spec.md` contract completeness. Ensure every endpoint maps perfectly to OpenAPI 3.x generation rules.
 ```
 
 ---
@@ -897,11 +794,11 @@ Add rows for all new skills:
 | `skills/observability-implementation/SKILL.md` | Architect, Programmer, Security Agent |
 | `skills/devops-delivery/SKILL.md` | DevOps Agent |
 | `skills/performance-engineering/SKILL.md` | TestRunner Agent, Architect |
-| `skills/api-contracts/SKILL.md` | API Contract Agent, Spec Agent, Docs Agent |
+| `skills/api-contracts/SKILL.md` | Spec Agent, Code Review Agent, Docs Agent |
 | `skills/frontend-accessibility/SKILL.md` | Code Review Agent, QA/E2E Agent |
 | `skills/e2e-test-architecture/SKILL.md` | QA/E2E Agent, TDD Agent |
 | `skills/rag-ai-integration/SKILL.md` | Architect, Programmer, Database Agent |
-| `skills/change-management/SKILL.md` | Migration Executor Agent, DevOps Agent, Architect |
+| `skills/change-management/SKILL.md` | Programmer, DevOps Agent, Architect |
 | `skills/infrastructure-as-code/SKILL.md` | DevOps Agent, Architect |
 ```
 
@@ -909,7 +806,7 @@ Add rows for all new skills:
 
 ### AGENTS.md
 1. Update the pipeline diagram to the target state shown at the top of this document
-2. Add all 5 new agents to the agents table with a one-line description each
+2. Add the 3 new agents (DevOps, QA/E2E, Docs) to the agents table with a one-line description each
 
 ---
 
@@ -918,20 +815,6 @@ Add rows for all new skills:
 2. Add Stage-by-Stage Context Injection entries for each new agent (following the same format as existing entries)
 
 Injection context for each new agent:
-
-**API Contract Agent:**
-- `api.spec.md` from active spec package
-- Existing OpenAPI spec (if any)
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
-- `<SHOP_ROOT>/skills/api-contracts/SKILL.md`
-
-**Migration Executor Agent:**
-- `<SHOP_ROOT>/reports/codebase-analysis/MIGRATION-<id>-<date>.md`
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/db-model.md`
-- `<SHOP_ROOT>/skills/change-management/SKILL.md`
-- `<SHOP_ROOT>/skills/architecture-migration/SKILL.md`
-- Coordinator directive specifying authorized phase number
 
 **QA/E2E Agent:**
 - Active spec (full content + hash)
@@ -958,14 +841,58 @@ Injection context for each new agent:
 
 ---
 
+### README.md
+1. Update `## The Fourteen Agents` heading to `## The Seventeen Agents`
+2. Add all 3 new agents to the agent table with a one-line description each
+3. Add new agent folders (`agents/devops/`, `agents/qa-e2e/`, `agents/docs/`) to the Repository Layout tree
+4. Add new skill folders (`skills/observability-implementation/`, `skills/devops-delivery/`, `skills/performance-engineering/`, `skills/api-contracts/`, `skills/frontend-accessibility/`, `skills/e2e-test-architecture/`, `skills/rag-ai-integration/`, `skills/change-management/`, `skills/infrastructure-as-code/`) to the Repository Layout tree
+
+---
+
+### skills/coordination/SKILL.md
+Add 3 new routing branches to The Routing Decision Tree, before the `All checks pass?` leaf:
+```
+├─ MIGRATION-*.md exists and human approved execution?
+│   └─ Route to: Programmer Agent (in migration execution mode)
+│       Context: migration plan, ADR, db-model.md, authorized phase number
+│
+├─ Spec has user-journey ACs or frontend interactions?
+│   └─ Route to: QA/E2E Agent (after Programmer completes)
+│       Context: spec, ADR, test-certification.md, which ACs need E2E coverage
+│
+├─ Pipeline complete, feature has infrastructure requirements (new services, deployment changes)?
+│   └─ Route to: DevOps Agent
+│       Context: ADR, security findings, spec NFR section, existing CI/CD configs
+│
+├─ Pipeline complete, feature is user-facing (not internal tooling only)?
+│   └─ Route to: Docs Agent
+│       Context: spec, ADR, security findings, CHANGELOG.md
+```
+
+---
+
+### workflows/pipeline-state-format.md
+Add the 3 new pipeline stages to the stage enum or stage list so the Coordinator can track them in `.pipeline-state.md`:
+- `qa-e2e`
+- `devops`
+- `docs`
+
+---
+
+### agents/database/skills.md
+Add to Skills section:
+```
+- `<SHOP_ROOT>/skills/change-management/SKILL.md` — expand-contract pattern for safe schema migrations (when migration involves breaking schema changes)
+```
+
+---
+
 ## Summary — Files to Create
 
 ```
 agents/devops/skills.md
 agents/qa-e2e/skills.md
 agents/docs/skills.md
-agents/api-contract/skills.md
-agents/migration-executor/skills.md
 
 skills/observability-implementation/SKILL.md
 skills/devops-delivery/SKILL.md
@@ -986,7 +913,11 @@ agents/code-review/skills.md
 agents/architect/skills.md
 agents/programmer/skills.md
 agents/spec/skills.md
+agents/database/skills.md
 project-knowledge/skills-registry.md
+skills/coordination/SKILL.md
+workflows/pipeline-state-format.md
 AGENTS.md
+README.md
 workflows/multi-agent-pipeline.md
 ```

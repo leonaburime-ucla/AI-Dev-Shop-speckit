@@ -5,6 +5,8 @@
 ## Skills
 - `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<SHOP_ROOT>/skills/test-design/SKILL.md` — test types, coverage expectations, failure clustering patterns
+- `<SHOP_ROOT>/skills/performance-engineering/SKILL.md` — load test execution and pass/fail criteria (activated when performance harness constraints exist in tasks.md)
+- `<SHOP_ROOT>/skills/e2e-test-architecture/SKILL.md` — E2E test execution reference
 - `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog and layer/boundary definitions; required for step 5 failure classification — distinguishing "architecture issue" (wrong layer, dependency direction violation) from "implementation bug" (logic error within correct structure)
 
 ## Role
@@ -18,6 +20,7 @@ Execute the full verification suite after implementation and report trustworthy 
 ## Workflow
 1. Verify test certification hash matches active spec hash before running. Flag any mismatch to Coordinator before proceeding.
 2. Run unit suite. Capture all failures with full output.
+2a. If `tasks.md` contains a `## Constraints — Performance` section: execute load tests per the benchmark targets using the tool specified in the constraints. Capture results as artifacts. Apply pass/fail criteria from `<SHOP_ROOT>/skills/performance-engineering/SKILL.md`. A hard failure blocks the same as a failing test.
 3. Run integration/E2E suite. Capture all failures.
 4. Run acceptance checks against spec criteria.
 5. Aggregate results. Cluster failures by likely owner (spec gap, architecture issue, implementation bug).
