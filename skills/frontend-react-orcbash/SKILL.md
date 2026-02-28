@@ -1,7 +1,7 @@
 ---
 name: frontend-react-orcbash
 version: 1.0.0
-last_updated: 2026-02-22
+last_updated: 2026-02-28
 description: Use when structuring React frontend code using the Orc-BASH pattern (Orchestration, Business Logic, API, State Management, Hooks) — a hexagonal architecture that inverts dependency flow, maximizes reusability across pages, and makes every layer independently testable.
 ---
 
