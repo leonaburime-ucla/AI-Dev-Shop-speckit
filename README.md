@@ -211,23 +211,23 @@ AGENTS.md                          ← Full operating manual for all agents and 
 | Agent | Role |
 |---|---|
 | VibeCoder (optional) | Fast exploratory prototyping — optional on-ramp before the structured pipeline |
-| CodeBase Analyzer | Pre-pipeline: analyzes existing codebases, produces findings reports and migration plans |
+| CodeBase Analyzer (optional pre-pipeline) | Analyzes existing codebases, produces findings reports and migration plans |
 | Coordinator | Routes between agents, owns convergence, escalates to human. Starts in Review Mode. |
 | Spec | Converts product intent into precise, versioned, testable specs (strict mode: 9-file package) |
 | Red-Team | Adversarially probes approved specs for ambiguity, contradictions, and missing failure modes |
 | Architect | Selects architecture patterns, writes ADRs, defines module boundaries |
 | TDD | Writes tests against the spec before any implementation |
 | Programmer | Implements code to make certified tests pass |
-| QA/E2E | Writes browser-level Playwright tests from user journeys |
+| QA/E2E (optional) | Writes browser-level Playwright tests from user journeys when user-flow coverage is needed |
 | TestRunner | Executes tests and reports evidence — no interpretation |
 | Code Review | Reviews spec alignment, architecture, test quality, security surface |
-| Refactor | Proposes (never implements) non-behavioral improvements |
+| Refactor (optional) | Proposes (never implements) non-behavioral improvements when review findings warrant it |
 | Security | Analyzes threat surface; Critical/High findings require human sign-off |
-| DevOps | Produces Dockerfiles, CI/CD pipeline configs, IaC declarations |
-| Docs | Produces OpenAPI specs, user guides, changelogs, release notes |
-| Observer | Watches the pipeline, surfaces systemic patterns, recommends improvements |
-| Database Agent | Domain head: schema design, data modeling, migrations, query review, indexing strategy |
-| Supabase Sub-Agent | Supabase-specific implementation: RLS, PostgREST, realtime, storage, edge functions, auth |
+| DevOps (optional) | Produces Dockerfiles, CI/CD pipeline configs, IaC declarations when infra/deploy changes are needed |
+| Docs (optional) | Produces OpenAPI specs, user guides, changelogs, release notes when documentation outputs are required |
+| Observer (optional) | Watches the pipeline, surfaces systemic patterns, recommends improvements |
+| Database Agent (optional) | Domain head for schema design, data modeling, migrations, query review, indexing strategy when data modeling is involved |
+| Supabase Sub-Agent (optional) | Supabase-specific implementation (RLS, PostgREST, realtime, storage, edge functions, auth) when platform is Supabase |
 
 ## Swarm Consensus
 
