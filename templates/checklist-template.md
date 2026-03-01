@@ -28,7 +28,7 @@
 
 ## Spec Integrity
 
-- [ ] FEAT number assigned and unique (verified against existing `<SHOP_ROOT>/reports/pipeline/` folders)
+- [ ] FEAT number assigned and unique (verified against existing `<AI_DEV_SHOP_ROOT>/reports/pipeline/` folders)
 - [ ] Content hash computed and recorded in header metadata
 - [ ] Constitution Compliance table completed — all 8 articles marked COMPLIES / EXCEPTION / N/A
 - [ ] Open Questions list is empty, or all remaining questions have an owner and a resolution target date

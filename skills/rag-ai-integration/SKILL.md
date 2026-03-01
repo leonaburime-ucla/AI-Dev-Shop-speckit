@@ -28,7 +28,7 @@ RAG systems fail silently — they return plausible but wrong answers when retri
 
 - **pgvector (Postgres extension)**: suitable for < 1M vectors, existing Postgres infrastructure.
 - **Pinecone / Weaviate / Qdrant**: suitable for > 1M vectors or when dedicated vector ops needed.
-- **Supabase**: includes pgvector support — use when project already uses Supabase (see `<SHOP_ROOT>/skills/supabase/SKILL.md`).
+- **Supabase**: includes pgvector support — use when project already uses Supabase (see `<AI_DEV_SHOP_ROOT>/skills/supabase/SKILL.md`).
 - **Index type**: HNSW preferred over IVFFlat for most use cases (better recall, slower build).
 
 ## Embedding Models
@@ -49,7 +49,7 @@ RAG systems fail silently — they return plausible but wrong answers when retri
 
 - **System prompt**: define role, output format, and constraints — keep stable across requests.
 - **User prompt**: query + assembled context — clearly delimit context from query.
-- Never inject unvalidated user input directly into system prompt (prompt injection risk — reference `<SHOP_ROOT>/skills/security-review/SKILL.md`).
+- Never inject unvalidated user input directly into system prompt (prompt injection risk — reference `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md`).
 - **Temperature**: 0 for factual retrieval tasks, 0.3-0.7 for generative tasks.
 - **Max tokens**: always set — never allow unbounded generation.
 
@@ -57,7 +57,7 @@ RAG systems fail silently — they return plausible but wrong answers when retri
 
 - **Retrieval quality**: precision@k (are retrieved chunks relevant?), recall@k (are all relevant chunks retrieved?).
 - **Generation quality**: faithfulness (does response contradict retrieved context?), answer relevance.
-- Use LLM-as-judge for automated evaluation — reference `<SHOP_ROOT>/skills/evaluation/eval-rubrics.md`.
+- Use LLM-as-judge for automated evaluation — reference `<AI_DEV_SHOP_ROOT>/skills/evaluation/eval-rubrics.md`.
 - Establish baseline before tuning — cannot improve what you do not measure.
 
 ## Cost Management

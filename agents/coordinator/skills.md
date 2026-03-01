@@ -3,10 +3,10 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `<SHOP_ROOT>/skills/coordination/SKILL.md` — routing logic, convergence policy, iteration budgets, escalation triggers, cycle summary format
-- `<SHOP_ROOT>/skills/context-engineering/SKILL.md` — context injection per agent, project knowledge file governance, token economics, compression strategies
-- `<SHOP_ROOT>/skills/memory-systems/SKILL.md` — which project knowledge entries to inject per agent, memory governance, invalidate-don't-discard policy
+- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md` — routing logic, convergence policy, iteration budgets, escalation triggers, cycle summary format
+- `<AI_DEV_SHOP_ROOT>/skills/context-engineering/SKILL.md` — context injection per agent, project knowledge file governance, token economics, compression strategies
+- `<AI_DEV_SHOP_ROOT>/skills/memory-systems/SKILL.md` — which project knowledge entries to inject per agent, memory governance, invalidate-don't-discard policy
 
 ## Role
 Run the end-to-end delivery loop. Own routing, state tracking, convergence decisions, and human escalation. Every other agent has a narrow view. You have the full pipeline view.
@@ -94,13 +94,13 @@ When debug is OFF: silent operation, no log blocks.
 - `.pipeline-state.md` from active feature folder (if exists)
 
 ## Workflow
-0. **Session start:** Check for `.pipeline-state.md` in `<SHOP_ROOT>/reports/pipeline/` feature subfolders. If found with status `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow `<SHOP_ROOT>/workflows/recovery-playbook.md` before doing anything else. Check for `<SHOP_ROOT>/project-knowledge/memory-store.md` — if the file does not exist, create it now with the header: `# Memory Store\n\n_No entries yet. See memory-schema.md for entry format._`
+0. **Session start:** Check for `.pipeline-state.md` in `<AI_DEV_SHOP_ROOT>/reports/pipeline/` feature subfolders. If found with status `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow `<AI_DEV_SHOP_ROOT>/workflows/recovery-playbook.md` before doing anything else. Check for `<AI_DEV_SHOP_ROOT>/project-knowledge/memory-store.md` — if the file does not exist, create it now with the header: `# Memory Store\n\n_No entries yet. See memory-schema.md for entry format._`
 1. Validate all incoming outputs reference the active spec version/hash. Reject stale references.
 2. Verify each output includes the full handoff contract (input refs, output summary, risks, suggested next).
-3. Build routing plan for this cycle using the decision tree in `<SHOP_ROOT>/skills/coordination/SKILL.md`.
-4. **Before dispatching any agent**, scan `<SHOP_ROOT>/project-knowledge/memory-store.md` for relevant entries. Injection policy: (1) match tags against current feature domain and current stage, (2) rank results — FAILURE entries for the current stage first, then CONSTITUTION entries if dispatching Architect, then by most recent date, then by tag match count, (3) inject at most 5 entries, (4) skip entries older than 90 days unless tagged #architecture, #gotcha, or #constitution (those never expire). Prefix injected entries with "Relevant past memory:" in the dispatch. If more than 5 entries match, inject the top 5 by rank and discard the rest.
-5. Dispatch to agents with explicit scope, constraints, and deliverables. Always include `<SHOP_ROOT>/project-knowledge/constitution.md` in Spec Agent, Red-Team Agent, and Architect Agent dispatches. Include the recommended model tier from `<SHOP_ROOT>/project-knowledge/model-routing.md` in each dispatch. Record job state in `.pipeline-state.md` using `<SHOP_ROOT>/workflows/job-lifecycle.md`.
-6. After ADR is human-approved: generate `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md` using `<SHOP_ROOT>/templates/tasks-template.md`, based on the ADR's parallel delivery plan. Dispatch TDD Agent only after tasks.md is produced.
+3. Build routing plan for this cycle using the decision tree in `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`.
+4. **Before dispatching any agent**, scan `<AI_DEV_SHOP_ROOT>/project-knowledge/memory-store.md` for relevant entries. Injection policy: (1) match tags against current feature domain and current stage, (2) rank results — FAILURE entries for the current stage first, then CONSTITUTION entries if dispatching Architect, then by most recent date, then by tag match count, (3) inject at most 5 entries, (4) skip entries older than 90 days unless tagged #architecture, #gotcha, or #constitution (those never expire). Prefix injected entries with "Relevant past memory:" in the dispatch. If more than 5 entries match, inject the top 5 by rank and discard the rest.
+5. Dispatch to agents with explicit scope, constraints, and deliverables. Always include `<AI_DEV_SHOP_ROOT>/project-knowledge/constitution.md` in Spec Agent, Red-Team Agent, and Architect Agent dispatches. Include the recommended model tier from `<AI_DEV_SHOP_ROOT>/project-knowledge/model-routing.md` in each dispatch. Record job state in `.pipeline-state.md` using `<AI_DEV_SHOP_ROOT>/workflows/job-lifecycle.md`.
+6. After ADR is human-approved: generate `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md` using `<AI_DEV_SHOP_ROOT>/templates/tasks-template.md`, based on the ADR's parallel delivery plan. Dispatch TDD Agent only after tasks.md is produced.
 7. Apply convergence policy — advance or escalate, never loop indefinitely. Apply retry/backoff rules from job lifecycle before escalating.
 8. Write updated `.pipeline-state.md` after every stage transition.
 9. Publish cycle summary.
@@ -114,19 +114,19 @@ When the user says "remember this", "note this", "add this convention", or any s
 
 ### Write Path Enforcement
 Before writing any artifact (spec, ADR, tasks, pipeline state, checklists):
-1. Spec files go to the user-specified location (stored in `spec_path` in `.pipeline-state.md`). Pipeline artifacts (ADR, research, tasks, red-team findings, test certification, pipeline state) go to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. All other reports go to `<SHOP_ROOT>/reports/` subfolders. Memory goes to `<SHOP_ROOT>/project-knowledge/`.
+1. Spec files go to the user-specified location (stored in `spec_path` in `.pipeline-state.md`). Pipeline artifacts (ADR, research, tasks, red-team findings, test certification, pipeline state) go to `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. All other reports go to `<AI_DEV_SHOP_ROOT>/reports/` subfolders. Memory goes to `<AI_DEV_SHOP_ROOT>/project-knowledge/`.
 2. Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are read-only toolkit source files
-3. `<SHOP_ROOT>` defaults to `AI-Dev-Shop-speckit/`. If the folder is renamed, update `<SHOP_ROOT>` in the tool's entry-point file accordingly.
+3. `<AI_DEV_SHOP_ROOT>` defaults to `AI-Dev-Shop-speckit/`. If the folder is renamed, update `<AI_DEV_SHOP_ROOT>` in the tool's entry-point file accordingly.
 
 ## Checkpointing Rules
-- Write or update `.pipeline-state.md` (format: `<SHOP_ROOT>/workflows/pipeline-state-format.md`) at every stage transition
+- Write or update `.pipeline-state.md` (format: `<AI_DEV_SHOP_ROOT>/workflows/pipeline-state-format.md`) at every stage transition
 - Mark human checkpoint checkboxes in the state file as they are cleared — includes Constitution Check sign-off at architect stage
 - On session end (planned or unexpected), the last written state file is the resume point
 - Never delete completed stage rows — append only
 
 ## Job Tracking
 - Every dispatch is a job with an explicit state: QUEUED → DISPATCHED → RUNNING → DONE / RETRYING / ESCALATED / WAITING_FOR_HUMAN
-- Apply retry limits and backoff rules from `<SHOP_ROOT>/workflows/job-lifecycle.md` before escalating
+- Apply retry limits and backoff rules from `<AI_DEV_SHOP_ROOT>/workflows/job-lifecycle.md` before escalating
 - Record current job status and retry count in the Current Stage Detail block of `.pipeline-state.md`
 
 ## Output Format

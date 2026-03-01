@@ -9,10 +9,11 @@ description: Output root, spec folder structure, and reports folder structure fo
 
 ## Output Root
 
-Spec files are written to the **user-specified location** — the Spec Agent asks before writing. Pipeline artifacts (ADR, research, tasks, test-certification, red-team findings, pipeline state) are written under `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. Reports (analysis, test runs, code review, security, observer) live in `<SHOP_ROOT>/reports/` subfolders.
+`<AI_DEV_SHOP_ROOT>` means the path to this toolkit folder (usually `AI-Dev-Shop-speckit/`).
+Spec files are written to the **user-specified location** — the Spec Agent asks before writing. Pipeline artifacts (ADR, research, tasks, test-certification, red-team findings, pipeline state) are written under `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. Reports (analysis, test runs, code review, security, observer) live in `<AI_DEV_SHOP_ROOT>/reports/` subfolders.
 
-**Writable under `<SHOP_ROOT>`:** `reports/`, `project-knowledge/`
-**Read-only under `<SHOP_ROOT>`:** `agents/`, `skills/`, `templates/`, `workflows/` — toolkit source files, never modify.
+**Writable under `<AI_DEV_SHOP_ROOT>`:** `reports/`, `project-knowledge/`
+**Read-only under `<AI_DEV_SHOP_ROOT>`:** `agents/`, `skills/`, `templates/`, `workflows/` — toolkit source files, never modify.
 
 ---
 
@@ -36,10 +37,10 @@ Spec files live at the **user-specified location**, in a named subfolder:
 
 ## Pipeline Artifact Folder Convention
 
-All pipeline artifacts for a feature live under `<SHOP_ROOT>/reports/pipeline/`:
+All pipeline artifacts for a feature live under `<AI_DEV_SHOP_ROOT>/reports/pipeline/`:
 
 ```
-<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/
+<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/
   .pipeline-state.md       (Coordinator state — created at spec time, updated every stage)
   adr.md                   (architecture decision record)
   research.md              (if produced by Architect)
@@ -57,7 +58,7 @@ All pipeline artifacts for a feature live under `<SHOP_ROOT>/reports/pipeline/`:
 All agent reports live under a single centralized folder. This is the single source of truth for everything agents produce outside of spec artifacts. The subdirectory structure is pre-created in the repo — agents can write directly without creating directories.
 
 ```
-<SHOP_ROOT>/reports/
+<AI_DEV_SHOP_ROOT>/reports/
   pipeline/
     <NNN>-<feature-name>/    (per-feature — see Pipeline Artifact Folder Convention above)
   codebase-analysis/

@@ -13,13 +13,13 @@ This is strictly required to let the user know exactly who is talking and to con
 # Mandatory Startup
 
 On the first user message in this repository (including greetings), before any reply:
-1. Open and read `<SHOP_ROOT>/AGENTS.md`.
+1. Open and read `<AI_DEV_SHOP_ROOT>/AGENTS.md`.
 2. Provide a welcome message that MUST include:
-   - "Booted with <SHOP_ROOT>/AGENTS.md loaded."
+   - "Booted with <AI_DEV_SHOP_ROOT>/AGENTS.md loaded."
    - A bulleted list of the 3 Coordinator modes with a 1-sentence summary of each.
    - The pipeline diagram and its notes (copy from the How This Works section verbatim).
 3. If the file is missing or unreadable, state that explicitly and stop.
-4. Read `<SHOP_ROOT>/project-knowledge/reminders.md`. For each reminder NOT listed under Dismissed, show a short prompt after the welcome message.
+4. Read `<AI_DEV_SHOP_ROOT>/project-knowledge/reminders.md`. For each reminder NOT listed under Dismissed, show a short prompt after the welcome message.
 
 **slash-commands-setup** (skip if dismissed):
 Show: "Would you like to enable slash commands (`/spec`, `/plan`, `/consensus`, and more)? Say **yes** and I'll walk you through it."
@@ -52,8 +52,9 @@ To return from either: "back to coordinator", "resume coordinator" — Coordinat
 ## Subfolder Install Shim
 
 If this toolkit is a subfolder and the session starts at the parent project root:
-- Toolkit root: `<SHOP_ROOT>` (default: `AI-Dev-Shop-speckit/`)
-- All path references in this file use `<SHOP_ROOT>`. If the folder is renamed, update `<SHOP_ROOT>` in `CLAUDE.md` (or your tool's entry-point file) to match the new name.
+- Toolkit root placeholder: `<AI_DEV_SHOP_ROOT>` means the path to this toolkit folder (default: `AI-Dev-Shop-speckit/`)
+- Legacy note: older docs may mention a previous root placeholder; treat that as equivalent to `<AI_DEV_SHOP_ROOT>`.
+- All path references in this file use `<AI_DEV_SHOP_ROOT>`. If the folder is renamed, update `<AI_DEV_SHOP_ROOT>` in `CLAUDE.md` (or your tool's entry-point file) to match the new name.
 
 ---
 
@@ -73,10 +74,10 @@ Agents are specialized roles, each with a `skills.md`. All routing flows through
 
 ## Starting the Pipeline
 
-**Before anything else:** Confirm `<SHOP_ROOT>` — the path to the AI Dev Shop toolkit folder (default: `AI-Dev-Shop-speckit/`). Pipeline artifacts are written under `<SHOP_ROOT>/reports/`. Spec files are written to the user-specified location.
+**Before anything else:** Confirm `<AI_DEV_SHOP_ROOT>` — the path to the AI Dev Shop toolkit folder (default: `AI-Dev-Shop-speckit/`). Pipeline artifacts are written under `<AI_DEV_SHOP_ROOT>/reports/`. Spec files are written to the user-specified location.
 
 **For an existing codebase (first time):**
-0. Spawn CodeBase Analyzer → `<SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`
+0. Spawn CodeBase Analyzer → `<AI_DEV_SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`
 0a. Human reviews → decides Route A (migrate first) or Route B (build alongside migration)
 
 **For all projects:**
@@ -90,15 +91,15 @@ Agents are specialized roles, each with a `skills.md`. All routing flows through
 
 If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do not keep retrying.
 
-Full stage-by-stage context injection and parallel execution rules: `<SHOP_ROOT>/workflows/multi-agent-pipeline.md`
+Full stage-by-stage context injection and parallel execution rules: `<AI_DEV_SHOP_ROOT>/workflows/multi-agent-pipeline.md`
 
 ---
 
 ## Invoking the Pipeline
 
 **Option A — Slash commands** (one-time setup):
-- Claude Code: copy `<SHOP_ROOT>/templates/commands/` to `.claude/commands/`
-- Gemini CLI: copy `<SHOP_ROOT>/templates/commands/gemini/` to `.gemini/commands/`
+- Claude Code: copy `<AI_DEV_SHOP_ROOT>/templates/commands/` to `.claude/commands/`
+- Gemini CLI: copy `<AI_DEV_SHOP_ROOT>/templates/commands/gemini/` to `.gemini/commands/`
 
 **Option B — Manual**: paste the contents of the corresponding template file as your message, replacing `$ARGUMENTS`.
 
@@ -159,15 +160,15 @@ These rules apply to every agent when operating in Agent Direct Mode (invoked vi
 ## Shared Rules (All Agents)
 
 - **Specs are ground truth.** Confirm spec hash before every dispatch. If specs are wrong, all downstream work is wrong.
-- **The constitution governs architecture.** Spec Agent flags compliance, Red-Team pre-flights it, Architect's ADR is the binding record. Unjustified violation = blocking escalation. See `<SHOP_ROOT>/project-knowledge/constitution.md`.
+- **The constitution governs architecture.** Spec Agent flags compliance, Red-Team pre-flights it, Architect's ADR is the binding record. Unjustified violation = blocking escalation. See `<AI_DEV_SHOP_ROOT>/project-knowledge/constitution.md`.
 - **[NEEDS CLARIFICATION] markers block Architect dispatch.** Resolve or escalate to human first.
 - **Every artifact references the active spec version and hash.** No exceptions.
-- **Framework files are read-only.** Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are toolkit source files. `reports/` and `project-knowledge/` are the project workspace and are writable under `<SHOP_ROOT>/`. Spec files are written to the user-specified location outside `<SHOP_ROOT>/`.
-- **Handoff contract is mandatory.** Every output must include: inputs used (spec hash, ADR, test certification), output summary, risks, suggested next assignee. Format: `<SHOP_ROOT>/templates/handoff-template.md`.
+- **Framework files are read-only.** Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are toolkit source files. `reports/` and `project-knowledge/` are the project workspace and are writable under `<AI_DEV_SHOP_ROOT>/`. Spec files are written to the user-specified location outside `<AI_DEV_SHOP_ROOT>/`.
+- **Handoff contract is mandatory.** Every output must include: inputs used (spec hash, ADR, test certification), output summary, risks, suggested next assignee. Format: `<AI_DEV_SHOP_ROOT>/templates/handoff-template.md`.
 - **No agent edits outside its role.** Structural/cross-file refactoring = Refactor Agent. Inline cleanup within files being modified = Programmer. Refactor Agent does not implement features.
 - **Generated code must include inline documentation.** TypeDoc/JSDoc for TypeScript/JavaScript, docstrings for Python. No exceptions.
 - **Fix the spec, not the code.** Bugs route back through Spec or TDD — never patched directly in code. Manual patches are overwritten on the next pipeline run.
-- **Debug mode:** toggle `debug on` / `debug off` at any time. See `<SHOP_ROOT>/workflows/trace-schema.md`.
+- **Debug mode:** toggle `debug on` / `debug off` at any time. See `<AI_DEV_SHOP_ROOT>/workflows/trace-schema.md`.
 
 ---
 
@@ -185,14 +186,14 @@ These rules apply to every agent when operating in Agent Direct Mode (invoked vi
 ## Routing Rules
 
 Full routing decision tree (Red-Team, Database, Supabase, test failures, security, refactor, spec misalignment):
-`<SHOP_ROOT>/skills/coordination/SKILL.md`
+`<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`
 
 ---
 
 ## Convergence Policy
 
 Threshold: ~90-95% acceptance tests passing. Single cluster: escalate after 3 consecutive failures.
-Full policy, retry budgets, escalation message format: `<SHOP_ROOT>/project-knowledge/escalation-policy.md`
+Full policy, retry budgets, escalation message format: `<AI_DEV_SHOP_ROOT>/project-knowledge/escalation-policy.md`
 
 ---
 
@@ -203,24 +204,24 @@ Per-project files (fill in for each project):
 - `project-knowledge/learnings.md` — failure log, append-only
 - `project-knowledge/project_notes.md` — open questions, deferred decisions
 
-Routing authority for all memory writes: `<SHOP_ROOT>/project-knowledge/knowledge-routing.md`
+Routing authority for all memory writes: `<AI_DEV_SHOP_ROOT>/project-knowledge/knowledge-routing.md`
 
 ---
 
 ## Skills Library
 
-Full map of skills to agents: `<SHOP_ROOT>/project-knowledge/skills-registry.md`
+Full map of skills to agents: `<AI_DEV_SHOP_ROOT>/project-knowledge/skills-registry.md`
 
 ---
 
 ## Conventions
 
-`<SHOP_ROOT>` path rules, spec folder structure, reports folder structure:
-`<SHOP_ROOT>/workflows/conventions.md`
+`<AI_DEV_SHOP_ROOT>` path rules, spec folder structure, reports folder structure:
+`<AI_DEV_SHOP_ROOT>/workflows/conventions.md`
 
 ---
 
 ## Golden Sample
 
 End-to-end example (spec → red-team → ADR → tasks → test certification):
-`<SHOP_ROOT>/examples/golden-sample/README.md`
+`<AI_DEV_SHOP_ROOT>/examples/golden-sample/README.md`

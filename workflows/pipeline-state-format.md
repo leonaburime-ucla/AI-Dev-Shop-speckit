@@ -121,7 +121,7 @@ When `on`, the Observer emits `[DEBUG]` trace entries at every dispatch, gate ch
 ## Read Rules
 
 - At session start, the Coordinator checks for `.pipeline-state.md` in the active feature folder.
-- If found and status is `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow the Recovery Playbook (`<SHOP_ROOT>/workflows/recovery-playbook.md`).
+- If found and status is `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow the Recovery Playbook (`<AI_DEV_SHOP_ROOT>/workflows/recovery-playbook.md`).
 - If found and status is `ABORTED`, treat as resumable — follow the Recovery Playbook.
 - If found and status is `COMPLETE`, `FAILED`, or `CANCELLED`, do not resume — start a new run or treat as reference only.
 - If not found, create a new one at the start of the spec stage.

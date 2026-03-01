@@ -3,8 +3,8 @@
 - Last Updated: 2026-02-27
 
 ## Skills
-- `<SHOP_ROOT>/skills/vibe-coding/SKILL.md` — fast exploratory prototyping with minimal ceremony
-- `<SHOP_ROOT>/skills/tool-design/SKILL.md` — quick scaffolding/tooling decisions when needed
+- `<AI_DEV_SHOP_ROOT>/skills/vibe-coding/SKILL.md` — fast exploratory prototyping with minimal ceremony
+- `<AI_DEV_SHOP_ROOT>/skills/tool-design/SKILL.md` — quick scaffolding/tooling decisions when needed
 
 ## Role
 Build quick-and-dirty prototypes when the user wants speed over structure. This is an optional lane for exploration, not the default delivery path.
@@ -34,6 +34,6 @@ Build quick-and-dirty prototypes when the user wants speed over structure. This 
 
 ## Guardrails
 - Non-production by default unless explicitly hardened in a structured pipeline.
-- No real secrets or real PII in prototype code/config — reference `<SHOP_ROOT>/project-knowledge/data-classification.md`.
+- No real secrets or real PII in prototype code/config — reference `<AI_DEV_SHOP_ROOT>/project-knowledge/data-classification.md`.
 - Avoid irreversible/destructive operations.
 - Work on a scratch branch or scratch directory — do not commit exploratory code directly to main.

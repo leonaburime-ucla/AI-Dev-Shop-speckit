@@ -11,7 +11,7 @@ Located at: `specs/<NNN>-<feature-name>/.pipeline-state.md`
 ### Required fields
 - [ ] `run_id` is present and non-empty
 - [ ] `spec_hash` is present — re-hash `feature.spec.md` and confirm it matches
-- [ ] `current_stage` is a valid stage name (see `<SHOP_ROOT>/workflows/pipeline-state-format.md`)
+- [ ] `current_stage` is a valid stage name (see `<AI_DEV_SHOP_ROOT>/workflows/pipeline-state-format.md`)
 - [ ] `status` is one of: `IN_PROGRESS` | `WAITING_FOR_HUMAN` | `COMPLETE` | `FAILED` | `CANCELLED` | `ABORTED`
 - [ ] `last_updated_at` timestamp is recent (if stale by days, the run may have been abandoned)
 
@@ -26,7 +26,7 @@ Located at: `specs/<NNN>-<feature-name>/.pipeline-state.md`
 ### Current stage detail
 - [ ] `job_status` is a valid state: `QUEUED` | `DISPATCHED` | `RUNNING` | `RETRYING` | `DONE` | `FAILED` | `ESCALATED` | `WAITING_FOR_HUMAN` | `CANCELLED` | `ABORTED`
 - [ ] If `job_status` is `RETRYING`, `retry_count` is present and within the stage's budget
-- [ ] If `job_status` is `ABORTED`, treat as resumable — follow `<SHOP_ROOT>/workflows/recovery-playbook.md`
+- [ ] If `job_status` is `ABORTED`, treat as resumable — follow `<AI_DEV_SHOP_ROOT>/workflows/recovery-playbook.md`
 - [ ] If `job_status` is `CANCELLED`, do not resume — start a new run
 
 ### Failure clusters

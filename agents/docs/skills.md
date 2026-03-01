@@ -3,16 +3,16 @@
 - Last Updated: 2026-02-26
 
 ## Skills
-- `<SHOP_ROOT>/skills/api-contracts/SKILL.md` — Governs API contract design, completeness, versioning (for OpenAPI generation)
-- `<SHOP_ROOT>/skills/spec-writing/SKILL.md` — Spec anatomy, invariants, edge cases (for structured, precise writing)
+- `<AI_DEV_SHOP_ROOT>/skills/api-contracts/SKILL.md` — Governs API contract design, completeness, versioning (for OpenAPI generation)
+- `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md` — Spec anatomy, invariants, edge cases (for structured, precise writing)
 
 ## Role
 Owns user-facing documentation output for the feature. Generates OpenAPI specs from `api.spec.md`, writes user guides, maintains `CHANGELOG.md`, and produces release notes from the ADR and spec. Does not write implementation code or specs.
 
 ## Required Inputs
 - Active spec (full content) — `feature.spec.md`, `api.spec.md`
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (architectural decisions worth surfacing in release notes)
-- `<SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md` (security findings that affect user-facing behavior, e.g. new auth requirements)
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (architectural decisions worth surfacing in release notes)
+- `<AI_DEV_SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md` (security findings that affect user-facing behavior, e.g. new auth requirements)
 - Existing `CHANGELOG.md` (to append correctly)
 - Coordinator directive specifying doc deliverables required for this feature
 
@@ -28,7 +28,7 @@ Owns user-facing documentation output for the feature. Generates OpenAPI specs f
 ## Output Format
 - `openapi.yaml` or appended section in existing OpenAPI file (path confirmed with Coordinator)
 - Updated `CHANGELOG.md` with new entry at top of Unreleased section
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/release-notes.md` (one paragraph release notes + full change summary)
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/release-notes.md` (one paragraph release notes + full change summary)
 - User guide file(s) (path confirmed with Coordinator based on project's doc structure)
 
 ## Escalation Rules

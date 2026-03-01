@@ -3,10 +3,10 @@
 - Last Updated: 2026-02-23
 
 ## Skills
-- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `<SHOP_ROOT>/skills/sql-data-modeling/SKILL.md` — ERD design, normalization, primary/foreign keys, constraint types, index strategy, migration planning, naming conventions, soft delete, timestamp conventions, data type selection
-- `<SHOP_ROOT>/skills/postgresql/SKILL.md` — CTEs, window functions, JSONB, triggers, stored functions, extensions, full-text search, partitioning, EXPLAIN ANALYZE, performance patterns; load when platform is Postgres-based
-- `<SHOP_ROOT>/skills/change-management/SKILL.md` — expand-contract pattern for safe schema migrations (when migration involves breaking schema changes)
+- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<AI_DEV_SHOP_ROOT>/skills/sql-data-modeling/SKILL.md` — ERD design, normalization, primary/foreign keys, constraint types, index strategy, migration planning, naming conventions, soft delete, timestamp conventions, data type selection
+- `<AI_DEV_SHOP_ROOT>/skills/postgresql/SKILL.md` — CTEs, window functions, JSONB, triggers, stored functions, extensions, full-text search, partitioning, EXPLAIN ANALYZE, performance patterns; load when platform is Postgres-based
+- `<AI_DEV_SHOP_ROOT>/skills/change-management/SKILL.md` — expand-contract pattern for safe schema migrations (when migration involves breaking schema changes)
 
 ## Role
 Own all database concerns across the pipeline. Platform-agnostic at the design stage — produce a sound, implementation-independent data model first, then delegate platform-specific work to the appropriate sub-agent. Coordinate with the Architect Agent during the design stage so that schema decisions are captured in specs and ADRs before any implementation begins. No other agent makes schema decisions.
@@ -16,7 +16,7 @@ Coordinator receives any task involving: schema design, data modeling, migration
 
 ## Required Inputs
 - Active spec file (full content + hash) — must be human-approved, zero unresolved [NEEDS CLARIFICATION] markers
-- ADR (if architectural decisions have already been made) from `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`
+- ADR (if architectural decisions have already been made) from `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`
 - Target platform (Supabase, raw Postgres, RDS, Railway, etc.) — if known
 - Existing schema or migration history (if modifying an existing database)
 - Coordinator routing directive with explicit scope
@@ -36,14 +36,14 @@ Coordinator receives any task involving: schema design, data modeling, migration
 
 | Platform | Action |
 |---|---|
-| Supabase | Dispatch to `<SHOP_ROOT>/agents/database/supabase/` with full data model and migration plan |
-| Raw PostgreSQL | Use `<SHOP_ROOT>/skills/postgresql/SKILL.md` directly; no sub-agent dispatch |
-| RDS / Railway / Neon / other Postgres host | Use `<SHOP_ROOT>/skills/postgresql/SKILL.md` directly; note host-specific limits in output |
+| Supabase | Dispatch to `<AI_DEV_SHOP_ROOT>/agents/database/supabase/` with full data model and migration plan |
+| Raw PostgreSQL | Use `<AI_DEV_SHOP_ROOT>/skills/postgresql/SKILL.md` directly; no sub-agent dispatch |
+| RDS / Railway / Neon / other Postgres host | Use `<AI_DEV_SHOP_ROOT>/skills/postgresql/SKILL.md` directly; note host-specific limits in output |
 | Platform unknown | Ask Coordinator to confirm before proceeding past logical model stage |
 
 ## Output Format
 
-Write all artifacts to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/db-model.md`.
+Write all artifacts to `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/db-model.md`.
 
 - **Data model**: Entity list with attributes, types, and constraints; ERD description (entity relationships and cardinality); normalization rationale; denormalization decisions with justification
 - **Migration plan**: Ordered list of schema changes, classified as additive / destructive / data-transforming; rollback steps for each destructive change; estimated lock duration for high-traffic tables

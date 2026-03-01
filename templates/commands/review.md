@@ -6,9 +6,9 @@ Implementation has reached the convergence threshold. Run Code Review and Securi
 
 **Code Review Agent** — dispatch with:
 - Full diff of changed files
-- Spec: path from `spec_path` in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` (for alignment check)
-- ADR: `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (for architecture compliance)
-- Skills: `<SHOP_ROOT>/skills/code-review/SKILL.md`, `<SHOP_ROOT>/skills/security-review/SKILL.md`
+- Spec: path from `spec_path` in `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` (for alignment check)
+- ADR: `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (for architecture compliance)
+- Skills: `<AI_DEV_SHOP_ROOT>/skills/code-review/SKILL.md`, `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md`
 - Previous Code Review findings (to detect recurrence)
 - Output: findings classified as **Required** (blocks advance) or **Recommended** (non-blocking)
 
@@ -16,13 +16,13 @@ Implementation has reached the convergence threshold. Run Code Review and Securi
 - Full diff of changed files
 - Spec (for business logic abuse vector analysis)
 - List of changed auth/payment/data paths (Coordinator identifies these from the diff)
-- Skill: `<SHOP_ROOT>/skills/security-review/SKILL.md`
+- Skill: `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md`
 - Output: findings classified as Critical / High / Medium / Low with exploit scenarios
 
 **After both complete:**
 - Required Code Review findings → Programmer Agent (must fix before advancing)
 - Recommended Code Review findings → Refactor Agent (non-blocking proposals only)
 - Critical/High Security findings → surface to human for sign-off before merge (hard gate)
-- Medium/Low Security findings → log in `<SHOP_ROOT>/project-knowledge/learnings.md`, continue
+- Medium/Low Security findings → log in `<AI_DEV_SHOP_ROOT>/project-knowledge/learnings.md`, continue
 
 Human must explicitly approve any Critical/High security finding before shipping.

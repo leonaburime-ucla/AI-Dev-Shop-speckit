@@ -22,7 +22,7 @@ The pipeline produces tested, reviewed, secure code. This skill covers the last 
 - **lint and type-check**: fast, blocks everything.
 - **unit and integration tests**: run in parallel where possible.
 - **build and push image**: only on success.
-- **security scan**: image scan + SAST — reference `<SHOP_ROOT>/skills/security-review/SKILL.md` for what to scan.
+- **security scan**: image scan + SAST — reference `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` for what to scan.
 - **deploy to staging**: automatic on main merge.
 - **smoke test**: run against staging.
 - **deploy to production**: manual approval gate or automated with rollback trigger.

@@ -4,19 +4,19 @@ $ARGUMENTS
 
 The tasks.md is ready. Run the implementation pipeline:
 
-1. Verify prerequisites: read `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` — confirm `spec_path` is set, ADR exists at `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`, tasks.md exists at `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md`.
+1. Verify prerequisites: read `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` — confirm `spec_path` is set, ADR exists at `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`, tasks.md exists at `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md`.
 2. Dispatch **TDD Agent** with:
    - Spec: path from `spec_path` in `.pipeline-state.md` (full content + hash)
-   - ADR: `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
-   - Tasks: `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md`
-   - Skill: `<SHOP_ROOT>/skills/test-design/SKILL.md`
+   - ADR: `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
+   - Tasks: `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md`
+   - Skill: `<AI_DEV_SHOP_ROOT>/skills/test-design/SKILL.md`
    - Directive: Write failing tests for all P1 ACs before any implementation starts. Certify against spec hash.
-   - Output: test certification at `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/test-certification.md`
+   - Output: test certification at `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/test-certification.md`
 3. After TDD certification, dispatch **Programmer Agent** with:
    - Spec hash (must match TDD certification hash)
    - Certified test names and which ACs they cover
    - ADR constraints
-   - Relevant `<SHOP_ROOT>/project-knowledge/project_memory.md` entries
+   - Relevant `<AI_DEV_SHOP_ROOT>/project-knowledge/project_memory.md` entries
 4. After each Programmer cycle, dispatch **TestRunner Agent**. Report pass/fail counts and failure clusters.
 5. Advance to Code Review when ≥90% acceptance tests pass (calibrate threshold to risk — payment/auth systems may require 100%).
 6. If the same tests fail after 3 cycles: escalate to human. This signals a spec gap or architecture mismatch, not a code problem.

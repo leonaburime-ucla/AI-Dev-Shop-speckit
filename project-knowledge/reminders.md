@@ -17,12 +17,13 @@ or delete the line from the Dismissed section.
 ## slash-commands-setup
 
 Available commands: `/spec` `/plan` `/tasks` `/implement` `/review` `/clarify` `/agent` `/consensus`
+Placeholder note: `<AI_DEV_SHOP_ROOT>` means the toolkit folder path (usually `AI-Dev-Shop-speckit/`).
 
 ### Claude Code
 
 If the user says "yes" or "set up slash commands", run this via Bash:
 ```bash
-cp -r <SHOP_ROOT>/templates/commands/ .claude/commands/
+cp -r <AI_DEV_SHOP_ROOT>/templates/commands/ .claude/commands/
 ```
 Confirm success, then offer to dismiss the reminder.
 After setup, `/spec`, `/plan`, `/consensus`, etc. work directly in chat.
@@ -30,23 +31,23 @@ After setup, `/spec`, `/plan`, `/consensus`, etc. work directly in chat.
 ### Gemini CLI
 
 Slash commands are not natively supported. Use Option B:
-paste the contents of `<SHOP_ROOT>/templates/commands/<command>.md` as your message.
+paste the contents of `<AI_DEV_SHOP_ROOT>/templates/commands/<command>.md` as your message.
 
 ### Codex CLI
 
 Slash commands are not natively supported. Use Option B:
-paste the contents of `<SHOP_ROOT>/templates/commands/<command>.md` as your message.
+paste the contents of `<AI_DEV_SHOP_ROOT>/templates/commands/<command>.md` as your message.
 
 ### Claude.ai (web)
 
 Slash commands and filesystem access are not available. Use Option B:
-open `<SHOP_ROOT>/templates/commands/<command>.md` on your machine, copy the contents,
+open `<AI_DEV_SHOP_ROOT>/templates/commands/<command>.md` on your machine, copy the contents,
 and paste as your message. You will also need to paste relevant project files manually.
 
 ### Generic LLM
 
 Slash commands are not supported. Use Option B:
-open `<SHOP_ROOT>/templates/commands/<command>.md` on your machine, copy the contents,
+open `<AI_DEV_SHOP_ROOT>/templates/commands/<command>.md` on your machine, copy the contents,
 and paste as your prompt along with any relevant project files.
 
 ### Host Detection

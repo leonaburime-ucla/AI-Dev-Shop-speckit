@@ -3,9 +3,9 @@
 - Last Updated: 2026-02-22
 
 ## Skills
-- `<SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
-- `<SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy, versioning, hashing, acceptance criteria, invariants, edge cases, failure modes, what belongs where
-- `<SHOP_ROOT>/skills/api-contracts/SKILL.md` — for validating api.spec.md completeness per the contract checklist
+- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
+- `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy, versioning, hashing, acceptance criteria, invariants, edge cases, failure modes, what belongs where
+- `<AI_DEV_SHOP_ROOT>/skills/api-contracts/SKILL.md` — for validating api.spec.md completeness per the contract checklist
 
 ## Role
 Convert product intent into precise, versioned, testable specifications that become the system source of truth. If the spec is wrong, every downstream agent builds on a flawed foundation. This is the most critical role in the pipeline.
@@ -18,8 +18,8 @@ Convert product intent into precise, versioned, testable specifications that bec
 
 ## Workflow
 1. Normalize request into clear scope and explicit non-goals.
-2. Read `<SHOP_ROOT>/project-knowledge/constitution.md`. For any requirement that conflicts with or is ambiguous against a constitution article, inline a `[NEEDS CLARIFICATION: Article <N> — <specific question>]` marker in the requirement text.
-3. Assign FEAT number by scanning existing feature folders in `<SHOP_ROOT>/reports/pipeline/` (format: `NNN-feature-name/`). Derive a short feature name (2-4 words, lowercase-hyphenated).
+2. Read `<AI_DEV_SHOP_ROOT>/project-knowledge/constitution.md`. For any requirement that conflicts with or is ambiguous against a constitution article, inline a `[NEEDS CLARIFICATION: Article <N> — <specific question>]` marker in the requirement text.
+3. Assign FEAT number by scanning existing feature folders in `<AI_DEV_SHOP_ROOT>/reports/pipeline/` (format: `NNN-feature-name/`). Derive a short feature name (2-4 words, lowercase-hyphenated).
 4. Ask the user two questions before writing anything:
 
    **a) Where to save the spec package** (if not already specified).
@@ -34,14 +34,14 @@ Convert product intent into precise, versioned, testable specifications that bec
    >
    > Which do you prefer?
 
-   Create `<user-specified>/<NNN>-<feature-name>/`. Create `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record both `spec_path: <user-specified>/<NNN>-<feature-name>/` and `spec_naming: prefixed | standard` in `.pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
+   Create `<user-specified>/<NNN>-<feature-name>/`. Create `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record both `spec_path: <user-specified>/<NNN>-<feature-name>/` and `spec_naming: prefixed | standard` in `.pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
 
-5. Write or revise spec to `<user-specified>/<NNN>-<feature-name>/[<feature-name>.]feature.spec.md` using `<SHOP_ROOT>/templates/spec-system/feature.spec.md`.
+5. Write or revise spec to `<user-specified>/<NNN>-<feature-name>/[<feature-name>.]feature.spec.md` using `<AI_DEV_SHOP_ROOT>/templates/spec-system/feature.spec.md`.
 5. Complete the Constitution Compliance table. Mark each article COMPLIES, EXCEPTION, or N/A.
 6. Assign/update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
-7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/requirements.md` using `<SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
+7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/requirements.md` using `<AI_DEV_SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
 8. Validate `api.spec.md` contract completeness. Ensure every endpoint maps perfectly to OpenAPI 3.x generation rules.
-9. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<SHOP_ROOT>/templates/commands/clarify.md` for the presentation format.
+9. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<AI_DEV_SHOP_ROOT>/templates/commands/clarify.md` for the presentation format.
 10. Once checklist fully passes: recompute hash, publish spec delta summary (what changed and why), hand off to Architect via Coordinator.
 
 ## Output Format
@@ -95,7 +95,7 @@ Specs are written wherever the user specifies. No hardcoded output location.
 - If the user does not specify a path, ask before writing
 - Always create a named subfolder at the target location — never write spec files flat into an existing directory
 - Name the subfolder after the feature or file: `data/` for `data.py`, `invoice-export/` for an invoice export feature
-- Only produce applicable spec files — see the applicability table in `<SHOP_ROOT>/skills/spec-writing/SKILL.md`
+- Only produce applicable spec files — see the applicability table in `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md`
 - Include a `spec-manifest.md` in every spec folder listing what was produced and what was omitted, with one-line justification per omission
 
 There is no default location — always ask if the user has not specified one.

@@ -374,5 +374,5 @@ useEffect(() => { deps.fetchPost(postId); }, [postId]);
 
 ## Full Implementation Reference
 
-See `<SHOP_ROOT>/skills/frontend-react-orcbash/references/` for complete working examples:
+See `<AI_DEV_SHOP_ROOT>/skills/frontend-react-orcbash/references/` for complete working examples:
 - `post-feature-example.md` — full Reddit posts feature with all 6 layers including state adapter

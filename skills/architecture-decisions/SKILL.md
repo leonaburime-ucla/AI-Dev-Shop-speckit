@@ -42,7 +42,7 @@ These are 90% the same idea: dependencies point inward, core business logic has 
 
 **Core principle**: Your business logic must not import from your database layer, web framework, or any third-party library. Dependency injection inverts this at the composition root.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/clean-architecture.md`, `<SHOP_ROOT>/skills/design-patterns/references/hexagonal-architecture.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/clean-architecture.md`, `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/hexagonal-architecture.md`
 
 ---
 
@@ -56,7 +56,7 @@ Organize by feature, not by technical layer. Each feature is self-contained: its
 
 **Key tradeoff**: Some logic duplication across slices is expected and acceptable. Extract shared code only when three or more slices need it (rule of three).
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/vertical-slice-architecture.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/vertical-slice-architecture.md`
 
 ---
 
@@ -70,7 +70,7 @@ A single deployable unit with strongly enforced module boundaries. Modules commu
 
 **Key tradeoff**: Simpler ops than microservices. Module boundaries in the monolith become service boundaries later — if boundaries are enforced now, extraction is straightforward.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/modular-monolith.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/modular-monolith.md`
 
 ---
 
@@ -84,7 +84,7 @@ Separate read and write models completely. Writes validate business rules and ma
 
 **Key tradeoff**: Projection lag — read models may be slightly behind write state in async implementations.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/cqrs.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/cqrs.md`
 
 ---
 
@@ -98,7 +98,7 @@ Services communicate through events, not direct calls. Publishers emit events to
 
 **Key tradeoff**: No direct call stack makes debugging harder. Eventual consistency requires explicit handling.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/event-driven-architecture.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/event-driven-architecture.md`
 
 ---
 
@@ -122,7 +122,7 @@ Each service owns its own deployment, database, and release cycle. Teams deploy 
 
 **Avoid when**: Starting out. Small team. Distributed systems complexity will slow you down more than it helps you.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/microservices.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/microservices.md`
 
 ---
 
@@ -131,7 +131,7 @@ Each service owns its own deployment, database, and release cycle. Teams deploy 
 **Serverless**: Bursty workloads where you pay per execution. Ops-light teams.
 **Pipeline/Batch**: Offline large-scale data processing with stage isolation.
 
-**Files**: `<SHOP_ROOT>/skills/design-patterns/references/serverless-architecture.md`, `<SHOP_ROOT>/skills/design-patterns/references/pipeline-batch-architecture.md`
+**Files**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/serverless-architecture.md`, `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/pipeline-batch-architecture.md`
 
 ---
 
@@ -143,7 +143,7 @@ Abstract all data access behind a typed interface. The domain layer defines what
 
 **Avoid when**: Simple CRUD with no domain logic; ORM already provides adequate abstraction and tests are integration-only.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/repository-pattern.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/repository-pattern.md`
 
 ---
 
@@ -155,7 +155,7 @@ Entity (identity-based), Value Object (value-based, immutable), Aggregate (consi
 
 **Avoid when**: Simple CRUD with no domain rules. Prototype or throwaway code. Team unfamiliar with the concepts — poorly applied DDD is worse than a flat model.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/ddd-tactical-patterns.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/ddd-tactical-patterns.md`
 
 ---
 
@@ -167,7 +167,7 @@ Three isolation models: shared DB/shared schema (row-level `tenant_id`), shared 
 
 **Avoid when**: Single-tenant internal tool. Consumer app with individual users (not organizations). Pre-revenue prototype.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/multi-tenant-architecture.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/multi-tenant-architecture.md`
 
 ---
 
@@ -179,7 +179,7 @@ Cache-aside (lazy load on miss), write-through (populate on write), write-behind
 
 **Avoid when**: Data changes faster than it can be cached (near-zero hit rate). Strong consistency required on every read (financial balances, inventory). Scale has not been measured yet — profile first.
 
-**File**: `<SHOP_ROOT>/skills/design-patterns/references/caching-patterns.md`
+**File**: `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/caching-patterns.md`
 
 ---
 
@@ -226,9 +226,9 @@ These terms appear throughout architecture discussions. Precision matters.
 
 ## Architecture Decision Record (ADR) Format
 
-Every significant architecture choice must be recorded. Use `<SHOP_ROOT>/templates/adr-template.md` — it includes all required sections: Context, Decision, Rationale, Pattern Evaluation, Consequences, Module/Service Boundaries, API/Event Contract Summary, Enforcement, and Related Decisions.
+Every significant architecture choice must be recorded. Use `<AI_DEV_SHOP_ROOT>/templates/adr-template.md` — it includes all required sections: Context, Decision, Rationale, Pattern Evaluation, Consequences, Module/Service Boundaries, API/Event Contract Summary, Enforcement, and Related Decisions.
 
-ADRs live in `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. They are inputs to the Programmer Agent and Code Review Agent — architectural violations are violations of a recorded ADR.
+ADRs live in `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`. They are inputs to the Programmer Agent and Code Review Agent — architectural violations are violations of a recorded ADR.
 
 ## Principles That Always Apply
 

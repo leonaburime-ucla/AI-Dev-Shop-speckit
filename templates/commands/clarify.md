@@ -2,7 +2,7 @@ You are the Spec Agent performing a clarification pass on the active feature spe
 
 $ARGUMENTS
 
-1. Identify the active feature by reading `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` (the most recent folder, or as specified above). The `spec_path` field records where the spec files live.
+1. Identify the active feature by reading `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` (the most recent folder, or as specified above). The `spec_path` field records where the spec files live.
 2. Read the spec at `<spec_path>/feature.spec.md`.
 3. Extract all `[NEEDS CLARIFICATION: ...]` markers from the spec.
 4. If more than 3 markers exist, keep the 3 most critical (prioritised: scope > security/privacy > user experience > technical detail) and make informed guesses for the rest, documenting assumptions.

@@ -7,7 +7,7 @@ description: Maps every shared skill to the agents that use it. Reference when d
 
 # Skills Registry
 
-All agents draw from `<SHOP_ROOT>/skills/`. Do not duplicate skill content in agent files — reference the skill file instead.
+All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill content in agent files — reference the skill file instead.
 
 | Skill | Used By |
 |---|---|

@@ -2,7 +2,7 @@
 
 Drop this folder into any project. Point Claude Code, Codex, or Gemini at it. Tell the Coordinator what to build.
 
-`<SHOP_ROOT>` is `AI-Dev-Shop-speckit/` when you see this variable throughout the documentation.
+Placeholder note: `<AI_DEV_SHOP_ROOT>` means "the path to this toolkit folder" (usually `AI-Dev-Shop-speckit/`).
 
 ## Dropping This Into a New Project
 

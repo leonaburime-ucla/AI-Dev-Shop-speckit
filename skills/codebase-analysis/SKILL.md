@@ -9,7 +9,7 @@ description: Use when analyzing an existing codebase for architectural flaws, co
 
 Analyzing an existing codebase requires token discipline. Reading every file is not viable for production codebases. This skill uses a three-phase approach that builds a complete picture through targeted reads rather than exhaustive ones.
 
-Reports are saved to `<SHOP_ROOT>/reports/codebase-analysis/` — not kept in context. This makes findings persistent and loadable by the `architecture-migration` skill in a separate session.
+Reports are saved to `<AI_DEV_SHOP_ROOT>/reports/codebase-analysis/` — not kept in context. This makes findings persistent and loadable by the `architecture-migration` skill in a separate session.
 
 ## Token Budget Before You Start
 
@@ -117,7 +117,7 @@ For each dependency found, determine the minimum change to make it injectable or
 
 ## Findings Report Format
 
-**Small/medium codebases:** Save as `<SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-<id>-<YYYY-MM-DD>.md`
+**Small/medium codebases:** Save as `<AI_DEV_SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-<id>-<YYYY-MM-DD>.md`
 
 **Large codebases:** Split into named parts:
 - `ANALYSIS-<id>-<date>-part1-structure.md`
@@ -170,14 +170,14 @@ Due to token budget, the following were sampled but not fully read:
 ## Recommended Next Step
 
 State which option applies:
-- If zero coverage in critical modules and full migration is premature: generate a Testability Remediation Plan using Phase 4 of `<SHOP_ROOT>/skills/codebase-analysis/SKILL.md`
-- If architecture overhaul is warranted: load this report into `<SHOP_ROOT>/skills/architecture-migration/SKILL.md` to generate a migration plan
+- If zero coverage in critical modules and full migration is premature: generate a Testability Remediation Plan using Phase 4 of `<AI_DEV_SHOP_ROOT>/skills/codebase-analysis/SKILL.md`
+- If architecture overhaul is warranted: load this report into `<AI_DEV_SHOP_ROOT>/skills/architecture-migration/SKILL.md` to generate a migration plan
 - If structural issues are minor: route findings to Refactor Agent via Coordinator
 ```
 
 ## Testability Remediation Plan Format
 
-Save to `<SHOP_ROOT>/reports/codebase-analysis/TESTABILITY-<id>-<YYYY-MM-DD>.md`
+Save to `<AI_DEV_SHOP_ROOT>/reports/codebase-analysis/TESTABILITY-<id>-<YYYY-MM-DD>.md`
 
 Only produce this when Phase 4 is run.
 

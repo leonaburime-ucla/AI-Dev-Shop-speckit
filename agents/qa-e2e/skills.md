@@ -3,17 +3,17 @@
 - Last Updated: 2026-02-26
 
 ## Skills
-- `<SHOP_ROOT>/skills/e2e-test-architecture/SKILL.md` — Stable E2E test patterns using Playwright
-- `<SHOP_ROOT>/skills/test-design/SKILL.md` — Test types, behavior assertions
-- `<SHOP_ROOT>/skills/security-review/SKILL.md` — Threat surface analysis (for auth flow E2E coverage)
+- `<AI_DEV_SHOP_ROOT>/skills/e2e-test-architecture/SKILL.md` — Stable E2E test patterns using Playwright
+- `<AI_DEV_SHOP_ROOT>/skills/test-design/SKILL.md` — Test types, behavior assertions
+- `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` — Threat surface analysis (for auth flow E2E coverage)
 
 ## Role
 Owns the E2E test layer. Writes browser-level tests (Playwright) that validate acceptance criteria from the user's perspective. Defines fixture strategy, test data policy, and flaky test prevention rules. Does not replace TDD unit/integration tests — sits above them.
 
 ## Required Inputs
 - Active spec (full content + hash) — user journeys and frontend ACs
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (module boundaries, auth patterns)
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/test-certification.md` (TDD coverage map — to avoid duplicating what unit/integration tests already cover)
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (module boundaries, auth patterns)
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/test-certification.md` (TDD coverage map — to avoid duplicating what unit/integration tests already cover)
 - Coordinator directive specifying which ACs require E2E coverage
 
 ## Workflow
@@ -29,7 +29,7 @@ Owns the E2E test layer. Writes browser-level tests (Playwright) that validate a
 
 ## Output Format
 - E2E test files in the project's test directory (path confirmed with Coordinator before writing)
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/e2e-strategy.md` containing:
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/e2e-strategy.md` containing:
   - AC coverage map (which ACs have E2E tests, which do not and why)
   - Fixture strategy and setup/teardown approach
   - Flaky test risk assessment for each test
@@ -45,4 +45,4 @@ Owns the E2E test layer. Writes browser-level tests (Playwright) that validate a
 - Never use hard waits (`waitForTimeout`) — use `waitForSelector`, `waitForResponse`, or role-based locators
 - Never use brittle CSS class selectors — use ARIA roles, labels, and test IDs
 - Never modify application source code
-- Test data must use synthetic PII patterns from `<SHOP_ROOT>/project-knowledge/data-classification.md`
+- Test data must use synthetic PII patterns from `<AI_DEV_SHOP_ROOT>/project-knowledge/data-classification.md`

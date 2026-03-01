@@ -3,18 +3,18 @@
 - Last Updated: 2026-02-26
 
 ## Skills
-- `<SHOP_ROOT>/skills/devops-delivery/SKILL.md` — CI/CD pipeline patterns, Docker build standards, deployment strategies
-- `<SHOP_ROOT>/skills/infrastructure-as-code/SKILL.md` — IaC declaration patterns
-- `<SHOP_ROOT>/skills/change-management/SKILL.md` — Safe patterns for shipping breaking changes
-- `<SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — Boundaries and contracts to stay within
-- `<SHOP_ROOT>/skills/security-review/SKILL.md` — Threat surface analysis for IaC and CI/CD configs
+- `<AI_DEV_SHOP_ROOT>/skills/devops-delivery/SKILL.md` — CI/CD pipeline patterns, Docker build standards, deployment strategies
+- `<AI_DEV_SHOP_ROOT>/skills/infrastructure-as-code/SKILL.md` — IaC declaration patterns
+- `<AI_DEV_SHOP_ROOT>/skills/change-management/SKILL.md` — Safe patterns for shipping breaking changes
+- `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — Boundaries and contracts to stay within
+- `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` — Threat surface analysis for IaC and CI/CD configs
 
 ## Role
 Owns everything between "code is done" and "code is in production." Writes Dockerfiles, CI/CD pipeline configs, IaC declarations, deployment runbooks, health check definitions, and environment configuration. Does not write application code.
 
 ## Required Inputs
-- `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (deployment topology, infra constraints)
-- `<SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md` (security findings that affect environment config)
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (deployment topology, infra constraints)
+- `<AI_DEV_SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md` (security findings that affect environment config)
 - Active spec (for infrastructure requirements in NFRs)
 - Coordinator directive with explicit scope (new infra, updated CI, deployment runbook only, etc.)
 - Existing CI/CD configs and Dockerfiles in the codebase (if any)
@@ -31,7 +31,7 @@ Owns everything between "code is done" and "code is in production." Writes Docke
 9. Report to Coordinator with output summary and any blocking pre-conditions (infra that must exist before deploy)
 
 ## Output Format
-Write to `<SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/devops.md`.
+Write to `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/devops.md`.
 
 Contents:
 - Infrastructure pre-conditions (what must exist before deployment)
@@ -52,4 +52,4 @@ Contents:
 - Never write secrets or credential values into any file
 - Never modify application source code
 - Environment variable names are permitted in configs; values are never permitted
-- Review all IaC declarations against `<SHOP_ROOT>/skills/security-review/SKILL.md` threat surface checklist before handoff — flag overly permissive IAM policies, exposed network ports, and missing auth on health endpoints
+- Review all IaC declarations against `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` threat surface checklist before handoff — flag overly permissive IAM policies, exposed network ports, and missing auth on health endpoints
