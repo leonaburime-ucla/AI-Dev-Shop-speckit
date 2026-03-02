@@ -1,8 +1,8 @@
 ---
 name: swarm-consensus
-version: 1.1.0
-last_updated: 2026-02-23
-description: Orchestrate a multi-model swarm by dispatching a prompt to all available LLM CLIs (whichever ones are installed), collating independent responses, and synthesizing a consensus. Model-agnostic — the primary model is whoever is currently running this skill. OFF by default.
+version: 1.2.0
+last_updated: 2026-03-01
+description: Orchestrate a multi-model swarm by dispatching a prompt to all available LLM CLIs (whichever ones are installed), collating independent responses, and synthesizing a consensus. Supports single-pass and debate modes. Model-agnostic — the primary model is whoever is currently running this skill. OFF by default.
 ---
 
 # Skill: Swarm Consensus
@@ -34,7 +34,29 @@ If you are Claude Code, you dispatch to `gemini` and `codex`. If you are Gemini,
 
 ---
 
-## Step 1 — Prerequisite Check
+## Consensus Modes
+
+Pick one mode explicitly at run start:
+
+- `single-pass` (default): independent first-pass answers from all models, one synthesis pass, then final recommendation.
+- `debate`: independent first-pass answers, then bounded rebuttal rounds, then final recommendation.
+
+If the user does not specify mode, use `single-pass`.
+
+---
+
+## Debate Controls
+
+Debate mode accepts runtime controls from the user:
+
+- `max_rounds=<int>`: maximum rebuttal rounds (default `3`)
+- `min_confidence=<0.0-1.0>`: minimum agreement threshold to stop early (default `0.90`)
+
+If controls are not provided, use defaults. If provided values are invalid, state the invalid value and fall back to defaults.
+
+---
+
+## Step 1 — Prerequisite Check + Preflight
 
 Before dispatching anything, run these checks via shell:
 
@@ -49,8 +71,23 @@ From the output:
 - Record the exact model version string for each available CLI — this goes in the consensus report
 - Skip any CLI that is not installed — do not error, just note it as absent in the report
 - Check for any user-saved model version preferences (e.g. from a prior "always use Opus for consensus" instruction) and apply them via CLI flags if the tool supports it
+- Run preflight transparency announcement before asking any model:
+  - `Asking question to Gemini <version>, Codex <version>, Claude <version>`
+  - If a CLI is missing: `Gemini not installed` (or equivalent) in the same announcement.
 
 A minimum viable swarm is **primary model + 1 peer**. If no peers are available, tell the user and stop — running consensus with only one model produces no value. **This is a graceful stop, not a pipeline failure.** If Swarm Consensus was invoked as part of a pipeline stage, that stage proceeds using the primary model's output alone — the pipeline is not blocked by missing peer CLIs.
+
+### Freshness policy
+
+Consensus runs should prefer latest or near-latest model aliases/snapshots when available:
+
+- Claude: use explicit alias/full model via `--model` and prefer current production aliases (for example `sonnet`/`opus`) unless user pins otherwise.
+- Gemini: use an explicitly configured model (`-m`) and prefer current production Gemini family.
+- Codex: use an explicitly configured model (`-m`) and prefer current production Codex/GPT coding model aliases.
+
+If a configured model appears stale, unavailable, or unknown, state it before the run and continue only if:
+- the user accepts fallback, or
+- a documented default fallback exists in this project.
 
 ---
 
@@ -69,10 +106,16 @@ Keep it self-contained. The peer CLIs have no project context — everything the
 
 **CRITICAL ANTI-HALLUCINATION RULE:** You MUST NOT fake, imagine, or hallucinate the responses from other models. If a CLI tool is not installed, or if the shell command fails or times out, you must strictly report that it failed or is unavailable. Do not invent a consensus or make up quotes from peer models. You are only allowed to synthesize the actual text captured from the `stdout` of the shell commands.
 
-Run in parallel where possible:
+### First-pass anti-bias rule (hard requirement)
 
-1. **Self (primary model):** Generate your own full response to the prompt internally. Do not anchor on what you expect others to say.
-2. **Each available peer CLI:** Execute via shell, capture `stdout`. Use a timeout of 60 seconds per call — if a tool hangs, mark it as timed out in the report and continue.
+1. Primary model MUST produce its own answer first and freeze it.
+2. Primary model MUST NOT read peer outputs until its first-pass answer is written.
+3. Round-1 peer prompts MUST NOT include other models' answers.
+
+### Round 1 (all modes)
+
+1. **Self (primary model):** Generate full first-pass response and freeze it.
+2. **Each available peer CLI:** Execute via shell, capture `stdout`. Use timeout of 60 seconds per call — if a tool hangs, mark as timed out and continue.
 
 ```bash
 # Example — adapt flags to whatever the tool actually supports
@@ -82,6 +125,25 @@ codex "<prompt>"     2>/dev/null
 ```
 
 If a peer CLI returns a non-zero exit code or empty output, mark it as failed in the report and exclude it from synthesis.
+
+---
+
+### Debate rounds (debate mode only)
+
+In `debate` mode, run bounded rebuttal rounds after Round 1:
+
+1. Build a decision-point ledger (architecture choice, data model strategy, risk posture, migration approach, etc.).
+2. Summarize deltas only (where models disagree) and send the summarized deltas back to each model for rebuttal.
+3. Repeat for up to `max_rounds`.
+4. Stop early when agreement is >=`min_confidence` on decision points.
+
+Agreement formula:
+- `agreement_percent = (decision_points_with_same_outcome / total_decision_points) * 100`
+
+If max rounds reached without reaching `min_confidence`:
+- stop debate,
+- declare unresolved deltas,
+- provide recommendation with explicit uncertainty/tradeoff callouts.
 
 ---
 
@@ -105,6 +167,8 @@ Produce a `consensus-report.md` (or inline if the user prefers) with this struct
 
 **Date:** <ISO-8601>
 **Prompt:** <the prompt used>
+**Mode:** <single-pass | debate>
+**Primary model:** <name>
 
 ## The Swarm
 | Role | Model | Version | Status |
@@ -138,6 +202,14 @@ Produce a `consensus-report.md` (or inline if the user prefers) with this struct
 
 ### Unique Insights
 <Anything only one model raised>
+
+### Decision Ledger
+| Decision Point | Primary | Claude | Gemini | Codex | Agreement |
+|---|---|---|---|---|---|
+| <point 1> | <position> | <position> | <position> | <position> | Yes/No |
+
+### Unresolved Deltas
+<Only include if disagreement remains after synthesis/debate>
 
 ## Final Recommendation
 <Synthesized conclusion with reasoning>

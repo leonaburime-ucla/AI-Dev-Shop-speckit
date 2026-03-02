@@ -1,7 +1,7 @@
 ---
 name: frontend-react-orcbash
-version: 1.0.0
-last_updated: 2026-02-28
+version: 1.1.0
+last_updated: 2026-03-02
 description: Use when structuring React frontend code using the Orc-BASH pattern (Orchestration, Business Logic, API, State Management, Hooks) — a hexagonal architecture that inverts dependency flow, maximizes reusability across pages, and makes every layer independently testable.
 ---
 
@@ -24,6 +24,13 @@ Business Logic, API, and State Manager import from shared `types/` only. They ne
 1. Data (simple values)
 2. Functions (API calls, business logic methods)
 3. Classes (store instances, service instances — last resort, harder to mock)
+
+## Type Signature and TypeDoc Requirements
+
+- Every exported function, hook, and orchestrator must declare an explicit return type in its TypeScript signature.
+- Every exported function and hook must include TypeDoc/TSDoc with `@param` and `@returns`.
+- Internal/private hooks and helper functions must also be documented when they coordinate side-effects or domain behavior (especially UI-state hooks, logic hooks, and integration hooks).
+- Do not rely on inferred return types at Orc-BASH layer boundaries.
 
 ## File Structure
 
@@ -158,7 +165,14 @@ The hook layer has three sub-hooks with distinct responsibilities:
 **UI State Hook** — ephemeral view state only (modals, spinners, form input). No async, no business logic.
 
 ```typescript
-const usePostUiState = () => {
+/**
+ * Manages ephemeral UI-only state for post interactions.
+ * @returns UI state snapshot and UI-only actions.
+ */
+const usePostUiState = (): {
+  uiState: { isLiking: boolean; showCommentModal: boolean; commentText: string };
+  actions: { setLiking: (v: boolean) => void; openModal: () => void };
+} => {
   const [uiState, setUiState] = useState({
     isLiking: false,
     showCommentModal: false,
@@ -173,7 +187,19 @@ const usePostUiState = () => {
 **Business Logic Hook** (optional) — a light React wrapper for service methods that need lifecycle integration: `useEffect` triggered by business rule outcomes, or local React state tied to a service computation. Use when a service method needs to interact with React's lifecycle, not just transform data.
 
 ```typescript
-const usePostLogic = ({ post, formatPost }: { post: Post | null; formatPost: (p: Post) => FormattedPost }) => {
+/**
+ * Computes memoized, domain-derived post view data.
+ * @param post Current post entity from state.
+ * @param formatPost Domain formatter function.
+ * @returns Formatted post view model.
+ */
+const usePostLogic = ({
+  post,
+  formatPost,
+}: {
+  post: Post | null;
+  formatPost: (p: Post) => FormattedPost;
+}): { formattedPost: FormattedPost | null } => {
   // Memoize expensive business logic computation — needs React's useMemo
   const formattedPost = useMemo(
     () => post ? formatPost(post) : null,
@@ -196,7 +222,22 @@ export interface UsePostDependencies {
   updatePostLikes: (postId: string, likes: number) => void;
 }
 
-export const usePost = (postId: string, deps: UsePostDependencies) => {
+/**
+ * Composes UI state, business logic, and async integration concerns.
+ * @param postId Target post identifier.
+ * @param deps Injected dependencies from orchestrator wiring.
+ * @returns Orchestrated state and actions for post views.
+ */
+export const usePost = (
+  postId: string,
+  deps: UsePostDependencies,
+): {
+  post: FormattedPost | null;
+  isLoading: boolean;
+  error: Error | null;
+  uiState: { isLiking: boolean; showCommentModal: boolean; commentText: string };
+  actions: { fetchPost: () => Promise<void>; like: () => Promise<void>; openModal: () => void };
+} => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -255,7 +296,18 @@ import { postService } from '../logic/PostService';
 import { usePostStateAdapter } from '../state/PostStateAdapter';   // ← adapter, not store
 import { usePost } from '../hooks/usePost';
 
-export const usePostPageOrchestrator = (postId: string) => {
+/**
+ * Wires all Orc-BASH dependencies for the post page use case.
+ * @param postId Target post identifier.
+ * @returns UI-ready view model and actions.
+ */
+export const usePostPageOrchestrator = (postId: string): {
+  post: FormattedPost | null;
+  isLoading: boolean;
+  error: Error | null;
+  isLiking: boolean;
+  onLike: () => Promise<void>;
+} => {
   const state = usePostStateAdapter(postId);   // all state via adapter
 
   const hook = usePost(postId, {
@@ -376,3 +428,5 @@ useEffect(() => { deps.fetchPost(postId); }, [postId]);
 
 See `<AI_DEV_SHOP_ROOT>/skills/frontend-react-orcbash/references/` for complete working examples:
 - `post-feature-example.md` — full Reddit posts feature with all 6 layers including state adapter
+- `typedoc-return-types-example.md` — explicit return types and TypeDoc/TSDoc coverage for exported APIs plus internal hook internals
+- `feature-slice-drop-in-template.md` — DDD/vertical-slice drop-in feature structure with rationale, weaknesses, and improvement guidance

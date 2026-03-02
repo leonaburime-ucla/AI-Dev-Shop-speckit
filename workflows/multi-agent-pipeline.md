@@ -31,7 +31,7 @@ Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/
 - Coordinator generates `tasks.md` from the approved ADR before TDD dispatch — not an agent step
 - `[Observer]` is passive across all stages when enabled
 
-Each stage is blocked until the Coordinator validates the previous stage's handoff contract. No agent talks directly to another — all routing flows through the Coordinator.
+Each stage is blocked until the Coordinator validates the previous stage's handoff contract. By default, routing flows through the Coordinator with bounded cross-agent consultation enabled; if consultation mode is disabled, the Coordinator uses strict single-agent routing with no consultations.
 
 ---
 

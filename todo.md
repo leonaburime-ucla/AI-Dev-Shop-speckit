@@ -11,6 +11,7 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ### Observer Agent Operational Cadence
 **What it is:** The Observer role and output format are well-defined but its trigger is not. Currently it "runs alongside" the pipeline with no specified cadence — making it easy to never dispatch in practice.
+**Current state:** **[PARTIAL]** Observer behavior is documented in multiple places (`workflows/multi-agent-pipeline.md`, scorecard docs), but Coordinator dispatch trigger rules are still not explicit.
 **What to add:**
 - Define trigger conditions in `agents/coordinator/skills.md`: dispatch Observer after every 3rd feature completion, after any convergence escalation, and on explicit Coordinator request
 - Define what "weekly pattern report" means: manual trigger via slash command or Coordinator initiates after N features
@@ -18,11 +19,23 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ### Git Branching and PR Strategy
 **What it is:** The pipeline produces merge-ready code but says nothing about git workflow — feature branches, PR naming, review process, or merge strategy. The human is left to figure this out.
+**Current state:** Still valid gap (no canonical branching/PR policy in coordinator workflow docs).
 **What to add:**
 - Recommended branch naming convention per feature: `feature/<SPEC-ID>-<feature-name>`
 - PR description template that references spec hash, ADR path, and security sign-off status
 - Coordinator guidance: when to create a branch (at TDD dispatch), when to signal PR-ready (at Done State)
 - Note on merge strategy trade-offs (squash vs merge commit vs rebase) relative to spec traceability
+
+---
+
+## Priority 2 — Consensus Orchestration
+
+### Multi-LLM Consensus Modes and Guardrails **[PARTIAL]**
+**What it is:** `/consensus` and `skills/swarm-consensus/SKILL.md` exist, but they need stronger orchestration rules for architecture/data-modeling debates and reproducible runs with explicit mode control.
+**Current state:** Core orchestration flow is implemented; this section now tracks only remaining gaps.
+**Known issue:** Consensus runs can still misreport exact peer model/version identifiers in some environments; preflight/version capture needs stricter normalization and verification.
+**What to add:**
+- Normalize and verify peer model/version reporting across CLI outputs so preflight and reports always show accurate model IDs and versions.
 
 ---
 
@@ -46,10 +59,10 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ### Spec-Kit Command Contract Parity **[PARTIAL]**
 **What it is:** Command files (`.claude/commands/`) currently lack machine-readable frontmatter. Spec-kit's command format includes `handoffs:` and `scripts:` fields that enable automated contract validation — e.g., checking that `/plan` references an approved spec before executing.
-**Current state:** All 6 command files exist (`spec`, `clarify`, `plan`, `tasks`, `implement`, `review`). Frontmatter contracts not yet added.
+**Current state:** Command files exist in `templates/commands/` (including `spec`, `clarify`, `plan`, `tasks`, `implement`, `review`, `consensus`, `agent`). Frontmatter contracts are still not present.
 **What to add:**
-- Frontmatter schema for command files — `description`, `requires`, `handoffs`, `produces`
-- Update all 6 command files in `templates/commands/` to include frontmatter
+- Frontmatter schema for command files — `description`, `requires`, `handoffs`, `produces`, and optional `mode`
+- Update all command files in `templates/commands/` to include frontmatter
 - Coordinator skills update — teach it to validate command preconditions against frontmatter `requires` fields before dispatch
 **References:** github/spec-kit command format (`github-spec-kit/templates/commands/specify.md`)
 

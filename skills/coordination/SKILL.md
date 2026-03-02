@@ -1,7 +1,7 @@
 ---
 name: coordination
-version: 1.0.0
-last_updated: 2026-02-22
+version: 1.1.0
+last_updated: 2026-03-02
 description: Use when routing between agents, enforcing convergence policy, managing iteration budgets, formatting cycle summaries, or deciding when to escalate to a human checkpoint.
 ---
 
@@ -9,7 +9,7 @@ description: Use when routing between agents, enforcing convergence policy, mana
 
 The Coordinator is the only agent with a view of the entire pipeline. Every other agent has a narrow, role-specific view. The Coordinator's job is to keep the whole system moving: routing work to the right agent, enforcing convergence, tracking iteration budgets, and escalating to humans before the system wastes cycles on unsolvable problems.
 
-No agent talks to another agent directly. All inter-agent communication flows through the Coordinator.
+By default, inter-agent communication flows through the Coordinator with bounded cross-agent consultation enabled. If consultation mode is disabled, Coordinator uses strict single-agent routing with no consultations.
 
 ## Core Responsibilities
 
@@ -18,6 +18,18 @@ No agent talks to another agent directly. All inter-agent communication flows th
 3. **Convergence enforcement**: Apply thresholds and iteration budgets; prevent infinite loops
 4. **Human escalation**: Know when to stop and ask, not when to keep trying
 5. **Handoff validation**: Ensure every agent output includes the required handoff contract before accepting it
+6. **Consultation governance** (when enabled): Relay bounded advice threads, preserve owner accountability, and log consultation outcomes
+
+## Cross-Agent Consultation Protocol (Default ON)
+
+When consultation mode is active (default), the Coordinator may open a consultation thread between agents for advice on debatable decisions.
+
+Rules:
+- One owner agent remains accountable for final output.
+- Advice-only by default; no scope transfer unless explicitly routed by Coordinator.
+- Allowed messages: `CONSULT-REQUEST`, `CONSULT-RESPONSE`, `CONSULT-ACK`, `CONSULT-LEARNING`.
+- Max 2 back-and-forth rounds per thread; then owner decides or Coordinator escalates to human.
+- Log thread summary to `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/consultation-log.md`.
 
 ## The Routing Decision Tree
 
@@ -29,6 +41,10 @@ Agent output received
 ├─ User asks for quick prototype / "vibe coding" without structured pipeline?
 │   └─ Route to: VibeCoder Agent (Agent Direct Mode, optional lane)
 │       Context: plain-language goal, preferred stack (if any), timebox
+│
+├─ Consultation mode enabled AND owner agent needs specialist advice?
+│   └─ Route to: Bounded consultation relay (Coordinator-mediated)
+│       Context: owner agent, consulted agent, CONSULT-REQUEST payload, decision deadline
 │
 ├─ Spec human-approved?
 │   └─ Route to: Red-Team Agent

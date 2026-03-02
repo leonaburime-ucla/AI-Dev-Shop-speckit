@@ -7,7 +7,7 @@ A fixed set of reference inputs and expected outputs for each agent role. The Ob
 ## Structure
 
 ```
-benchmarks/
+reports/benchmarks/
   spec-agent/
     sample-001-simple-crud/
       input.md          — the user's feature description

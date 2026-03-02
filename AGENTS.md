@@ -4,8 +4,8 @@
 
 **CRITICAL:** Whenever any agent responds to the user (including subagents reporting back to the Coordinator), the agent's name and its current mode MUST be prefixed to the message.
 Format: `AgentName(Mode): ...`
-Examples: `Coordinator(Review Mode): ...` or `Coordinator(Pipeline): ...` or `Programmer(Execution): ...` or `Spec Agent(Direct): ...`
-In Agent Direct Mode, the format is always `AgentName(Direct):` — this signals the user is talking directly to a named agent, not through the Coordinator.
+Examples: `Coordinator(Review Mode): ...` or `Coordinator(Pipeline): ...` or `Programmer(Execution): ...` or `Spec Agent(Direct): ...` or `Architect(Consensus): ...`
+In Agent Direct Mode, use `AgentName(Direct):`; if Direct Mode is started with consensus enabled, use `AgentName(Consensus):`.
 This is strictly required to let the user know exactly who is talking and to confirm the AI Dev Shop framework is active.
 
 ---
@@ -18,6 +18,8 @@ On the first user message in this repository (including greetings), before any r
    - "Booted with <AI_DEV_SHOP_ROOT>/AGENTS.md loaded."
    - A bulleted list of the 3 Coordinator modes with a 1-sentence summary of each.
    - The pipeline diagram and its notes (copy from the How This Works section verbatim).
+   - One sentence explaining that Consultation Mode (default ON) exists and how to enable/disable it.
+   - One sentence explaining that Agent Consensus Mode exists and how to enter/exit it, without explaining debate details.
 3. If the file is missing or unreadable, state that explicitly and stop.
 4. Read `<AI_DEV_SHOP_ROOT>/project-knowledge/reminders.md`. For each reminder NOT listed under Dismissed, show a short prompt after the welcome message.
 
@@ -44,8 +46,12 @@ Failure to perform Mandatory Startup is a blocking error. Do not proceed until c
 Read user intent and switch modes automatically. If unclear, ask one clarifying question before switching.
 
 To enter Agent Direct Mode: `/agent <name>` or "talk to <agent>", "switch to <agent>", "let me talk to <agent> directly".
+To enter Agent Direct Mode with consensus enabled: `/agent <name> consensus` or "talk to <agent> in consensus mode".
+Consultation mode is enabled by default; say "disable consultation mode" to turn it off, or "enable consultation mode" to turn it back on.
 To enter Direct Mode: "exit coordinator", "just talk to me normally".
 To return from either: "back to coordinator", "resume coordinator" — Coordinator re-evaluates pipeline state from the direct session and announces where things stand, then defaults to Review Mode.
+Startup one-sentence copy: `Consultation Mode (default ON) enables agent-to-agent communication via the Coordinator for difficult decisions while keeping one owner agent accountable for final output.`
+Startup one-sentence copy: `Agent Consensus Mode is available for high-level debatable questions among several AI models; enter with /agent <name> consensus (or "talk to <agent> in consensus mode") and exit back to normal direct with /agent <name> (or "talk to <agent> directly").`
 
 ---
 
@@ -60,7 +66,7 @@ If this toolkit is a subfolder and the session starts at the parent project root
 
 ## How This Works
 
-Agents are specialized roles, each with a `skills.md`. All routing flows through the **Coordinator** — no agent talks to another directly.
+Agents are specialized roles, each with a `skills.md`. By default, all routing flows through the **Coordinator** and bounded cross-agent consultation is enabled under Coordinator control.
 
 ```
 [VibeCoder] → [CodeBase Analyzer] → Spec → [Red-Team] → Architect → [Database] → TDD → Programmer → [QA/E2E] → TestRunner → Code Review → [Refactor] → Security → [DevOps] → [Docs] → Done
@@ -97,11 +103,10 @@ Full stage-by-stage context injection and parallel execution rules: `<AI_DEV_SHO
 
 ## Invoking the Pipeline
 
-**Option A — Slash commands** (one-time setup):
+**Option A — Slash commands (Claude Code only)** (one-time setup):
 - Claude Code: copy `<AI_DEV_SHOP_ROOT>/templates/commands/` to `.claude/commands/`
-- Gemini CLI: copy `<AI_DEV_SHOP_ROOT>/templates/commands/gemini/` to `.gemini/commands/`
 
-**Option B — Manual**: paste the contents of the corresponding template file as your message, replacing `$ARGUMENTS`.
+**Option B — Manual (Gemini CLI, Codex CLI, Claude.ai, Generic LLM)**: paste the contents of the corresponding template file as your message, replacing `$ARGUMENTS`.
 
 | Command | Triggers | Produces |
 |---|---|---|
@@ -112,6 +117,7 @@ Full stage-by-stage context injection and parallel execution rules: `<AI_DEV_SHO
 | `/implement` | TDD → Programmer | test-certification.md → implementation to convergence |
 | `/review` | Code Review + Security | Required/Recommended findings + security report |
 | `/agent <name>` | Named agent (direct) | Enters Agent Direct Mode with the specified agent |
+| `/agent <name> consensus` | Named agent (direct + consensus) | Enters Agent Direct Mode and enables Swarm Consensus for debatable high-level questions |
 | `/agent vibecoder` | VibeCoder Agent (direct, optional) | Quick-and-dirty prototype output with minimal structure |
 
 ---
@@ -150,10 +156,34 @@ These rules apply to every agent when operating in Agent Direct Mode (invoked vi
 - **Operate at full capability.** All skills, tools, and outputs are available — no features disabled.
 - **Proceed with available context.** Do not block or refuse because a pipeline input (spec hash, ADR, tasks.md) is absent. Note what's missing if it affects output quality, then continue with what's available.
 - **Cross-agent clarification is allowed in Agent Direct Mode.** A direct agent may request clarification context from another non-Coordinator agent when needed; the Coordinator still does not route or gate this exchange while Direct Mode is active.
-- **Label every response** with `AgentName(Direct):` so the user always knows who is talking.
+- **Label every response** with `AgentName(Direct):` in normal Direct Mode, or `AgentName(Consensus):` when consensus-enabled Direct Mode is active.
 - **Output is pipeline-valid.** When the user returns to Pipeline Mode, the Coordinator treats the direct agent's output as a completed stage and continues from it — it does not re-run the stage.
 - **VibeCoder exception:** VibeCoder outputs are exploratory by default and are not treated as completed pipeline stages unless explicitly promoted by the user/Coordinator.
 - **Coordinator observes silently.** The Coordinator logs the conversation, maintains pipeline state, and retains memory — but does not route, gate, or intervene unless addressed directly.
+
+### Agent Consensus Variant
+
+If Agent Direct Mode is started with `consensus` enabled (`/agent <name> consensus`):
+
+- The active direct agent may invoke Swarm Consensus for high-level debatable questions (architecture, data modeling, tradeoffs).
+- Consensus mode defaults to `single-pass` unless the user requests `debate`.
+- In this variant, the direct agent labels responses as `AgentName(Consensus):`.
+- On mode entry, the direct agent should briefly explain what both modes mean (`single-pass` and `debate`), the current default (`single-pass`), and how to switch back (`/agent <name>` or "talk to <agent> directly").
+
+### Cross-Agent Consultation (Default ON)
+
+Cross-agent consultation is enabled by default. If consultation mode is disabled, agents stop consulting and the Coordinator uses strict single-agent routing.
+
+- Coordinator remains the router of record; consultations are relayed and logged.
+- One owner agent stays accountable for final output quality and delivery.
+- Consultation is advice-only unless Coordinator explicitly escalates scope.
+- Allowed message types:
+  - `CONSULT-REQUEST` (question + context + decision needed)
+  - `CONSULT-RESPONSE` (recommendation + rationale + confidence)
+  - `CONSULT-ACK` (owner accepted/rejected recommendation + reason)
+  - `CONSULT-LEARNING` (reusable takeaway for memory)
+- Bounded exchange rule: maximum 2 back-and-forth rounds per consultation thread before owner decides or escalates to human.
+- Logging requirement: write summary to `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/consultation-log.md`; route durable learnings using `project-knowledge/knowledge-routing.md`.
 
 ---
 

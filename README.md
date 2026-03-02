@@ -54,10 +54,8 @@ Multi-agent pipeline: see AI-Dev-Shop-speckit/AGENTS.md
 cp -r AI-Dev-Shop-speckit/templates/commands/ .claude/commands/
 ```
 
-**Slash commands (Gemini CLI)** — copy the Gemini-specific command templates:
-```bash
-cp -r AI-Dev-Shop-speckit/templates/commands/gemini/ .gemini/commands/
-```
+**Gemini CLI / Codex CLI** — slash commands are not natively supported. Use Option B:
+open `AI-Dev-Shop-speckit/templates/commands/<command>.md`, copy the contents, and paste as your prompt.
 
 If you want these slash commands but do not want to set them up manually, ask the AI to install them for you.
 
@@ -197,8 +195,7 @@ AGENTS.md                          ← Full operating manual for all agents and 
 │       ├── tasks.md     → /tasks
 │       ├── implement.md → /implement
 │       ├── review.md    → /review
-│       ├── consensus.md → /consensus
-│       └── gemini/      ← Gemini CLI equivalents (copy to .gemini/commands/)
+│       └── consensus.md → /consensus
 └── workflows/
     ├── multi-agent-pipeline.md    ← Stage-by-stage pipeline with context injection rules
     ├── job-lifecycle.md           ← Coordinator modes and job lifecycle
