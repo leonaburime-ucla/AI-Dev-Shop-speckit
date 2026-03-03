@@ -60,21 +60,47 @@
 |---|---|---|---|
 | | | | |
 
-## 9) Spec Decomposition Plan
+## 9) Core/Foundation Spec (P0, required)
 
-Define which specs should be written next and at what granularity.
+Define the required shared foundation that must be built and merged before parallel domain slices begin.
 
-| Spec Package | Domain | Priority (P1/P2/P3) | Why separate | Depends on |
+- Required core scope:
+  - repository/project shell setup
+  - global routing/layout shell
+  - shared runtime primitives (config/env/logging)
+  - shared clients/adapters (for example DB/auth client initialization)
+  - CI/test harness bootstrap needed by downstream slices
+- Why this must block parallel slices:
+
+> Hard boundary: `P0` must stay thin. It may include shared shell/runtime primitives and shared clients only. It must not include feature-specific business logic or feature-owned schema/tables.
+
+## 10) Critical User Journeys (Cross-Domain)
+
+List end-to-end user journeys that cross domain boundaries and must be validated after slices converge.
+
+| Journey ID | Flow (example: Signup -> Browse -> Checkout) | Domains Touched | Criticality | QA/E2E Priority |
 |---|---|---|---|---|
 | | | | | |
 
-## 10) Handoff to Spec Agent
+## 11) Spec Decomposition Plan
+
+Define which specs should be written next and at what granularity.
+
+| Spec Package | Domain | Priority (P0/P1/P2/P3) | Why separate | Depends on |
+|---|---|---|---|---|
+| | | | | |
+
+> Rule: include one explicit `Core/Foundation` package at `P0`. Domain slices (P1+) depend on it.
+> Rule: if `Depends on` is non-empty, the package must be sequenced after its dependency and cannot be in the same parallel wave.
+> Rule: if a package requires a foreign key or contract dependency on another domain-owned resource, list that owner in `Depends on` and place this package in a later phase.
+
+## 12) Handoff to Spec Agent
 
 - Approved boundaries to preserve:
 - Open decisions that Spec should mark with `[NEEDS CLARIFICATION]` if unresolved:
 - Recommended sequencing for spec creation:
 
-## 11) Approval
+## 13) Approval
 
 - Human reviewer:
 - Decision: APPROVED | REVISE

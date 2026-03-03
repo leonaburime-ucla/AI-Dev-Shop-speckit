@@ -111,6 +111,15 @@ Agent output received
 │   └─ Route to: Programmer Agent
 │       Context: failing test names, spec ref, architecture constraints
 │
+├─ Downstream agent raises `[ARCHITECTURE_REVISION_REQUEST]`?
+│   └─ Route to: Coordinator escalation flow
+│       Context required: blocking constraint, failed alternatives, impacted specs/tasks/tests, proposed revision scope
+│       Next:
+│         1) Pause downstream implementation for affected scope
+│         2) Re-dispatch System Blueprint Agent for macro-boundary revisions if the issue is system-shape/domain-level
+│         3) Re-dispatch Architect Agent for ADR revision if the issue is feature-level technical architecture
+│         4) Require human approval for revised blueprint/ADR before resuming
+│
 ├─ Architecture violation found (by Code Review)?
 │   └─ Route to: Architect Agent
 │       Context: specific violation, which ADR was breached
@@ -215,6 +224,8 @@ Human checkpoints are blocking. The pipeline stops. The Coordinator presents the
 When the Architect identifies independent modules (which Vertical Slice and Modular Monolith patterns produce naturally), the Coordinator can dispatch multiple Programmer Agent instances simultaneously.
 
 Rules for parallel dispatch:
+- Enforce system-blueprint dependency sequencing: any module with `Depends on` must run after its dependency; only dependency-disjoint modules may run in parallel
+- Enforce ownership sequencing for schema dependencies: if a module requires FK/contract linkage to another domain-owned table/interface, route it to a later wave
 - Modules must have no shared state that would cause conflicts
 - Each Programmer instance works against a separate, non-overlapping set of tests
 - TestRunner aggregates all parallel outputs before routing to Code Review

@@ -12,6 +12,7 @@ Owns the E2E test layer. Writes browser-level tests (Playwright) that validate a
 
 ## Required Inputs
 - Active spec (full content + hash) — user journeys and frontend ACs
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/system-blueprint.md` (if produced — use `Critical User Journeys (Cross-Domain)` as primary E2E targets)
 - `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` (module boundaries, auth patterns)
 - `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/test-certification.md` (TDD coverage map — to avoid duplicating what unit/integration tests already cover)
 - Coordinator directive specifying which ACs require E2E coverage
@@ -25,8 +26,9 @@ Owns the E2E test layer. Writes browser-level tests (Playwright) that validate a
 5. Apply anti-flake rules from the skill — no hard waits, proper selectors, isolated contexts
 6. Tag each test with the AC it covers
 7. Verify tests pass against the current implementation. If a test fails, determine whether the cause is a spec gap, a bug in the implementation, or a test error — report each accordingly
-8. Write E2E strategy document summarizing coverage, fixture approach, and flaky test policy for this feature
-9. Report to Coordinator with test count per AC and any ACs that cannot be E2E tested (with reason)
+8. Prioritize cross-domain journeys from `system-blueprint.md` (if present) after slice convergence; explicitly report journey coverage status
+9. Write E2E strategy document summarizing coverage, fixture approach, and flaky test policy for this feature
+10. Report to Coordinator with test count per AC and any ACs/journeys that cannot be E2E tested (with reason)
 
 ## Output Format
 - E2E test files under `__tests__/e2e/` (or approved project override path confirmed with Coordinator)

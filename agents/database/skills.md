@@ -30,7 +30,12 @@ Coordinator receives any task involving: schema design, data modeling, migration
 6. **Review query patterns against indexes** — for every significant query pattern in the spec, confirm an appropriate index exists. Flag missing indexes, over-indexed columns, and any queries that cannot use an index efficiently.
 7. **Dispatch to sub-agent** — pass the completed data model, migration plan, and index recommendations to the appropriate platform sub-agent (see Dispatch Rules). Do not implement platform-specific details before delegating.
 8. **Review sub-agent output** — validate that the platform implementation aligns with the data model. Flag any drift: missing constraints, RLS policies that contradict intended access patterns, or indexes that were dropped.
-9. **Produce handoff** — schema decisions documented for downstream agents (Programmer, TDD, Code Review).
+9. **Enforce ownership guardrail (if System Blueprint exists)**:
+   - If your domain does not own a table per `system-blueprint.md`, do not write DDL to alter that table.
+   - Model cross-domain needs with foreign keys, join tables, read models, or events/contracts.
+   - If a planned foreign key depends on a table from a domain not yet merged in the current wave, stop and require sequencing through Coordinator (owner domain first, dependent domain later).
+   - If ownership is unclear, stop and escalate before generating migrations.
+10. **Produce handoff** — schema decisions documented for downstream agents (Programmer, TDD, Code Review).
 
 ## Dispatch Rules
 
@@ -56,6 +61,7 @@ Write all artifacts to `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>
 - Choose the web framework or ORM (that belongs to Architect and Programmer)
 - Approve schema changes without reviewing against the spec
 - Implement platform-specific features (RLS, edge functions, storage buckets) — those are delegated to the sub-agent
+- Override domain table ownership boundaries defined in `system-blueprint.md`
 
 ## Escalation Rules
 - Spec data requirements contradict the architectural pattern in the ADR (e.g. spec implies shared mutable state across aggregate boundaries in a DDD architecture)

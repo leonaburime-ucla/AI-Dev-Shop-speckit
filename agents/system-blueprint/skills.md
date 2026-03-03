@@ -32,9 +32,15 @@ Create a macro-level system blueprint that defines what is being built and how i
    - Ask what the user is leaning toward and confirm constraints.
 4. Map integration boundaries and high-level runtime/data topology.
 5. Identify risks and unresolved ownership/integration decisions.
-6. Propose a spec decomposition plan (separate spec packages by domain/vertical).
-7. Write `system-blueprint.md` using `<AI_DEV_SHOP_ROOT>/templates/system-blueprint-template.md`.
-8. Hand off to Coordinator for human review and Spec dispatch.
+6. Define the required `Core/Foundation` package at `P0` that must block parallel domain slice execution.
+7. Capture `Critical User Journeys (Cross-Domain)` for QA/E2E planning.
+8. Propose a spec decomposition plan (default to domain/vertical slices; use horizontal slicing only with explicit justification).
+9. Encode dependency-aware sequencing in the decomposition plan:
+   - Any package with API/event/schema dependency on another package must list it in `Depends on` and be placed in a later phase.
+   - Any package requiring a foreign key to another domain-owned table must be sequenced after the owner domain.
+10. Keep `P0` thin: no feature-specific business logic or feature-owned schema in Core/Foundation.
+11. Write `system-blueprint.md` using `<AI_DEV_SHOP_ROOT>/templates/system-blueprint-template.md`.
+12. Hand off to Coordinator for human review and Spec dispatch.
 
 ## Output Format
 - Blueprint artifact path

@@ -238,6 +238,8 @@ The ADR defines API and event contracts. Contract tests verify the implementatio
 - Contract tests verify the shape and behavior of the interface, not the implementation behind it
 - If the Architect flagged a contract as "consumer-driven," generate a Pact contract file
 - If the Architect flagged "schema validation," generate tests against the OpenAPI schema
+- For cross-domain boundaries, do not rely on freehand mocks as the primary signal; prefer contract fixtures/schemas derived from the ADR contract source
+- If a mock is used at a boundary, validate it against the contract shape (schema/type/fixture) so tests fail on contract drift
 
 **In the certification record**, list contract tests separately:
 ```
@@ -247,6 +249,8 @@ Contract Tests:
 ```
 
 **Gap rule:** If a contract cannot be tested (e.g., third-party API with no sandbox), document it as a High-risk gap in the certification record with justification.
+
+**Cross-domain reliability signal:** If unit/integration suites are passing but QA/E2E repeatedly fails on cross-domain journeys, treat this as probable contract drift or over-mocking and escalate to Coordinator for contract/test redesign before continuing cycles.
 
 ---
 

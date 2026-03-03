@@ -81,6 +81,14 @@ When a codebase analysis report exists, include in Architect dispatch:
 
 What the Coordinator must include in each agent dispatch. Include only what is listed. Extra context degrades attention quality.
 
+### Context Shedding Rule (required)
+
+After `system-blueprint.md` and the active spec package are approved, do not keep injecting raw `vibe` artifacts into downstream implementation stages.
+
+- Allowed downstream context: approved `system-blueprint.md`, active spec package, ADR, tasks, and current-stage artifacts.
+- Optional: a short 3-5 bullet intent summary derived from vibe output (if needed), not the full raw vibe transcript.
+- Purpose: reduce context drift and avoid conflicting stale tech hints in implementation stages.
+
 ### System Blueprint Agent (conditional pre-spec stage)
 - Product vision / idea statement (from user or VibeCoder output)
 - Known constraints and NFRs
@@ -91,6 +99,9 @@ What the Coordinator must include in each agent dispatch. Include only what is l
 Output:
 - `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/system-blueprint.md`
 - Spec decomposition recommendation (which spec packages to create next and in what order)
+- Mandatory `Core/Foundation` package at `P0` to block parallel domain slices until shared shell/primitives are merged
+- `Critical User Journeys (Cross-Domain)` list for QA/E2E planning after slice convergence
+- Dependency-aware sequencing (`Depends on`) so only dependency-disjoint slices run in parallel
 
 ### Spec Agent
 - Product intent from human (verbatim)
@@ -171,7 +182,8 @@ When the spec involves data modeling or database operations:
 
 Coordinator generates `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md` using `<AI_DEV_SHOP_ROOT>/templates/tasks-template.md`:
 - Phases and story order derived from the ADR's parallel delivery plan and AC priorities (P1 first)
-- `[P]` markers based on the ADR's independent module boundaries
+- `[P]` markers based on independent module boundaries **and** system-blueprint dependency constraints (`Depends on`)
+- Do not mark tasks parallel when one task depends on another domain's API/event/schema contract or table ownership boundary
 - Checkpoint annotation after Phase 1 and after each story phase
 - TDD Agent is dispatched only after tasks.md is produced
 
@@ -232,6 +244,7 @@ Before Programmer begins implementation:
 
 ### QA/E2E Agent (runs after Programmer)
 - Active spec (full content + hash)
+- `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/system-blueprint.md` (if produced; prioritize `Critical User Journeys (Cross-Domain)`)
 - `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
 - `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/test-certification.md`
 - `<AI_DEV_SHOP_ROOT>/skills/e2e-test-architecture/SKILL.md`
@@ -270,6 +283,7 @@ Before Programmer begins implementation:
 | Red-Team: CONSTITUTION-FLAG | Human → Spec Agent | Flag details, relevant constitution article |
 | Red-Team: ADVISORY only | Architect | Spec, spec hash, advisory list |
 | Test failures | Programmer | Failing test names, spec ACs, ADR constraints |
+| `[ARCHITECTURE_REVISION_REQUEST]` from downstream agent | Coordinator escalation flow | Blocking technical constraint, failed alternatives, impacted artifacts (spec/ADR/tasks/tests), requested revision scope |
 | Coverage gaps (any type) | TDD Agent (triage first) | Coverage Gap List (High-priority first), current % vs threshold per file, spec hash, test certification record — TDD classifies each gap as spec-traceable (writes tests) or no-spec-mapping (flags to Coordinator for Refactor dispatch) |
 | Coverage gaps — no spec mapping (flagged by TDD triage) | Refactor Agent | `reports/pipeline/<NNN>-<feature-name>/coverage-triage-<YYYY-MM-DD>.md`, Coverage Gap List, uncovered files with line ranges, ADR constraints |
 | Touched-file coverage regression | Coordinator routing triage first — uses TestRunner/TDD evidence plus diff metadata, then routes to TDD (tests deleted) or Programmer (implementation removed covered path) | Regressed files, previous vs current %, diff metadata, latest coverage evidence |
@@ -338,6 +352,8 @@ When the Architect defines independent modules (natural in Vertical Slice, Modul
 6. Security receives the combined diff
 
 Parallel rules:
+- Respect the system-blueprint dependency graph: slices linked by `Depends on` must be serialized; only dependency-disjoint slices run in parallel
+- If a slice depends on another domain's table ownership (FK dependency), sequence it to a later wave after the owner slice merges
 - Modules must have no shared mutable state
 - No Programmer instance writes to a file another instance reads
 - If a shared utility needs changes, serialize — do not parallelize changes to shared code

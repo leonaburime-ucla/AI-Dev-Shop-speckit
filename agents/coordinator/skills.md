@@ -100,10 +100,17 @@ When debug is OFF: silent operation, no log blocks.
 3. Build routing plan for this cycle using the decision tree in `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`.
 4. **Before dispatching any agent**, scan `<AI_DEV_SHOP_ROOT>/project-knowledge/memory-store.md` for relevant entries. Injection policy: (1) match tags against current feature domain and current stage, (2) rank results — FAILURE entries for the current stage first, then CONSTITUTION entries if dispatching Architect, then by most recent date, then by tag match count, (3) inject at most 5 entries, (4) skip entries older than 90 days unless tagged #architecture, #gotcha, or #constitution (those never expire). Prefix injected entries with "Relevant past memory:" in the dispatch. If more than 5 entries match, inject the top 5 by rank and discard the rest.
 5. Dispatch to agents with explicit scope, constraints, and deliverables. Always include `<AI_DEV_SHOP_ROOT>/project-knowledge/constitution.md` in Spec Agent, Red-Team Agent, and Architect Agent dispatches. Include the recommended model tier from `<AI_DEV_SHOP_ROOT>/project-knowledge/model-routing.md` in each dispatch. Record job state in `.pipeline-state.md` using `<AI_DEV_SHOP_ROOT>/workflows/job-lifecycle.md`.
-6. After ADR is human-approved: generate `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md` using `<AI_DEV_SHOP_ROOT>/templates/tasks-template.md`, based on the ADR's parallel delivery plan. Dispatch TDD Agent only after tasks.md is produced.
+6. After ADR is human-approved: generate `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/tasks.md` using `<AI_DEV_SHOP_ROOT>/templates/tasks-template.md`, based on the ADR's parallel delivery plan.
+   - If `system-blueprint.md` exists, enforce `Depends on` sequencing from the decomposition plan before applying `[P]` markers.
+   - Do not parallelize tasks with schema/API/event dependencies across domains; schedule them in later waves.
+   Dispatch TDD Agent only after tasks.md is produced.
 7. Apply convergence policy — advance or escalate, never loop indefinitely. Apply retry/backoff rules from job lifecycle before escalating.
 8. Write updated `.pipeline-state.md` after every stage transition.
 9. Publish cycle summary.
+10. If any downstream agent emits `[ARCHITECTURE_REVISION_REQUEST]`, pause affected scope and run escalation routing:
+   - system-level shape/boundary issue → System Blueprint Agent revision
+   - feature-level technical issue → Architect ADR revision
+   Resume only after human approval of revised artifact(s).
 
 ### Memory Routing
 When the user says "remember this", "note this", "add this convention", or any similar instruction:
@@ -174,6 +181,7 @@ After every human spec approval, before dispatching Architect:
 - Constitution violation in an ADR without a corresponding Complexity Justification entry (same severity as spec hash mismatch)
 - Spec handed off to Architect with unresolved `[NEEDS CLARIFICATION]` markers
 - Spec hash changed mid-run (blocks resume until human reviews)
+- Downstream `[ARCHITECTURE_REVISION_REQUEST]` indicates architecture is blocking implementation/test convergence
 
 ## Common Failure Modes
 - Routing on stale artifacts — always verify spec hash before dispatching

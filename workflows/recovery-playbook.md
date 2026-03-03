@@ -73,3 +73,24 @@ After successfully resuming:
 - Do not resume if the spec hash has changed — this is a blocking condition requiring human review
 - Do not resume a `FAILED` run — start fresh and reference the failed run's Notes for context
 - Do not skip the Constitution Check validation when resuming at or after the architect stage
+
+---
+
+## Upward Feedback Loop: Architecture Revision Request
+
+If a downstream agent (TDD/Programmer/QA/TestRunner/Code Review) discovers a blocking architecture mismatch, it may raise:
+
+`[ARCHITECTURE_REVISION_REQUEST]`
+
+Required payload:
+- Blocking constraint observed
+- What was tried and why it failed
+- Impacted artifacts (spec/ADR/tasks/tests)
+- Requested revision scope (macro blueprint vs feature ADR)
+
+Coordinator actions:
+1. Pause affected downstream work.
+2. Route to System Blueprint Agent if revision is macro/domain-boundary level.
+3. Route to Architect Agent if revision is feature-level technical architecture.
+4. Require human approval on revised blueprint/ADR.
+5. Resume from the last valid checkpoint using updated artifacts.

@@ -68,14 +68,30 @@ The output must include:
 2. Ownership boundaries and integration map.
 3. High-level runtime/data topology.
 4. Explicit risks and unknowns.
-5. Spec decomposition plan (what spec packages to write next).
+5. A required `Core/Foundation` spec package at `P0` (shared shell/primitives that block parallel slices).
+6. Critical cross-domain user journeys for QA/E2E handoff.
+7. Spec decomposition plan (what spec packages to write next).
+8. Dependency-aware sequencing plan so parallel slices are only used where dependencies permit.
+
+## Spec Decomposition Policy
+
+Default to **vertical/domain slicing** for decomposition.
+
+- Preferred: domain-oriented spec packages (for example `auth-domain`, `checkout-domain`, `billing-domain`) that each own their relevant API/state/UI boundaries.
+- Avoid horizontal decomposition (`frontend-only`, `api-only`, `database-only`) unless there is a clear, documented reason.
+- If horizontal slicing is chosen, include explicit justification and expected coordination overhead in the blueprint risks section.
+- Always define a `Core/Foundation` package at `P0`; domain slices must depend on it before parallel execution.
+- If a slice depends on another slice's schema/API/event contract, it cannot run in the same parallel wave. Record the dependency in `Depends on` and place it in a later phase.
+- If a slice needs a foreign key to another domain-owned table, the owner domain must be implemented first; the dependent slice must be sequenced after it.
 
 ## Guardrails
 
 - Do not produce a feature-level ADR.
 - Do not lock low-level implementation patterns.
 - Keep stack direction non-binding unless a hard constraint already exists.
+- `Core/Foundation` (`P0`) is a thin bootstrap layer only: shell/runtime primitives/shared clients/CI harness. Do not place feature-specific business logic or feature-owned tables in `P0`.
 - Use `[OWNERSHIP UNCLEAR]` markers where needed; unresolved markers block Spec decomposition approval.
+- Include `Critical User Journeys (Cross-Domain)` so QA/E2E can validate slice convergence end to end.
 
 ## Handoff Contract
 
