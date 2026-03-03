@@ -110,6 +110,22 @@ The spec hash in the certification must match the hash in the spec file. CI enfo
 
 ## Coverage Targets
 
+### Hard Coverage Gates (non-negotiable; takes precedence over all other coverage guidance)
+
+The following suite-level gates are mandatory and evaluated per metric, not as an average:
+
+- **Unit test coverage:** `lines >= 98%`, `branches >= 98%`, `functions >= 98%`, `statements >= 98%`
+- **Integration test coverage:** `lines >= 90%`, `branches >= 90%`, `functions >= 90%`, `statements >= 90%`
+
+If any one metric is below its gate, coverage is considered failing.
+
+### Uncovered Lines Policy
+
+- Target state is **no uncovered lines** in changed or high-priority runtime code paths.
+- If uncovered lines remain, they require explicit written justification before stopping the cycle.
+- Acceptable justifications are limited to concrete technical constraints (for example: unreachable defensive branch tied to runtime/environment, vendor boundary that cannot be deterministically simulated, or deprecated path pending approved removal).
+- "Not enough time" or "too hard to test" are not valid justifications.
+
 Coverage targets are risk-weighted by module class. Apply the correct threshold based on what the file does, not where it lives in the directory tree.
 
 | Module Class | Examples | Line Coverage | Branch Coverage |
@@ -130,7 +146,7 @@ Coverage targets are risk-weighted by module class. Apply the correct threshold 
 - All acceptance criteria in the spec: covered by acceptance tests
 - All concrete edge cases listed in the spec: covered by explicit scenario tests
 
-**Blocking rule takes precedence:** High-priority gaps in core business logic or API adapters block progression to Code Review — regardless of any other threshold language. For all other module classes, coverage below threshold is not an automatic merge blocker; the Coordinator decides based on gap size and project risk. In all cases, uncovered requirements must be explicitly listed as gaps in the certification record with a risk level.
+**Blocking rule takes precedence:** failing either hard coverage gate (unit/integration) blocks progression to Code Review. High-priority gaps in core business logic or API adapters also block progression regardless of module-class discretion. In all cases, uncovered requirements and uncovered lines must be explicitly listed with rationale in the certification record.
 
 ## Writing Good Assertions
 

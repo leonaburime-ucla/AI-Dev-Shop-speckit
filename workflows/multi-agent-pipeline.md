@@ -293,7 +293,7 @@ A feature reaches **Done** when all of the following are true:
 1. All three human checkpoints cleared: spec approval, architecture sign-off, security sign-off
 2. All tests pass against the certified spec hash
 3. All Critical/High security findings are resolved, or accepted with documented rationale in `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`
-4. Coverage report is attached to the final TestRunner artifact, with all High-priority coverage gaps resolved or explicitly accepted with risk rationale. No touched file has regressed below its threshold without documented justification.
+4. Coverage report is attached to the final TestRunner artifact; hard gates pass per metric (unit lines/branches/functions/statements >= 98%, integration lines/branches/functions/statements >= 90%); all High-priority gaps are resolved or explicitly accepted with risk rationale; no uncovered lines remain in changed/high-priority runtime paths without documented technical justification.
 
 The Coordinator issues a **merge-ready summary** to the human:
 ```
