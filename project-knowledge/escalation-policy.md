@@ -40,8 +40,11 @@ When a stage fails, the Coordinator re-dispatches up to the budget. On budget ex
 | `code-review` | 1 | Rare — escalate only if output is malformed | N/A |
 | `security` | 1; Critical/High escalate immediately without retry | All Critical/High findings are immediate blocking escalations | Human sign-off closes the finding |
 | `refactor` | 1 | Not retried — output is proposals, not implementation | N/A |
+| `coverage-loop` (tdd → programmer → testrunner cycle for gap fill) | 3 per High-priority gap cluster | Same High-priority gap cluster unresolved after 3 full cycles | Refactor seam extraction accepted and merged resets cluster count; spec hash change resets all |
 
 **Programmer budget clarification:** The 5-retry total budget and the 3-retry per-cluster escalation are separate rules. A cluster failing 3 times triggers an immediate escalation on that cluster even if the total budget is not yet exhausted. Total budget exhaustion triggers escalation regardless of cluster count.
+
+**Coverage-loop budget clarification:** One cycle = TDD writes or augments tests → Programmer integrates any seam changes → TestRunner runs and reports coverage. If a High-priority gap cluster (same file(s) at same gap type) is still present after 3 such cycles, escalate to human — do not continue. Medium and Low priority gaps that persist after budget exhaustion are logged in the triage report and deferred, not escalated.
 
 **Budget tracking:** The Coordinator records retry counts in the `Iteration Counts` table of `.pipeline-state.md`. An agent may not be dispatched if its stage is at budget — escalate first.
 

@@ -110,12 +110,27 @@ The spec hash in the certification must match the hash in the spec file. CI enfo
 
 ## Coverage Targets
 
-- Unit tests: 95%+ line and branch coverage on business logic
-- Integration tests: all public API contracts and database boundaries
-- Acceptance tests: all acceptance criteria in the spec
-- Edge cases: all concrete edge cases listed in the spec
+Coverage targets are risk-weighted by module class. Apply the correct threshold based on what the file does, not where it lives in the directory tree.
 
-Coverage below these thresholds is not a merge blocker by itself — but uncovered requirements must be explicitly listed as gaps in the certification record with a risk assessment.
+| Module Class | Examples | Line Coverage | Branch Coverage |
+|---|---|---|---|
+| Core business logic | Domain services, calculation engines, validators, state machines | 95%+ | 90%+ |
+| API adapters / controllers | HTTP handlers, event consumers, queue processors | 90%+ | 85%+ |
+| Orchestrators | Use-case orchestrators, pipeline controllers | 85%+ | 80%+ |
+| Infrastructure adapters | Repositories, DB clients, external API clients | 80%+ | 75%+ |
+| View / UI components | React components, templates, presentational-only code | 70%+ OR documented E2E coverage | — |
+| Configuration / type definitions | Constants, enums, pure type files, interface-only files | Exempt | Exempt |
+
+**Touched-file non-regression rule:** Once a file reaches its threshold, a subsequent change to that file cannot drop coverage below that threshold. A PR that regresses a file must either add tests (route to TDD) or explicitly document the regression justification in the certification record.
+
+**Project-level override:** If the risk profile of a project justifies globally higher or lower thresholds (e.g., a payment processor requiring 100% branch coverage on business logic, or a prototype where 70% is acceptable across the board), document the override in `<AI_DEV_SHOP_ROOT>/project-knowledge/project_memory.md` and reference it in the test certification record. Without a documented override, the table above governs.
+
+**Integration and acceptance coverage (non-negotiable regardless of module class):**
+- All public API contracts and database boundaries: covered by integration tests
+- All acceptance criteria in the spec: covered by acceptance tests
+- All concrete edge cases listed in the spec: covered by explicit scenario tests
+
+**Blocking rule takes precedence:** High-priority gaps in core business logic or API adapters block progression to Code Review — regardless of any other threshold language. For all other module classes, coverage below threshold is not an automatic merge blocker; the Coordinator decides based on gap size and project risk. In all cases, uncovered requirements must be explicitly listed as gaps in the certification record with a risk level.
 
 ## Writing Good Assertions
 

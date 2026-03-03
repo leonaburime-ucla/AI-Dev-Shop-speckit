@@ -70,6 +70,26 @@ Agent output received
 │   └─ Route to: Supabase Sub-Agent
 │       Context: data model, spec, Supabase project context
 │
+├─ Coverage gaps (from TestRunner coverage report)?
+│   └─ Route to: TDD Agent (triage — TDD has the spec and implementation context to classify)
+│       Context: TestRunner coverage report, Coverage Gap List (High-priority files first),
+│                current % vs threshold per file, spec hash, active test certification record
+│       TDD triage produces one of two outputs:
+│         (a) Gap maps to a spec requirement → TDD stays and writes missing tests (Coverage Gap Fill Mode);
+│             re-dispatch Programmer if seam changes needed, then re-run TestRunner
+│         (b) Gap has no spec mapping (dead code or untestable coupling) → TDD flags to Coordinator
+│             → Route to: Refactor Agent
+│                 Context: `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/coverage-triage-<YYYY-MM-DD>.md`,
+│                          Coverage Gap List, specific uncovered files and line ranges, ADR constraints
+│                 After Refactor proposes seam extraction and human approves: dispatch Programmer,
+│                 then dispatch TDD to cover the newly testable units, then re-run TestRunner
+│
+├─ Touched-file coverage regression (from TestRunner coverage report)?
+│   └─ Route to: Coordinator triage — examine the diff to determine cause:
+│       - Tests were deleted → TDD Agent to restore coverage
+│       - Implementation change removed a previously covered path → Programmer to restore coverage
+│       Context: which files regressed, previous vs current %, what changed in the diff
+│
 ├─ Test failures?
 │   └─ Route to: Programmer Agent
 │       Context: failing test names, spec ref, architecture constraints

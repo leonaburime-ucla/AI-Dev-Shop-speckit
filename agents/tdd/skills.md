@@ -52,3 +52,29 @@ Encode the spec into executable tests before implementation. Certify each test s
 - Do not certify tests against a spec that has not been human-approved
 - Prefer behavior-level assertions over implementation internals
 - Group tests by requirement, not by file structure
+
+---
+
+## Coverage Gap Fill Mode (dispatched by Coordinator post-TestRunner)
+
+When dispatched with a TestRunner coverage report rather than at initial spec-encoding time, operate in gap fill mode. This is a reactive, post-implementation pass — not a recertification.
+
+### Required Inputs (in addition to standard inputs)
+- TestRunner coverage report containing the Coverage Gap List
+- Full diff or contents of recently implemented files (to understand what the Programmer wrote)
+- Active test certification record (to update, not replace)
+
+### Workflow
+1. Read the Coverage Gap List (High-priority files first).
+2. For each uncovered file or module: read the implementation to understand which code paths are not exercised.
+3. Map each uncovered path back to a spec requirement, invariant, or edge case:
+   - If it maps to a known spec item → write the missing test.
+   - If it maps to no spec item → flag to Coordinator as a Refactor candidate (dead code or out-of-scope implementation). Do not write a test for behavior not in the spec.
+4. Write tests following the same naming and directory conventions as the original suite.
+5. Update the test certification record: add newly-written tests to the requirement-to-test mapping, revise the Coverage Gaps section, update the timestamp. Do not change the original certified spec hash — this is a gap fill, not a recertification.
+6. Report to Coordinator: tests written, remaining uncovered paths that have no spec mapping (Refactor candidates), updated certification record location. Write a structured triage report using `<AI_DEV_SHOP_ROOT>/templates/tdd-coverage-triage-template.md` only when: (a) any gap is being routed to Refactor Agent and a structured handoff is needed, or (b) the Coordinator explicitly requests a written artifact. In conversational or Agent Direct Mode use, prose output is sufficient.
+7. Do not dispatch Programmer or Refactor Agent directly — hand off to Coordinator.
+
+### What does not belong here
+- Code paths that cannot be traced to any spec requirement → route to Coordinator as Refactor candidates
+- Code that is genuinely hard to test due to tight coupling → route to Coordinator as Refactor candidates; do not write implementation-internal tests to inflate coverage numbers

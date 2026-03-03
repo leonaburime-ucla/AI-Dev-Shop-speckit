@@ -43,6 +43,7 @@ QUEUED → DISPATCHED → RUNNING → DONE
 | `testrunner` | 2 | None | Infrastructure/tooling failure (not test logic) |
 | `code-review` | 1 | None | Rare — escalate if output is malformed |
 | `security` | 1 | None | Escalate all Critical/High findings immediately |
+| `coverage-loop` (tdd → programmer → testrunner cycle for gap fill) | 3 per High-priority gap cluster | None | Same High-priority gap cluster unresolved after 3 full cycles — escalate; Medium/Low gaps are deferred, not escalated |
 
 **Backoff rule for Programmer retries 3+:**
 Before dispatching retry 4 or 5, inject the full failure cluster history and ask the agent to reason about root cause before attempting a fix. Do not just re-dispatch with the same context — that produces the same result.

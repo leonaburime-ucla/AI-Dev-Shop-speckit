@@ -22,9 +22,12 @@ Execute the full verification suite after implementation and report trustworthy 
 2. Run unit suite. Capture all failures with full output.
 2a. If `tasks.md` contains a `## Constraints — Performance` section: execute load tests per the benchmark targets using the tool specified in the constraints. Capture results as artifacts. Apply pass/fail criteria from `<AI_DEV_SHOP_ROOT>/skills/performance-engineering/SKILL.md`. A hard failure blocks the same as a failing test.
 3. Run integration/E2E suite. Capture all failures.
+3a. Run coverage reporter against the full suite output. Use the coverage tool specified in `tasks.md` constraints; if none is specified, use the project's default (e.g., c8/istanbul for Node.js, coverage.py for Python, go test -cover for Go). Capture per-file line, branch, and statement percentages.
+3b. Compare per-module coverage against the risk-weighted thresholds in `<AI_DEV_SHOP_ROOT>/skills/test-design/SKILL.md`. Classify each file as: Above Threshold, Below Threshold, or Exempt (configuration/type-only files with no runtime logic).
+3c. Build the Coverage Gap List: all Below Threshold files with their current %, target %, and uncovered line/branch counts. Assign priority: High (core business logic or API adapters), Medium (orchestrators, infrastructure adapters), Low (view/UI components). If a per-file coverage baseline exists in `tasks.md`, flag any touched file whose coverage decreased vs. that baseline as a regression, regardless of whether it is still above threshold.
 4. Run acceptance checks against spec criteria.
 5. Aggregate results. Cluster failures by likely owner (spec gap, architecture issue, implementation bug).
-6. Report to Coordinator with convergence status vs threshold.
+6. Report to Coordinator with convergence status vs threshold and coverage status.
 
 ## Output Format
 
@@ -37,11 +40,20 @@ Report contents:
   - Test names and spec references they cover
   - Likely failure owner (Programmer, Architect, Spec)
   - Flaky/non-deterministic test notes (do not count these in pass rate)
-- Route recommendation to Coordinator
+- **Coverage Report** section:
+  - Per-file table: path, module class, line %, branch %, statement %, threshold, status (Above / Below / Exempt)
+  - Coverage Gap List: Below Threshold files sorted by priority (High first), with current %, target %, and uncovered line/branch counts
+  - Touched-file regression flag: any file whose coverage decreased vs. baseline (if baseline exists in `tasks.md`)
+- Route recommendation to Coordinator:
+  - Test failures → Programmer
+  - Coverage gaps → TDD Agent for triage (TDD determines whether each uncovered path maps to a spec requirement; if it does not, TDD flags it to Coordinator for Refactor dispatch)
+  - Touched-file regression → flag to Coordinator; Coordinator determines whether Programmer or TDD is responsible
 
 ## Escalation Rules
 - Test certification hash does not match active spec hash — stop and escalate before running
 - Suite infrastructure failure (test runner crash, environment issue) — escalate, do not report partial results as meaningful
+- Coverage tool fails to produce output — escalate; do not report pass/fail results without coverage data (partial evidence is misleading)
+- Touched-file coverage regression detected — flag to Coordinator before advancing to Code Review
 
 ## Guardrails
 - Do not write new tests
