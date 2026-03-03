@@ -13,6 +13,8 @@ This skill produces a macro-level architecture planning artifact before detailed
 
 Provide a high-level system layout so Spec Agent knows what to spec and at what granularity.
 
+This stage exists to prevent downstream spec drift: if specs are written before macro boundaries are clear, they often encode the wrong granularity, assumptions, and ownership model. That causes rework in Architect/TDD/Programmer later.
+
 - This is problem-space and system-shape planning.
 - This is not a feature-level ADR.
 - This does not make binding micro-level implementation decisions.
@@ -31,6 +33,28 @@ Run before Spec when one or more are true:
 - Product vision / vibe output / discovery notes.
 - Constraints: compliance, latency, reliability, budget, timeline.
 - Existing architecture context (if extending an existing system).
+
+## Skill Loading Priority
+
+1. Primary: this skill (`system-blueprint`) controls process and artifact shape.
+2. Secondary (always): `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` for macro architecture option language and tradeoff framing.
+3. Secondary (always): `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` for system-driver framing (without producing ADR decisions here).
+4. Conditional tertiary skills (load only when needed):
+   - `sql-data-modeling` for ambiguous data ownership boundaries
+   - `api-contracts` for integration-heavy domain boundaries
+   - `change-management` for legacy migration planning
+   - `performance-engineering` for strict NFR-driven topology decisions
+
+## Exploration Requirement (mandatory)
+
+Before finalizing the blueprint, run a short exploratory tradeoff discussion with the human:
+
+1. Present 2-3 plausible macro stack directions.
+2. Explain tradeoffs in plain language (delivery speed, complexity, scalability, operations, cost, team fit).
+3. Ask what the user prefers or wants to avoid.
+4. Reflect the chosen direction in the blueprint with rationale.
+
+This stage should help the user learn options and choose intentionally, not receive a one-shot static output.
 
 ## Required Output
 

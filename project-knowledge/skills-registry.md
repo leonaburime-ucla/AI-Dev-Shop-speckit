@@ -13,7 +13,7 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 |---|---|
 | `skills/spec-writing/SKILL.md` | Spec Agent |
 | `skills/test-design/SKILL.md` | TDD Agent |
-| `skills/architecture-decisions/SKILL.md` | Architect, Programmer |
+| `skills/architecture-decisions/SKILL.md` | Architect, Programmer, System Blueprint Agent (secondary) |
 | `skills/code-review/SKILL.md` | Code Review Agent |
 | `skills/refactor-patterns/SKILL.md` | Refactor Agent |
 | `skills/coordination/SKILL.md` | Coordinator |
@@ -23,7 +23,7 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/agent-evaluation/SKILL.md` | Observer |
 | `skills/codebase-analysis/SKILL.md` | CodeBase Analyzer |
 | `skills/architecture-migration/SKILL.md` | CodeBase Analyzer |
-| `skills/design-patterns/SKILL.md` | Architect, CodeBase Analyzer |
+| `skills/design-patterns/SKILL.md` | Architect, CodeBase Analyzer, System Blueprint Agent (secondary) |
 | `skills/system-blueprint/SKILL.md` | System Blueprint Agent, Coordinator |
 | `skills/frontend-react-orcbash/SKILL.md` | Programmer (React frontends) |
 | `skills/testable-design-patterns/SKILL.md` | Architect, Programmer, Refactor Agent, TDD Agent |

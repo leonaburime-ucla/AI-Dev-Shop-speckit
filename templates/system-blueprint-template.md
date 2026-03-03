@@ -8,6 +8,8 @@
 
 ---
 
+> Why this artifact exists: writing detailed specs before macro system shape is clear frequently creates wrong boundaries and wrong spec granularity. This blueprint aligns scope, ownership, and decomposition before spec writing.
+
 ## 1) System Goal
 
 - Problem statement:
@@ -46,7 +48,7 @@
 - Runtime topology (frontend/backend/workers/jobs):
 - External systems (payments, auth, CRM, etc.):
 
-## 7) Technology Direction (Non-Binding)
+## 7) Technology Direction
 
 - Suggested stack direction (optional):
 - Why this direction is plausible:
