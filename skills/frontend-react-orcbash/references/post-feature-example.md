@@ -22,14 +22,20 @@ export interface Post {
 ```typescript
 import type { Post } from '../types/post';
 
-export const fetchPost = async (postId: string): Promise<Post> => {
-  const response = await fetch(`/api/posts/${postId}`);
+export const fetchPost = async (
+  { postId }: { postId: string },
+  { signal }: { signal?: AbortSignal } = {},
+): Promise<Post> => {
+  const response = await fetch(`/api/posts/${postId}`, { signal });
   if (!response.ok) throw new Error('Failed to fetch post');
   return response.json();
 };
 
-export const likePost = async (postId: string): Promise<{ likes: number }> => {
-  const response = await fetch(`/api/posts/${postId}/like`, { method: 'POST' });
+export const likePost = async (
+  { postId }: { postId: string },
+  { signal }: { signal?: AbortSignal } = {},
+): Promise<{ likes: number }> => {
+  const response = await fetch(`/api/posts/${postId}/like`, { method: 'POST', signal });
   if (!response.ok) throw new Error('Failed to like post');
   return response.json();
 };
@@ -48,7 +54,7 @@ export interface FormattedPost extends Post {
 }
 
 export class PostService {
-  formatPost(post: Post): FormattedPost {
+  formatPost({ post }: { post: Post }): FormattedPost {
     return {
       ...post,
       formattedTimestamp: formatDistanceToNow(new Date(post.createdAt), { addSuffix: true }),
@@ -57,7 +63,7 @@ export class PostService {
     };
   }
 
-  validateComment(text: string): { isValid: boolean; error?: string } {
+  validateComment({ text }: { text: string }): { isValid: boolean; error?: string } {
     if (!text.trim()) return { isValid: false, error: 'Comment cannot be empty' };
     if (text.length > 1000) return { isValid: false, error: 'Comment too long' };
     return { isValid: true };
@@ -129,7 +135,7 @@ Maps the concrete store to the port interface. **This is the only file that chan
 import { usePostStore } from './postStore';
 import type { PostStatePort } from './PostStatePort';
 
-export const usePostStateAdapter = (postId: string): PostStatePort => {
+export const usePostStateAdapter = ({ postId }: { postId: string }): PostStatePort => {
   const post = usePostStore(s => s.posts[postId] ?? null);
   const feed = usePostStore(s => s.feed);
   const savePost = usePostStore(s => s.savePost);
@@ -151,12 +157,12 @@ import type { FormattedPost } from '../logic/PostService';
 
 export interface UsePostDependencies {
   post: Post | null;
-  fetchPost: (postId: string) => Promise<Post>;
-  likePost: (postId: string) => Promise<{ likes: number }>;
-  formatPost: (post: Post) => FormattedPost;
-  validateComment: (text: string) => { isValid: boolean; error?: string };
+  fetchPost: ({ postId }: { postId: string }, optional?: { signal?: AbortSignal }) => Promise<Post>;
+  likePost: ({ postId }: { postId: string }, optional?: { signal?: AbortSignal }) => Promise<{ likes: number }>;
+  formatPost: ({ post }: { post: Post }) => FormattedPost;
+  validateComment: ({ text }: { text: string }) => { isValid: boolean; error?: string };
   savePost: (post: Post) => void;
-  updatePostLikes: (postId: string, likes: number) => void;
+  updatePostLikes: ({ postId, likes }: { postId: string; likes: number }) => void;
 }
 
 // Business Logic Hook — React lifecycle wrapper for service computations
@@ -165,10 +171,10 @@ const usePostLogic = ({
   formatPost,
 }: {
   post: Post | null;
-  formatPost: (post: Post) => FormattedPost;
+  formatPost: ({ post }: { post: Post }) => FormattedPost;
 }) => {
   const formattedPost = useMemo(
-    () => (post ? formatPost(post) : null),
+    () => (post ? formatPost({ post }) : null),
     [post, formatPost]
   );
   return { formattedPost };
@@ -195,7 +201,7 @@ const usePostUiState = () => {
     setUiState(s => ({ ...s, showCommentModal: false }));
   }, []);
 
-  const setCommentText = useCallback((text: string) => {
+  const setCommentText = useCallback(({ text }: { text: string }) => {
     setUiState(s => ({ ...s, commentText: text, validationError: '' }));
   }, []);
 
@@ -203,7 +209,10 @@ const usePostUiState = () => {
 };
 
 // Integration Hook — composes sub-hooks, coordinates async with injected dependencies
-export const usePost = (postId: string, deps: UsePostDependencies) => {
+export const usePost = (
+  { postId, deps }: { postId: string; deps: UsePostDependencies },
+  {}: {} = {},
+) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const ui = usePostUiState();
@@ -213,7 +222,7 @@ export const usePost = (postId: string, deps: UsePostDependencies) => {
     setIsLoading(true);
     setError(null);
     try {
-      const fetched = await deps.fetchPost(postId);
+      const fetched = await deps.fetchPost({ postId });
       deps.savePost(fetched);
     } catch (err) {
       setError(err as Error);
@@ -225,8 +234,8 @@ export const usePost = (postId: string, deps: UsePostDependencies) => {
   const like = useCallback(async () => {
     ui.actions.setLiking(true);
     try {
-      const { likes } = await deps.likePost(postId);
-      deps.updatePostLikes(postId, likes);
+      const { likes } = await deps.likePost({ postId });
+      deps.updatePostLikes({ postId, likes });
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -259,10 +268,10 @@ import { postService } from '../logic/PostService';
 import { usePostStateAdapter } from '../state/PostStateAdapter';   // ← adapter, not store
 import { usePost } from '../hooks/usePost';
 
-export const usePostPageOrchestrator = (postId: string) => {
-  const state = usePostStateAdapter(postId);   // all state via adapter
+export const usePostPageOrchestrator = ({ postId }: { postId: string }) => {
+  const state = usePostStateAdapter({ postId });   // all state via adapter
 
-  const hook = usePost(postId, {
+  const hook = usePost({ postId, deps: {
     post: state.post,
     fetchPost: postApi.fetchPost,
     likePost: postApi.likePost,
@@ -270,7 +279,7 @@ export const usePostPageOrchestrator = (postId: string) => {
     validateComment: postService.validateComment.bind(postService),
     savePost: state.savePost,
     updatePostLikes: state.updatePostLikes,
-  });
+  } });
 
   useEffect(() => {
     if (!state.post) hook.actions.fetchPost();
@@ -297,10 +306,10 @@ import { usePostStateAdapter } from '../state/PostStateAdapter';   // ← adapte
 import { usePost } from '../hooks/usePost';
 
 // Per-post wiring hook — adapter provides all state for a single post
-const usePostWiring = (postId: string) => {
-  const state = usePostStateAdapter(postId);
+const usePostWiring = ({ postId }: { postId: string }) => {
+  const state = usePostStateAdapter({ postId });
 
-  return usePost(postId, {
+  return usePost({ postId, deps: {
     post: state.post,
     fetchPost: postApi.fetchPost,
     likePost: postApi.likePost,
@@ -308,11 +317,11 @@ const usePostWiring = (postId: string) => {
     validateComment: postService.validateComment.bind(postService),
     savePost: state.savePost,
     updatePostLikes: state.updatePostLikes,
-  });
+  } });
 };
 
-export const useFeedPageOrchestrator = (postIds: string[]) => {
-  return postIds.map(id => usePostWiring(id));
+export const useFeedPageOrchestrator = ({ postIds }: { postIds: string[] }) => {
+  return postIds.map(id => usePostWiring({ postId: id }));
 };
 ```
 
@@ -330,7 +339,7 @@ export const PostPage = ({
   postId: string;
   useOrchestrator?: typeof usePostPageOrchestrator;
 }) => {
-  const { post, isLoading, error, isLiking, onLike } = useOrchestrator(postId);
+  const { post, isLoading, error, isLiking, onLike } = useOrchestrator({ postId });
 
   if (error) return <ErrorView error={error} />;
   if (isLoading || !post) return <LoadingView />;

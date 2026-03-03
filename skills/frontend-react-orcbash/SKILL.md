@@ -25,12 +25,54 @@ Business Logic, API, and State Manager import from shared `types/` only. They ne
 2. Functions (API calls, business logic methods)
 3. Classes (store instances, service instances — last resort, harder to mock)
 
+## Parameter Convention (Required)
+
+For functions/hooks/orchestrators in Orc-BASH, use a two-object signature:
+
+- First parameter: required values object
+- Second parameter: optional values object with defaults (`= {}`)
+
+```typescript
+const doThing = (
+  { requiredA, requiredB }: { requiredA: string; requiredB: number },
+  { optionalX = false }: { optionalX?: boolean } = {},
+): Result => { ... };
+```
+
 ## Type Signature and TypeDoc Requirements
 
 - Every exported function, hook, and orchestrator must declare an explicit return type in its TypeScript signature.
 - Every exported function and hook must include TypeDoc/TSDoc with `@param` and `@returns`.
 - Internal/private hooks and helper functions must also be documented when they coordinate side-effects or domain behavior (especially UI-state hooks, logic hooks, and integration hooks).
 - Do not rely on inferred return types at Orc-BASH layer boundaries.
+
+## Testability-First Rule (Non-Negotiable)
+
+All code written in Orc-BASH layers must be easy to test.
+
+- API and logic layers should expose deterministic, assertion-friendly outputs.
+- Hooks and orchestrators should return stable, explicit state/action contracts that are straightforward to assert in tests.
+- Side effects must be isolated and injectable (network calls, storage, timers, random, date/time).
+- If a unit is hard to test, treat it as a design defect and refactor boundaries before proceeding.
+
+### Assertion-Friendly Return Contracts
+
+Prefer return shapes that are easy to verify:
+
+- Include explicit status/result objects over implicit side effects.
+- Return named fields for derived values (not only nested/transient state).
+- Return callable actions with explicit `Promise<void>` or typed result payloads.
+- Keep return contracts stable and typed so tests can assert behavior without peeking into internals.
+
+### `useEffect` Testability Guidance
+
+`useEffect` itself should coordinate, not own business logic.
+
+- Move business decisions into pure functions or logic hooks; call them from `useEffect`.
+- Keep effect dependencies minimal and explicit (primitive/stable refs only).
+- Inject effect dependencies (fetchers, adapters) so they can be mocked.
+- Prefer asserting observable outcomes (returned state/action effects) rather than "effect ran" internals.
+- For complex effects, expose a dedicated action (e.g. `initialize`, `refresh`) that the effect calls; test the action directly, then add a small integration test for effect wiring.
 
 ## File Structure
 
@@ -65,8 +107,11 @@ Pure functions that make network requests. No class, no state, no dependencies.
 // api/postApi.ts
 import type { Post } from '../types/post';
 
-export const fetchPost = async (postId: string): Promise<Post> => {
-  const response = await fetch(`/api/posts/${postId}`);
+export const fetchPost = async (
+  { postId }: { postId: string },
+  { signal }: { signal?: AbortSignal } = {},
+): Promise<Post> => {
+  const response = await fetch(`/api/posts/${postId}`, { signal });
   if (!response.ok) throw new Error('Failed to fetch post');
   return response.json();
 };
@@ -86,7 +131,7 @@ Use a class when you need to group related operations or maintain configuration.
 import type { Post } from '../types/post';
 
 export class PostService {
-  formatPost(post: Post): FormattedPost {
+  formatPost({ post }: { post: Post }): FormattedPost {
     return {
       ...post,
       excerpt: post.content.substring(0, 280) + (post.content.length > 280 ? '...' : ''),
@@ -116,7 +161,7 @@ export interface PostStatePort {
   post: Post | null;
   feed: string[];
   savePost: (post: Post) => void;
-  updatePostLikes: (postId: string, likes: number) => void;
+  updatePostLikes: ({ postId, likes }: { postId: string; likes: number }) => void;
 }
 ```
 
@@ -142,7 +187,7 @@ export const usePostStore = create<PostState>((set) => ({
 import { usePostStore } from './postStore';
 import type { PostStatePort } from './PostStatePort';
 
-export const usePostStateAdapter = (postId: string): PostStatePort => {
+export const usePostStateAdapter = ({ postId }: { postId: string }): PostStatePort => {
   const post = usePostStore(s => s.posts[postId] ?? null);
   const feed = usePostStore(s => s.feed);
   const savePost = usePostStore(s => s.savePost);
@@ -202,7 +247,7 @@ const usePostLogic = ({
 }): { formattedPost: FormattedPost | null } => {
   // Memoize expensive business logic computation — needs React's useMemo
   const formattedPost = useMemo(
-    () => post ? formatPost(post) : null,
+    () => post ? formatPost({ post }) : null,
     [post, formatPost]
   );
   return { formattedPost };
@@ -215,11 +260,11 @@ const usePostLogic = ({
 // hooks/usePost.ts
 export interface UsePostDependencies {
   post: Post | null;
-  fetchPost: (postId: string) => Promise<Post>;
-  likePost: (postId: string) => Promise<{ likes: number }>;
-  formatPost: (post: Post) => FormattedPost;
+  fetchPost: ({ postId }: { postId: string }, optional?: { signal?: AbortSignal }) => Promise<Post>;
+  likePost: ({ postId }: { postId: string }) => Promise<{ likes: number }>;
+  formatPost: ({ post }: { post: Post }) => FormattedPost;
   savePost: (post: Post) => void;
-  updatePostLikes: (postId: string, likes: number) => void;
+  updatePostLikes: ({ postId, likes }: { postId: string; likes: number }) => void;
 }
 
 /**
@@ -229,8 +274,8 @@ export interface UsePostDependencies {
  * @returns Orchestrated state and actions for post views.
  */
 export const usePost = (
-  postId: string,
-  deps: UsePostDependencies,
+  { postId, deps }: { postId: string; deps: UsePostDependencies },
+  { prefetchOnInit = false }: { prefetchOnInit?: boolean } = {},
 ): {
   post: FormattedPost | null;
   isLoading: boolean;
@@ -251,7 +296,7 @@ export const usePost = (
     setIsLoading(true);
     setError(null);
     try {
-      const fetched = await deps.fetchPost(postId);
+      const fetched = await deps.fetchPost({ postId });
       deps.savePost(fetched);
     } catch (err) {
       setError(err as Error);
@@ -263,8 +308,8 @@ export const usePost = (
   const like = useCallback(async () => {
     ui.actions.setLiking(true);
     try {
-      const { likes } = await deps.likePost(postId);
-      deps.updatePostLikes(postId, likes);
+      const { likes } = await deps.likePost({ postId });
+      deps.updatePostLikes({ postId, likes });
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -301,27 +346,30 @@ import { usePost } from '../hooks/usePost';
  * @param postId Target post identifier.
  * @returns UI-ready view model and actions.
  */
-export const usePostPageOrchestrator = (postId: string): {
+export const usePostPageOrchestrator = (
+  { postId }: { postId: string },
+  { prefetchOnInit = true }: { prefetchOnInit?: boolean } = {},
+): {
   post: FormattedPost | null;
   isLoading: boolean;
   error: Error | null;
   isLiking: boolean;
   onLike: () => Promise<void>;
 } => {
-  const state = usePostStateAdapter(postId);   // all state via adapter
+  const state = usePostStateAdapter({ postId });   // all state via adapter
 
-  const hook = usePost(postId, {
+  const hook = usePost({ postId, deps: {
     post: state.post,
     fetchPost: postApi.fetchPost,
     likePost: postApi.likePost,
     formatPost: postService.formatPost.bind(postService),
     savePost: state.savePost,
     updatePostLikes: state.updatePostLikes,
-  });
+  } });
 
   useEffect(() => {
-    if (!state.post) hook.actions.fetchPost();
-  }, [state.post]);
+    if (prefetchOnInit && !state.post) hook.actions.fetchPost();
+  }, [prefetchOnInit, state.post]);
 
   return {
     post: hook.post,
@@ -349,7 +397,7 @@ export const PostPage = ({
   postId: string;
   useOrchestrator?: typeof usePostPageOrchestrator;
 }) => {
-  const { post, isLoading, error, isLiking, onLike } = useOrchestrator(postId);
+  const { post, isLoading, error, isLiking, onLike } = useOrchestrator({ postId });
 
   if (error) return <ErrorView error={error} />;
   if (isLoading || !post) return <LoadingView />;
@@ -414,10 +462,10 @@ Cross-domain communication happens through orchestrators, not between domain int
 
 ```typescript
 // ❌ Unstable — deps object is recreated every render, triggers infinite loop
-useEffect(() => { deps.fetchPost(postId); }, [deps]);
+useEffect(() => { deps.fetchPost({ postId }); }, [deps]);
 
 // ✅ Stable — depend only on the specific value that should trigger the effect
-useEffect(() => { deps.fetchPost(postId); }, [postId]);
+useEffect(() => { deps.fetchPost({ postId }); }, [postId]);
 ```
 
 **Skipping the Business Logic Hook when React lifecycle is needed**: Calling service methods directly in the Integration Hook without wrapping in `useMemo`/`useCallback` when those methods have referential equality implications. Use the Business Logic sub-hook for any service interaction that needs lifecycle awareness.
@@ -430,3 +478,4 @@ See `<AI_DEV_SHOP_ROOT>/skills/frontend-react-orcbash/references/` for complete 
 - `post-feature-example.md` — full Reddit posts feature with all 6 layers including state adapter
 - `typedoc-return-types-example.md` — explicit return types and TypeDoc/TSDoc coverage for exported APIs plus internal hook internals
 - `feature-slice-drop-in-template.md` — DDD/vertical-slice drop-in feature structure with rationale, weaknesses, and improvement guidance
+- `testability-patterns-example.md` — general patterns for writing testable logic functions, API boundaries, hooks, and orchestrators

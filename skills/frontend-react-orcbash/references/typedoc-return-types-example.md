@@ -31,11 +31,11 @@ import type { FormattedPost, Post } from '../types/post';
 
 export interface UsePostDependencies {
   post: Post | null;
-  fetchPost: (postId: string) => Promise<Post>;
-  likePost: (postId: string) => Promise<{ likes: number }>;
-  formatPost: (post: Post) => FormattedPost;
+  fetchPost: ({ postId }: { postId: string }, optional?: { signal?: AbortSignal }) => Promise<Post>;
+  likePost: ({ postId }: { postId: string }) => Promise<{ likes: number }>;
+  formatPost: ({ post }: { post: Post }) => FormattedPost;
   savePost: (post: Post) => void;
-  updatePostLikes: (postId: string, likes: number) => void;
+  updatePostLikes: ({ postId, likes }: { postId: string; likes: number }) => void;
 }
 
 interface PostUiState {
@@ -87,10 +87,10 @@ const usePostLogic = ({
   formatPost,
 }: {
   post: Post | null;
-  formatPost: (p: Post) => FormattedPost;
+  formatPost: ({ post }: { post: Post }) => FormattedPost;
 }): UsePostLogicResult => {
   const formattedPost = useMemo(
-    (): FormattedPost | null => (post ? formatPost(post) : null),
+    (): FormattedPost | null => (post ? formatPost({ post }) : null),
     [post, formatPost],
   );
   return { formattedPost };
@@ -103,8 +103,8 @@ const usePostLogic = ({
  * @returns Orchestrated state and actions for post views.
  */
 export const usePost = (
-  postId: string,
-  deps: UsePostDependencies,
+  { postId, deps }: { postId: string; deps: UsePostDependencies },
+  { prefetchOnInit = false }: { prefetchOnInit?: boolean } = {},
 ): UsePostResult => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -119,7 +119,7 @@ export const usePost = (
     setIsLoading(true);
     setError(null);
     try {
-      const fetched = await deps.fetchPost(postId);
+      const fetched = await deps.fetchPost({ postId });
       deps.savePost(fetched);
     } catch (err) {
       setError(err as Error);
@@ -131,8 +131,8 @@ export const usePost = (
   const like = useCallback(async (): Promise<void> => {
     ui.actions.setLiking(true);
     try {
-      const { likes } = await deps.likePost(postId);
-      deps.updatePostLikes(postId, likes);
+      const { likes } = await deps.likePost({ postId });
+      deps.updatePostLikes({ postId, likes });
     } catch (err) {
       setError(err as Error);
     } finally {
@@ -173,17 +173,17 @@ export interface UsePostPageOrchestratorResult {
  * @returns UI-ready view model and actions.
  */
 export const usePostPageOrchestrator = (
-  postId: string,
+  { postId }: { postId: string },
 ): UsePostPageOrchestratorResult => {
-  const state = usePostStateAdapter(postId);
-  const hook: UsePostResult = usePost(postId, {
+  const state = usePostStateAdapter({ postId });
+  const hook: UsePostResult = usePost({ postId, deps: {
     post: state.post,
     fetchPost: postApi.fetchPost,
     likePost: postApi.likePost,
     formatPost: postService.formatPost.bind(postService),
     savePost: state.savePost,
     updatePostLikes: state.updatePostLikes,
-  });
+  } });
 
   return {
     post: hook.post,
