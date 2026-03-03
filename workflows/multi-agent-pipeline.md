@@ -193,6 +193,9 @@ Before Programmer begins implementation:
 - Spec hash certified by TDD Agent (to validate drift)
 - Previous cycle's failure clusters (to detect regressions)
 - Coverage tool (from `tasks.md` constraints section; if absent, use project default)
+- Active coverage profile for lines/branches/functions/statements by suite (from `tasks.md` constraints):
+  - defaults: unit `98/98/98/98`, integration `90/90/90/90`, e2e `80/80/80/80`
+  - if user provides custom minimums, those override defaults
 - Per-file coverage baseline (from `tasks.md` constraints section if present, used to flag regressions on touched files)
 
 ### Code Review Agent
@@ -256,7 +259,7 @@ Before Programmer begins implementation:
 | Test failures | Programmer | Failing test names, spec ACs, ADR constraints |
 | Coverage gaps (any type) | TDD Agent (triage first) | Coverage Gap List (High-priority first), current % vs threshold per file, spec hash, test certification record — TDD classifies each gap as spec-traceable (writes tests) or no-spec-mapping (flags to Coordinator for Refactor dispatch) |
 | Coverage gaps — no spec mapping (flagged by TDD triage) | Refactor Agent | `reports/pipeline/<NNN>-<feature-name>/coverage-triage-<YYYY-MM-DD>.md`, Coverage Gap List, uncovered files with line ranges, ADR constraints |
-| Touched-file coverage regression | Coordinator triage first — examines diff to determine cause, then routes to TDD (tests deleted) or Programmer (implementation removed covered path) | Regressed files, previous vs current %, diff of what changed |
+| Touched-file coverage regression | Coordinator routing triage first — uses TestRunner/TDD evidence plus diff metadata, then routes to TDD (tests deleted) or Programmer (implementation removed covered path) | Regressed files, previous vs current %, diff metadata, latest coverage evidence |
 | Architecture violation | Architect | Specific violation, which ADR was breached |
 | Spec ambiguity | Spec Agent | Exact ambiguity, what decision is blocked |
 | Security finding (Critical/High) | Programmer | Full finding, mitigation steps; Security verifies after fix |
@@ -293,7 +296,7 @@ A feature reaches **Done** when all of the following are true:
 1. All three human checkpoints cleared: spec approval, architecture sign-off, security sign-off
 2. All tests pass against the certified spec hash
 3. All Critical/High security findings are resolved, or accepted with documented rationale in `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`
-4. Coverage report is attached to the final TestRunner artifact; hard gates pass per metric (unit lines/branches/functions/statements >= 98%, integration lines/branches/functions/statements >= 90%); all High-priority gaps are resolved or explicitly accepted with risk rationale; no uncovered lines remain in changed/high-priority runtime paths without documented technical justification.
+4. Coverage report is attached to the final TestRunner artifact; hard gates pass per metric using the active profile (defaults: unit lines/branches/functions/statements >= 98%, integration lines/branches/functions/statements >= 90%, e2e lines/branches/functions/statements >= 80%); all High-priority gaps are resolved or explicitly accepted with risk rationale; no uncovered lines remain in changed/high-priority runtime paths without documented technical justification.
 
 The Coordinator issues a **merge-ready summary** to the human:
 ```

@@ -19,6 +19,7 @@ By default, inter-agent communication flows through the Coordinator with bounded
 4. **Human escalation**: Know when to stop and ask, not when to keep trying
 5. **Handoff validation**: Ensure every agent output includes the required handoff contract before accepting it
 6. **Consultation governance** (when enabled): Relay bounded advice threads, preserve owner accountability, and log consultation outcomes
+7. **Coverage profile initialization**: At pipeline start, ask whether to keep default coverage minimums or set custom per-suite minimums across lines/branches/functions/statements; persist final profile in `tasks.md` constraints
 
 ## Cross-Agent Consultation Protocol (Default ON)
 
@@ -30,6 +31,16 @@ Rules:
 - Allowed messages: `CONSULT-REQUEST`, `CONSULT-RESPONSE`, `CONSULT-ACK`, `CONSULT-LEARNING`.
 - Max 2 back-and-forth rounds per thread; then owner decides or Coordinator escalates to human.
 - Log thread summary to `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/consultation-log.md`.
+
+## Coverage Profile Prompt (Before Test Execution)
+
+Before first TestRunner dispatch for a feature, confirm coverage minimums with the human for all four metrics (lines, branches, functions, statements) per suite:
+
+- Unit default: `98/98/98/98`
+- Integration default: `90/90/90/90`
+- E2E default: `80/80/80/80`
+
+If the human does not provide custom values, apply defaults and persist the active profile into `tasks.md` constraints so TestRunner and TDD use the same numbers.
 
 ## The Routing Decision Tree
 
@@ -85,7 +96,7 @@ Agent output received
 │                 then dispatch TDD to cover the newly testable units, then re-run TestRunner
 │
 ├─ Touched-file coverage regression (from TestRunner coverage report)?
-│   └─ Route to: Coordinator triage — examine the diff to determine cause:
+│   └─ Route to: Coordinator routing triage — use TestRunner/TDD evidence plus diff metadata to determine owner:
 │       - Tests were deleted → TDD Agent to restore coverage
 │       - Implementation change removed a previously covered path → Programmer to restore coverage
 │       Context: which files regressed, previous vs current %, what changed in the diff

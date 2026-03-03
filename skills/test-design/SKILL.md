@@ -116,8 +116,19 @@ The following suite-level gates are mandatory and evaluated per metric, not as a
 
 - **Unit test coverage:** `lines >= 98%`, `branches >= 98%`, `functions >= 98%`, `statements >= 98%`
 - **Integration test coverage:** `lines >= 90%`, `branches >= 90%`, `functions >= 90%`, `statements >= 90%`
+- **E2E test coverage:** `lines >= 80%`, `branches >= 80%`, `functions >= 80%`, `statements >= 80%`
 
 If any one metric is below its gate, coverage is considered failing.
+
+### Coverage Profile Initialization (configurable with safe defaults)
+
+At pipeline start, Coordinator should ask the human whether to keep defaults or set custom minimums for each suite across all four metrics (lines, branches, functions, statements).
+
+- Default Unit minimums: `98/98/98/98`
+- Default Integration minimums: `90/90/90/90`
+- Default E2E minimums: `80/80/80/80`
+
+If no custom profile is provided, defaults apply automatically. Persist the active profile in `tasks.md` constraints and reference it in TestRunner output.
 
 ### Uncovered Lines Policy
 
@@ -146,7 +157,7 @@ Coverage targets are risk-weighted by module class. Apply the correct threshold 
 - All acceptance criteria in the spec: covered by acceptance tests
 - All concrete edge cases listed in the spec: covered by explicit scenario tests
 
-**Blocking rule takes precedence:** failing either hard coverage gate (unit/integration) blocks progression to Code Review. High-priority gaps in core business logic or API adapters also block progression regardless of module-class discretion. In all cases, uncovered requirements and uncovered lines must be explicitly listed with rationale in the certification record.
+**Blocking rule takes precedence:** failing any hard coverage gate (unit/integration/e2e) blocks progression to Code Review. High-priority gaps in core business logic or API adapters also block progression regardless of module-class discretion. In all cases, uncovered requirements and uncovered lines must be explicitly listed with rationale in the certification record.
 
 ## Writing Good Assertions
 

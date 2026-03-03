@@ -71,6 +71,7 @@ When dispatched with a TestRunner coverage report rather than at initial spec-en
 3. Map each uncovered path back to a spec requirement, invariant, or edge case:
    - If it maps to a known spec item → write the missing test.
    - If it maps to no spec item → flag to Coordinator as a Refactor candidate (dead code or out-of-scope implementation). Do not write a test for behavior not in the spec.
+   - If both types exist in the same module, do both in the same cycle: write tests immediately for spec-traceable paths and separately flag no-spec-mapping paths for Refactor. Do not pause spec-traceable coverage work while waiting for Refactor routing.
 4. Write tests following the same naming and directory conventions as the original suite.
 5. Update the test certification record: add newly-written tests to the requirement-to-test mapping, revise the Coverage Gaps section, update the timestamp. Do not change the original certified spec hash — this is a gap fill, not a recertification.
 6. Report to Coordinator: tests written, remaining uncovered paths that have no spec mapping (Refactor candidates), updated certification record location. Write a structured triage report using `<AI_DEV_SHOP_ROOT>/templates/tdd-coverage-triage-template.md` only when: (a) any gap is being routed to Refactor Agent and a structured handoff is needed, or (b) the Coordinator explicitly requests a written artifact. In conversational or Agent Direct Mode use, prose output is sufficient.
