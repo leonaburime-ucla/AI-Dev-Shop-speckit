@@ -62,6 +62,22 @@ Every requirement must have at least one test. Every test must trace to a requir
 
 ## Test File Naming Convention (Required)
 
+## Test Directory Convention (Required)
+
+Place tests in type-specific directories:
+
+- Unit tests: `__tests__/unit/`
+- Integration tests: `__tests__/integration/`
+- E2E tests: `__tests__/e2e/`
+
+Examples:
+
+- `__tests__/unit/req-001.submit-order.unit.test.ts`
+- `__tests__/integration/req-004.model-selection.integration.test.ts`
+- `__tests__/e2e/chat-sidebar.e2e.test.ts`
+
+If a repository has an approved existing convention that differs, the override must be documented in `project-knowledge/project_memory.md` and referenced in the certification output. Without an explicit override, this directory rule is mandatory.
+
 Use explicit test-type suffixes in filenames:
 
 - Unit tests: `*.unit.test.ts`
@@ -145,6 +161,8 @@ This is the connective tissue that keeps specs, tests, and code in provable alig
 **Copying spec hash manually**: Automate hash generation and certification. Manual copy-paste is how hashes go stale silently.
 
 **Tests that test the mock**: If your test only verifies that a mock was called with certain arguments, you're not testing behavior — you're testing that you wrote the mock correctly.
+
+**Inconsistent test organization**: Mixing type-specific directories with flat/misc test locations reduces discoverability and breaks suite routing. Use `__tests__/unit/`, `__tests__/integration/`, and `__tests__/e2e/` unless a documented project override exists.
 
 **Inconsistent test suffixes**: Mixing `.test.ts`, `.spec.ts`, and type-specific suffixes hides test intent and breaks automation/reporting. Use the required suffixes (`.unit.test.ts`, `.integration.test.ts`, `.e2e.test.ts`) unless a documented project override exists.
 
