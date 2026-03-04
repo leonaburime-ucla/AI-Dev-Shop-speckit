@@ -38,14 +38,14 @@ Placeholder note: `<AI_DEV_SHOP_ROOT>` means the path to this toolkit folder (us
 All features work as documented. Slash commands require the one-time setup:
 
 ```bash
-cp -r <AI_DEV_SHOP_ROOT>/templates/commands/ .claude/commands/
+cp -r <AI_DEV_SHOP_ROOT>/slash-commands/ .claude/commands/
 ```
 
 The Task tool enables true parallel agent dispatch and isolated context windows per agent. This is the recommended host for production use of this framework.
 
 ### Claude.ai (web)
 
-No Task tool, no slash commands, no filesystem access. All pipeline stages run in a single conversation with manual routing. Use Option B: paste the contents of `templates/commands/<command>.md` directly as your message.
+No Task tool, no slash commands, no filesystem access. All pipeline stages run in a single conversation with manual routing. Use Option B: paste the contents of `slash-commands/<command>.md` directly as your message.
 
 For SHA-256 hashes, compute manually using your OS shell or a web tool and paste the result into the artifact. Pipeline state file must be maintained by copy-pasting the current state into a local file between sessions.
 

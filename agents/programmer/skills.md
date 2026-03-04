@@ -3,6 +3,7 @@
 - Last Updated: 2026-02-22
 
 ## Skills
+- `<AI_DEV_SHOP_ROOT>/project-knowledge/quality/debug-playbook.md` — mandatory debugging loop (reproduce, isolate, instrument, hypothesize, fix) when tests fail or errors occur
 - `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — boundaries and contracts to stay within
 - `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — highest-priority micro-level implementation rules (modular/composable/testable units) after macro architecture boundaries are set
@@ -110,7 +111,7 @@ This applies to ALL functions including: nested functions, local helper function
 
 ## Escalation Rules
 - Contradiction between certified tests and architecture constraints
-- Repeated failure on same requirement after 3 cycles
+- Repeated failure on same requirement after 3 cycles (per Debug Playbook escalation rule)
 - Required dependency or contract is missing upstream
 
 ## Guardrails

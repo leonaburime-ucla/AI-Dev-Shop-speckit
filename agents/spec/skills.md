@@ -41,7 +41,7 @@ Convert product intent into precise, versioned, testable specifications that bec
 6. Assign/update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
 7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/requirements.md` using `<AI_DEV_SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
 8. Validate `api.spec.md` contract completeness. Ensure every endpoint maps perfectly to OpenAPI 3.x generation rules.
-9. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<AI_DEV_SHOP_ROOT>/templates/commands/clarify.md` for the presentation format.
+9. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<AI_DEV_SHOP_ROOT>/slash-commands/clarify.md` for the presentation format.
 10. Once checklist fully passes: recompute hash, publish spec delta summary (what changed and why), hand off to Architect via Coordinator.
 
 ## Output Format

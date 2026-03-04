@@ -105,7 +105,7 @@ Full stage-by-stage context injection and parallel execution rules: `<AI_DEV_SHO
 ## Invoking the Pipeline
 
 **Option A — Slash commands (Claude Code only)** (one-time setup):
-- Claude Code: copy `<AI_DEV_SHOP_ROOT>/templates/commands/` to `.claude/commands/`
+- Claude Code: copy `<AI_DEV_SHOP_ROOT>/slash-commands/` to `.claude/commands/`
 
 **Option B — Manual (Gemini CLI, Codex CLI, Claude.ai, Generic LLM)**: paste the contents of the corresponding template file as your message, replacing `$ARGUMENTS`.
 
@@ -257,4 +257,4 @@ Full map of skills to agents: `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/skil
 ## Golden Sample
 
 End-to-end example (spec → red-team → ADR → tasks → test certification):
-`<AI_DEV_SHOP_ROOT>/examples/golden-sample/README.md`
+`<AI_DEV_SHOP_ROOT>/project-knowledge/examples/golden-sample/README.md`
