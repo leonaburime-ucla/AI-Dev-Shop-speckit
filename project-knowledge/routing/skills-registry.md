@@ -1,7 +1,7 @@
 ---
 name: skills-registry
 version: 1.0.0
-last_updated: 2026-02-28
+last_updated: 2026-03-04
 description: Maps every shared skill to the agents that use it. Reference when dispatching agents or updating skills.
 ---
 
@@ -34,6 +34,10 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/sql-data-modeling/SKILL.md` | Database Agent |
 | `skills/postgresql/SKILL.md` | Database Agent, Supabase Sub-Agent |
 | `skills/supabase/SKILL.md` | Supabase Sub-Agent |
+| `skills/systematic-debugging/SKILL.md` | Skills Librarian, Programmer (debug process reference) |
+| `skills/shadcn-ui/SKILL.md` | Skills Librarian, Programmer (frontend component integration reference) |
+| `skills/seo-geo/SKILL.md` | Skills Librarian, Docs Agent (SEO/GEO reference) |
+| `skills/find-skills/SKILL.md` | Skills Librarian only (external discovery) |
 | `skills/enterprise-spec/SKILL.md` | Spec Agent (enterprise contexts) |
 | `skills/evaluation/eval-rubrics.md` | Observer |
 | `skills/swarm-consensus/SKILL.md` | All agents (opt-in via Coordinator) |
@@ -50,7 +54,9 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/vibe-coding/SKILL.md` | VibeCoder Agent (optional, Agent Direct Mode) |
 | `project-knowledge/governance/tool-permission-policy.md` | All agents (security guardrails) |
 | `project-knowledge/governance/skill-conflict-resolution.md` | All agents (cross-skill conflict handling and user choice protocol) |
+| `project-knowledge/governance/skills-librarian-policy.md` | Coordinator, Skills Librarian (external skill discovery/ingestion governance) |
 | `project-knowledge/operations/react-skill-operations.md` | Coordinator, Programmer, Code Review, QA/E2E (React skill preflight, precedence, and evaluation loop) |
+| `project-knowledge/operations/skills-librarian-sop.md` | Skills Librarian, Coordinator (inbox workflow and audit lifecycle) |
 | `project-knowledge/governance/data-classification.md` | All agents (PII and secret handling) |
 | `project-knowledge/routing/model-routing.md` | Coordinator (dispatch tier selection) |
 | `project-knowledge/governance/escalation-policy.md` | Coordinator (retry budgets and escalation triggers) |

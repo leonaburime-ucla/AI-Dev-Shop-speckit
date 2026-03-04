@@ -1,7 +1,7 @@
 ---
 name: swarm-consensus
 version: 1.2.0
-last_updated: 2026-03-01
+last_updated: 2026-03-04
 description: Orchestrate a multi-model swarm by dispatching a prompt to all available LLM CLIs (whichever ones are installed), collating independent responses, and synthesizing a consensus. Supports single-pass and debate modes. Model-agnostic — the primary model is whoever is currently running this skill. OFF by default.
 ---
 
@@ -100,6 +100,29 @@ Write one focused prompt that contains:
 
 Keep it self-contained. The peer CLIs have no project context — everything they need must be in the prompt itself.
 
+### Online Resource Pre-Fetch (primary model responsibility)
+
+If the prompt requires online resources (URLs, external files, live data from the web):
+
+1. **The primary model fetches all required resources before dispatching to peers.**
+2. Embed fetched resource content into the shared prompt payload — do not pass raw URLs and expect peers to fetch independently.
+3. If any required resource cannot be fetched (404, timeout, auth wall, etc.):
+   - Do not proceed with a degraded prompt that omits the resource.
+   - Tell the user immediately: which URL failed and why.
+   - Ask whether to proceed without that resource or abort.
+   - If the user says proceed, note the missing resource explicitly in the prompt so all models reason from the same incomplete-but-declared baseline.
+
+**Rationale:** Some LLMs in the swarm may not have web access, or the same URL may return differently across models. Pre-fetching by the primary model guarantees all peers reason from identical source material.
+
+### Prompt Transport Safety (hard requirement)
+
+Do not pass large or untrusted prompt text directly as shell-interpolated inline strings.
+
+1. Write the full prompt to a temporary file (for example `.swarm-prompt.txt`) or pipe it via stdin.
+2. Invoke peer CLIs using file/stdin-safe patterns where possible.
+3. If a tool only supports inline prompt args, apply strict escaping and note this risk in the report.
+4. Never execute fetched resource content as shell code.
+
 ---
 
 ## Step 3 — Swarm Dispatch
@@ -112,19 +135,40 @@ Keep it self-contained. The peer CLIs have no project context — everything the
 2. Primary model MUST NOT read peer outputs until its first-pass answer is written.
 3. Round-1 peer prompts MUST NOT include other models' answers.
 
+### Anti-Truncation Protocol (hard requirement)
+
+Do not rely on subjective "looks abrupt" checks alone.
+
+1. Require each peer response to end with a deterministic end marker, for example `<<SWARM_END>>`.
+2. If marker is missing, or response is empty/obviously partial, mark it as `Failed (Truncated)`.
+3. **Truncated responses MUST NOT be included in synthesis.**
+4. Tell the user inline: `[ModelName]'s response was truncated or incomplete. It has been excluded from synthesis.`
+
 ### Round 1 (all modes)
 
 1. **Self (primary model):** Generate full first-pass response and freeze it.
 2. **Each available peer CLI:** Execute via shell, capture `stdout`. Use timeout of 60 seconds per call — if a tool hangs, mark as timed out and continue.
 
 ```bash
-# Example — adapt flags to whatever the tool actually supports
-claude -p "<prompt>" 2>/dev/null
-gemini -p "<prompt>" 2>/dev/null
-codex "<prompt>"     2>/dev/null
+# Example patterns — adapt to actual CLI support
+# Preferred: stdin/file transport (safer than inline interpolation)
+claude -p "$(cat .swarm-prompt.txt)" 2>/dev/null
+gemini -p "$(cat .swarm-prompt.txt)" 2>/dev/null
+codex  "$(cat .swarm-prompt.txt)"    2>/dev/null
 ```
 
 If a peer CLI returns a non-zero exit code or empty output, mark it as failed in the report and exclude it from synthesis.
+
+### Resource Fetch Failure — Peer Withdrawal Protocol
+
+If a peer model's response contains a resource fetch failure signal (e.g. it reports it could not access a required URL, file, or external dependency needed to answer the question):
+
+1. **Mark that peer as "Resource unavailable" in the Swarm table** — do not include its response in synthesis.
+2. **Tell the user immediately**, inline, before continuing:
+   > `[ModelName] could not access [resource]. It has withdrawn from this round. Continuing with [remaining models].`
+3. Do not silently include a response that was built on assumptions about content the model could not read — that contaminates synthesis with hallucinated context.
+4. If the *primary model* cannot fetch a required resource, it must tell the user and stop the run (or ask to proceed without it) — it cannot dispatch a degraded prompt to peers without disclosing this.
+5. If after withdrawals only one model remains (primary + 0 peers), stop and inform the user: not enough participants for meaningful consensus.
 
 ---
 
@@ -133,7 +177,10 @@ If a peer CLI returns a non-zero exit code or empty output, mark it as failed in
 In `debate` mode, run bounded rebuttal rounds after Round 1:
 
 1. Build a decision-point ledger (architecture choice, data model strategy, risk posture, migration approach, etc.).
-2. Summarize deltas only (where models disagree) and send the summarized deltas back to each model for rebuttal.
+2. Summarize deltas only (where models disagree) and send the summarized deltas back to each model for rebuttal. 
+   - **Mid-Debate Dropout Rule:** If a model that participated in Round 1 fails to respond, times out, or reports a resource failure in Round 2+, it **withdraws from the remainder of the debate**. 
+   - Do not hallucinate its rebuttal. Note its withdrawal inline to the user. Its Round 1 positions remain in the ledger but are marked as "Final (Withdrawn)".
+   - Recompute active participants each round. If active participants drop below two total responders (primary + at least one peer), stop debate and report insufficient participants for meaningful consensus.
 3. Repeat for up to `max_rounds`.
 4. Stop early when agreement is >=`min_confidence` on decision points.
 
@@ -174,9 +221,9 @@ Produce a `consensus-report.md` (or inline if the user prefers) with this struct
 | Role | Model | Version | Status |
 |---|---|---|---|
 | Primary | <your model name> | <version> | Responded |
-| Peer | claude | <version or "not installed"> | Responded / Failed / Not installed |
-| Peer | gemini | <version or "not installed"> | Responded / Failed / Not installed |
-| Peer | codex  | <version or "not installed"> | Responded / Failed / Not installed |
+| Peer | claude | <version or "not installed"> | Responded / Failed / Failed (Truncated) / Withdrawn / Not installed / Resource unavailable |
+| Peer | gemini | <version or "not installed"> | Responded / Failed / Failed (Truncated) / Withdrawn / Not installed / Resource unavailable |
+| Peer | codex  | <version or "not installed"> | Responded / Failed / Failed (Truncated) / Withdrawn / Not installed / Resource unavailable |
 
 ## Individual Responses
 

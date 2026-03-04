@@ -1,7 +1,7 @@
 ---
 name: supabase
 version: 1.0.0
-last_updated: 2026-02-23
+last_updated: 2026-03-04
 description: Use when implementing Supabase-specific features including Row Level Security, PostgREST API conventions, realtime subscriptions, storage buckets, edge functions, auth integration, and typed client setup.
 ---
 
@@ -568,6 +568,21 @@ npx supabase gen types typescript --local > lib/supabase/database.types.ts
 ```
 
 Commit the generated types file. CI should fail if a schema change lands without a regenerated types file.
+
+## Performance Checklist (Supabase + Postgres)
+
+Use this checklist for query-heavy or latency-sensitive workloads:
+
+- **Indexing**:
+  - index foreign keys and high-frequency filter columns
+  - use composite indexes that match real predicate order
+  - use partial indexes for hot subsets (for example, active/pending rows)
+  - use covering indexes (`INCLUDE`) when index-only scans are feasible
+- **Pagination**: prefer keyset/cursor pagination over deep `OFFSET` on large tables.
+- **RLS performance**: index columns used in policy predicates (`user_id`, `tenant_id`, visibility flags) to avoid policy-driven full scans.
+- **Plan inspection**: run `EXPLAIN (ANALYZE, BUFFERS)` on critical queries and verify role-context behavior under `anon`/`authenticated` assumptions.
+- **Connection management**: use Supabase poolers and tune idle/connection limits; avoid per-request client construction patterns that increase churn.
+- **JSONB**: for containment-heavy workloads, use GIN indexes and consider operator-class tuning; extract scalar fields to generated columns when range/equality filters dominate.
 
 ## Common Gotchas
 

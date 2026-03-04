@@ -1,7 +1,7 @@
 ---
 name: postgresql
 version: 1.0.0
-last_updated: 2026-02-23
+last_updated: 2026-03-04
 description: Use when writing advanced PostgreSQL queries, implementing triggers, stored functions, full-text search, JSONB operations, partitioning, or diagnosing query performance. Applies to any PostgreSQL host (Supabase, RDS, Railway, Neon, self-hosted).
 ---
 
@@ -10,6 +10,20 @@ description: Use when writing advanced PostgreSQL queries, implementing triggers
 PostgreSQL is not just a relational database — it is a programmable data platform. This skill covers the features that go beyond basic CRUD: the tools that let you push logic to the database when it belongs there, query complex data shapes efficiently, and diagnose performance problems with evidence.
 
 Use these features when the problem calls for them. A simple `SELECT` does not need a CTE. A three-row lookup table does not need partitioning. Apply advanced features when they solve a real problem, and document why they were chosen.
+
+## Table Design Guardrails
+
+Apply these defaults before advanced query tuning:
+
+- **Primary keys**: prefer `BIGINT GENERATED ALWAYS AS IDENTITY` unless UUID is required for distributed uniqueness or external opacity.
+- **Foreign keys**: PostgreSQL does not auto-index FK columns; add explicit indexes for FK access paths.
+- **Type defaults**:
+  - use `TIMESTAMPTZ` (not `TIMESTAMP`)
+  - use `NUMERIC` for money (not floating point)
+  - use `TEXT` by default for strings; add explicit length checks when needed
+- **Constraints first**: enforce invariants in schema (`NOT NULL`, `CHECK`, `UNIQUE`) before relying on application validation.
+- **Unique-null behavior**: when business rules require nulls to collide, use `UNIQUE ... NULLS NOT DISTINCT` (PG15+).
+- **Identifier convention**: use unquoted `snake_case` identifiers to avoid case-sensitive naming traps.
 
 ## CTEs (Common Table Expressions)
 

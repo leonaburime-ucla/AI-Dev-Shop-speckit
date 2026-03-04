@@ -1,7 +1,7 @@
 ---
 name: test-design
 version: 1.0.0
-last_updated: 2026-02-22
+last_updated: 2026-03-04
 description: Use when designing tests, building requirement-to-test matrices, selecting test types, certifying test coverage against a spec, or detecting test drift after spec changes.
 ---
 
@@ -16,6 +16,21 @@ Tests in this system are not just verification — they are a second encoding of
 **Verification role (TestRunner Agent)**: Execute tests after implementation. Report pass/fail evidence. Identify failure clusters. Route results to Coordinator.
 
 These are distinct jobs. The TDD Agent does not run tests against finished code. The TestRunner Agent does not write new tests.
+
+## TDD Execution Mechanics (Mandatory)
+
+Use strict red-green-refactor execution for every behavior slice.
+
+1. **Red first**: write one failing test before any production code.
+2. **Verify red**: confirm it fails for the expected reason (missing behavior), not for setup/typo errors.
+3. **Green minimal**: implement the smallest change that makes the test pass.
+4. **Verify green**: run the targeted test, then run impacted suites.
+5. **Refactor after green only**: cleanup is allowed only while tests stay green.
+
+Hard rules:
+- No production code without a failing test first.
+- If a new test passes on the first run, it is not proving new behavior; tighten or rewrite the test.
+- Do not batch multiple behavior changes in one red-green loop.
 
 ## Requirement-to-Test Matrix
 

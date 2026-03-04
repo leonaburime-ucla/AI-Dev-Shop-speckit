@@ -133,6 +133,7 @@ Full operating procedure for each agent is in their `skills.md`.
 | VibeCoder (optional) | Fast exploratory prototyping — optional on-ramp before the structured pipeline | `agents/vibecoder/skills.md` |
 | System Blueprint (optional, pre-spec) | Macro-level system planning and spec decomposition before feature specs | `agents/system-blueprint/skills.md` |
 | Coordinator | Pipeline orchestration, routing, convergence, human escalation | `agents/coordinator/skills.md` |
+| Skills Librarian (optional) | Centralized external skill discovery, audit, and canonical merge governance | `agents/skills-librarian/skills.md` |
 | Spec | Converts intent into versioned, testable spec packages | `agents/spec/skills.md` |
 | Architect | Selects patterns, defines boundaries, produces ADR | `agents/architect/skills.md` |
 | TDD | Writes certified test suite before implementation | `agents/tdd/skills.md` |
