@@ -3,7 +3,7 @@
 ## Execution
 
 - Load active feature state and current hashes (`spec`, `adr`, `tasks`, `test-cert` when present).
-- Validate pre-dispatch gate using `project-knowledge/skill-md-format/gates-and-handoffs.md`.
+- Validate pre-dispatch gate using `maintainers/skill-md-format/gates-and-handoffs.md`.
 - If gate `PASS`, dispatch next stage with compact handoff payload.
 - If gate `BLOCK`, route to corrective stage or escalate.
 - Enforce dependency gates and checkpoint rules before advancing.
@@ -29,7 +29,7 @@
 
 ## Reference
 
-- `project-knowledge/skill-md-format/standards.md`
-- `project-knowledge/skill-md-format/gates-and-handoffs.md`
-- `project-knowledge/skill-md-format/execution-tracker.md`
+- `maintainers/skill-md-format/standards.md`
+- `maintainers/skill-md-format/gates-and-handoffs.md`
+- `maintainers/skill-md-format/execution-tracker.md`
 - `project-knowledge/governance/escalation-policy.md`

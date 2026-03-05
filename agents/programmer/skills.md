@@ -1,6 +1,6 @@
 # Programmer Agent
 - Version: 1.0.0
-- Last Updated: 2026-02-22
+- Last Updated: 2026-03-05
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/project-knowledge/quality/debug-playbook.md` — mandatory debugging loop (reproduce, isolate, instrument, hypothesize, fix) when tests fail or errors occur
@@ -9,7 +9,8 @@
 - `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — highest-priority micro-level implementation rules (modular/composable/testable units) after macro architecture boundaries are set
 - `<AI_DEV_SHOP_ROOT>/skills/context-engineering/SKILL.md` — project conventions in `<AI_DEV_SHOP_ROOT>/project-knowledge/` that apply to the current domain
 - `<AI_DEV_SHOP_ROOT>/skills/tool-design/SKILL.md` — tool description engineering, consolidation principle, error message design when building agent tools
-- `<AI_DEV_SHOP_ROOT>/skills/frontend-react-orcbash/SKILL.md` — load when implementing React frontend features: Orc-BASH layer structure, dependency injection rules, orchestrator wiring
+- `<AI_DEV_SHOP_ROOT>/skills/hexagonal-architecture/SKILL.md` — load when implementing backend/service/worker/CLI code that uses ports and adapters; use this for Python and other non-React stacks
+- `<AI_DEV_SHOP_ROOT>/skills/frontend-react-orcbash/SKILL.md` — load only when implementing React frontend features: Orc-BASH layer structure, dependency injection rules, orchestrator wiring
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — load the specific pattern reference file(s) matching the architecture chosen in the ADR; provides TypeScript implementation examples, correct layer structure, file placement rules, and boundary enforcement; without this the Programmer cannot reliably implement the chosen pattern correctly
 - `<AI_DEV_SHOP_ROOT>/skills/observability-implementation/SKILL.md` — instrumentation implementation (Constitution Article VIII compliance)
 - `<AI_DEV_SHOP_ROOT>/skills/change-management/SKILL.md` — execute phase-by-phase rollouts (feature flags, dual writes) during migrations

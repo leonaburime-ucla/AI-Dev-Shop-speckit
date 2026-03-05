@@ -1,13 +1,20 @@
 ---
 name: frontend-react-orcbash
 version: 1.1.0
-last_updated: 2026-03-04
-description: Use when structuring React frontend code using the Orc-BASH pattern (Orchestration, Business Logic, API, State Management, Hooks) — a hexagonal architecture that inverts dependency flow, maximizes reusability across pages, and makes every layer independently testable.
+last_updated: 2026-03-05
+description: Use only for React frontend code structured with the Orc-BASH pattern (Orchestration, Business Logic, API, State Management, Hooks) — a React-specific specialization of hexagonal architecture with explicit UI-facing test seams.
 ---
 
 # Skill: Frontend React — Orc-BASH Pattern
 
-Orc-BASH is hexagonal architecture for React frontends. The Orchestrator is the central hub that wires together four independent concerns and exposes a clean interface to the UI. Business Logic, API, and State Manager have **zero dependencies on each other** — the Orchestrator is the only layer that knows about all of them.
+Orc-BASH is a React-specific specialization of hexagonal architecture.
+
+Use this skill only for React and Next.js frontend implementation.
+
+- For Python, backend TypeScript, Go, Java, CLIs, workers, or general service code, use `<AI_DEV_SHOP_ROOT>/skills/hexagonal-architecture/SKILL.md` instead.
+- Do not apply Orc-BASH outside React UI architecture.
+
+The Orchestrator is the central hub that wires together four independent concerns and exposes a clean interface to the UI. Business Logic, API, and State Manager have **zero dependencies on each other** — the Orchestrator is the only layer that knows about all of them.
 
 ## Dependency Flow
 

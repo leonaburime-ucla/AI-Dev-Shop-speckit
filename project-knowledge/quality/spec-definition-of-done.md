@@ -20,21 +20,22 @@ If the answer is NO for any reason, the spec is NOT done. Identify the gap, retu
 
 ## Required Spec Package Files
 
-A complete spec for feature `NNN-feature-name` requires ALL of the following files to exist and be non-empty before the spec is considered Done. Missing any single file is a blocking deficiency.
+A complete spec for feature `NNN-feature-name` always requires the canonical primary spec plus the package-governance files below. Contract files are required when the feature shape makes them applicable. Missing any always-required file, or any applicable contract file, is a blocking deficiency.
 
 | File | Location | Purpose |
 |---|---|---|
 | `feature.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Human-readable spec: problem, scope, requirements, ACs, invariants, edge cases, dependencies, open questions, constitution compliance |
-| `api.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed API contracts: request/response schemas, HTTP methods, status codes, error payloads (TypeScript or equivalent for your stack) |
-| `state.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed state shapes: before/after for every mutation, initial state, derived state |
-| `orchestrator.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed orchestration contracts: which services/repos are called, in what order, what they return, what errors they surface |
-| `ui.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed UI contracts: component props, events emitted, loading/error/empty states, accessibility requirements |
-| `errors.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Exhaustive error catalog: every error code, exact payload shape, HTTP status, user-facing message, retry behavior |
-| `behavior.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Deterministic behavior rules: precedence, ordering, defaults, limits, deduplication, tie-break logic — anything not expressible in types |
+| `api.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed API contracts: request/response schemas, HTTP methods, status codes, error payloads (required only if the feature exposes or consumes an API) |
+| `state.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed state shapes: before/after for every mutation, initial state, derived state (required only if the feature introduces or mutates stateful data) |
+| `orchestrator.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed orchestration contracts: which services/repos are called, in what order, what they return, what errors they surface (required only if the feature has a coordinator/orchestrator layer) |
+| `ui.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Typed UI contracts: component props, events emitted, loading/error/empty states, accessibility requirements (required only if the feature has a UI surface) |
+| `errors.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Exhaustive error catalog: every error code, exact payload shape, HTTP status, user-facing message, retry behavior (required only if the feature defines error codes or recovery paths) |
+| `behavior.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Deterministic behavior rules: precedence, ordering, defaults, limits, deduplication, tie-break logic — anything not expressible in types (required only when such rules exist) |
 | `traceability.spec.md` | `<user-specified>/<NNN>-<feature-name>/` | Traceability matrix: REQ-* to function/component, REQ-* to test IDs |
+| `spec-manifest.md` | `<user-specified>/<NNN>-<feature-name>/` | Records actual filenames, omitted files with justification, and whether the package uses prefixed or standard naming |
 | `spec-dod.md` | `<user-specified>/<NNN>-<feature-name>/` | This DoD checklist, completed with pass/fail status for this spec |
 
-The existing `spec.md` (from `spec-template.md`) is renamed to `feature.spec.md` or kept as `spec.md` — either is valid as long as the file contains all required sections. The typed contract files (`api.spec.md`, `state.spec.md`, etc.) are additive and required in addition to it.
+Legacy single-file `spec.md` from the deleted `spec-template.md` flow is not valid for new work. New specs use `feature.spec.md` as the canonical primary file.
 
 ---
 
@@ -321,10 +322,10 @@ The Coordinator MUST NOT dispatch the Architect Agent unless ALL of the followin
 | 4 | `status` is `APPROVED` | Metadata block parsed; human has explicitly approved |
 | 5 | `content_hash` is present and matches the current file content | Recompute sha256; compare to stored hash |
 | 6 | Zero unresolved `[NEEDS CLARIFICATION]` markers in the spec | Grep the spec file for `[NEEDS CLARIFICATION]`; count must be 0 |
-| 7 | All required typed contract files exist and are non-empty | File system check for `api.spec.md`, `state.spec.md`, `orchestrator.spec.md`, `ui.spec.md`, `errors.spec.md` |
-| 8 | `behavior.spec.md` exists and all six required sections are present | File exists; section headers checked |
-| 9 | `traceability.spec.md` exists with Table 1 populated | Every REQ-* has at least one implementation target |
-| 10 | `spec-dod.md` exists and all items are marked PASS | No items marked FAIL or TODO |
+| 7 | All applicable typed contract files exist and are non-empty | File system check for the contract files the feature actually requires |
+| 8 | If `behavior.spec.md` applies, it exists and all required sections are present | File exists when needed; section headers checked |
+| 9 | `traceability.spec.md` and `spec-manifest.md` exist and are populated | Every REQ-* has at least one implementation target; manifest records omitted files with justification |
+| 10 | `spec-dod.md` exists and all items are PASS or NA with justification | No items marked FAIL, TODO, or left blank |
 | 11 | Constitution Compliance table in `feature.spec.md` is complete | Every article marked COMPLIES, EXCEPTION, or N/A; no blanks |
 | 12 | Every EXCEPTION in the Constitution table has a justification noted | Justification column is non-empty for all EXCEPTION rows |
 | 13 | Every acceptance scenario uses concrete inputs and exact expected outputs | Manual review; no vague qualifiers (see Banned Language section) |
@@ -376,13 +377,10 @@ The file `spec-dod.md` must be generated for each spec and completed before Arch
 
 ## Package Completeness
 - [ ] feature.spec.md exists and all sections populated
-- [ ] api.spec.md exists and all endpoints typed
-- [ ] state.spec.md exists and all state shapes typed
-- [ ] orchestrator.spec.md exists and all flows documented
-- [ ] ui.spec.md exists and all component contracts typed
-- [ ] errors.spec.md exists and all error codes cataloged
-- [ ] behavior.spec.md exists and all six sections present
+- [ ] all applicable typed contract files exist and are complete (`api.spec.md`, `state.spec.md`, `orchestrator.spec.md`, `ui.spec.md`, `errors.spec.md`)
+- [ ] behavior.spec.md exists when the feature has non-trivial behavior rules
 - [ ] traceability.spec.md exists and Table 1 populated
+- [ ] spec-manifest.md exists and records actual filenames plus omitted files with justification
 - [ ] spec-dod.md (this file) exists
 
 ## Metadata

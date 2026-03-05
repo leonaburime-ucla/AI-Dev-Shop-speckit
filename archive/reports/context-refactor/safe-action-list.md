@@ -1,7 +1,7 @@
 # Skill-MD-Format Safe Action List (Non-vercel)
 
 - Generated: 2026-03-03T20:39:25Z
-- Source artifacts: `reports/context-refactor/context-audit.md`, `reports/context-refactor/line-tags.tsv`
+- Source artifacts: `archive/reports/context-refactor/context-audit.md`, `archive/reports/context-refactor/line-tags.tsv`
 - Scope filter: excludes all `skills/vercel-*`
 
 ## How To Use This File
@@ -106,4 +106,4 @@ Start here for maximum impact on routing quality:
 ## Notes
 
 - This list is intentionally conservative and excludes all `skills/vercel-*` paths.
-- Use canonical rule-home map from `project-knowledge/skill-md-format/standards.md` when deduplicating.
+- Use canonical rule-home map from `maintainers/skill-md-format/standards.md` when deduplicating.

@@ -2,12 +2,12 @@
 
 ## Current Skill
 
-- Path: `project-knowledge/skill-md-format/rewrite-drafts/skills/coordination/v1/HUMANS.md`
+- Path: `maintainers/skill-md-format/rewrite-drafts/skills/coordination/v1/HUMANS.md`
 - Length: long-form, human-readable baseline, policy narrative, examples
 
 ## v1 Draft
 
-- Path: `project-knowledge/skill-md-format/rewrite-drafts/skills/coordination/v1/SKILL.md`
+- Path: `maintainers/skill-md-format/rewrite-drafts/skills/coordination/v1/SKILL.md`
 - Format: `Execution` / `Guardrails` / `Output` / `Reference`
 - Goal: faster agent parsing, less instruction noise
 

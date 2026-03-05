@@ -1,13 +1,25 @@
 ---
 name: design-patterns
 version: 1.0.0
-last_updated: 2026-02-22
+last_updated: 2026-03-05
 description: Use when selecting or implementing architecture patterns including hexagonal, clean architecture, CQRS, event sourcing, event-driven, microservices, resilience, DDD tactical patterns, multi-tenant, caching, repository pattern, and more — each with TypeScript examples, tradeoffs, and when-to-use guidance.
 ---
 
 # Design Patterns Library
 
 19+ production architecture patterns with TypeScript examples, tradeoffs, testing guidance, and failure modes. Load the specific pattern file(s) relevant to the current decision — do not load all at once.
+
+For active ports-and-adapters implementation guidance across non-React stacks, prefer loading `<AI_DEV_SHOP_ROOT>/skills/hexagonal-architecture/SKILL.md` alongside the reference material.
+
+## Default Product Heuristic
+
+For most long-lived products:
+
+- start with a modular monolith as the macro shape,
+- organize work by vertical slices or strongly owned modules,
+- apply hexagonal boundaries only where external I/O isolation or business-critical logic actually benefits from ports and adapters.
+
+Do not default the entire codebase to full ports-and-adapters ceremony if the work is simple CRUD, scripting, or otherwise low-complexity.
 
 ## Pattern Selection Decision Guide
 

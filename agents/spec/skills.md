@@ -1,6 +1,6 @@
 # Spec Agent
 - Version: 1.0.0
-- Last Updated: 2026-02-22
+- Last Updated: 2026-03-05
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
@@ -36,16 +36,16 @@ Convert product intent into precise, versioned, testable specifications that bec
 
    Create `<user-specified>/<NNN>-<feature-name>/`. Create `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/` and record both `spec_path: <user-specified>/<NNN>-<feature-name>/` and `spec_naming: prefixed | standard` in `.pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
 
-5. Write or revise spec to `<user-specified>/<NNN>-<feature-name>/[<feature-name>.]feature.spec.md` using `<AI_DEV_SHOP_ROOT>/templates/spec-system/feature.spec.md`.
-5. Complete the Constitution Compliance table. Mark each article COMPLIES, EXCEPTION, or N/A.
-6. Assign/update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
-7. Generate the spec quality checklist at `<user-specified>/<NNN>-<feature-name>/requirements.md` using `<AI_DEV_SHOP_ROOT>/templates/checklist-template.md`. Validate the spec against every item. Update checklist with pass/fail status.
-8. Validate `api.spec.md` contract completeness. Ensure every endpoint maps perfectly to OpenAPI 3.x generation rules.
-9. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<AI_DEV_SHOP_ROOT>/slash-commands/clarify.md` for the presentation format.
-10. Once checklist fully passes: recompute hash, publish spec delta summary (what changed and why), hand off to Architect via Coordinator.
+5. Determine which spec-package files apply to the feature. Write or revise the full package at `<user-specified>/<NNN>-<feature-name>/`, using `<AI_DEV_SHOP_ROOT>/templates/spec-system/` templates for every applicable file.
+6. Complete the Constitution Compliance table in `feature.spec.md`. Mark each article COMPLIES, EXCEPTION, or N/A. Assign or update metadata: Spec ID, FEAT number, Version, Last Edited (ISO-8601 UTC), Content Hash (sha256).
+7. Generate `spec-manifest.md`. Record the actual filenames written, omitted files with one-line justification, and the `spec_naming` choice used.
+8. Validate `api.spec.md` contract completeness when an API contract file exists. Ensure every endpoint maps cleanly to OpenAPI 3.x generation rules.
+9. Fill `spec-dod.md`. Every item must be PASS or NA with justification. Any FAIL blocks handoff until fixed.
+10. If `[NEEDS CLARIFICATION]` markers remain: present them as structured questions (max 3, A/B/C options) and wait for human answers before finalizing. See `<AI_DEV_SHOP_ROOT>/slash-commands/clarify.md` for the presentation format.
+11. Once `spec-dod.md` fully passes: recompute hash, publish spec delta summary (what changed and why), hand off to Architect via Coordinator.
 
 ## Output Format
-- Spec file path
+- Spec package path
 - Spec metadata (ID / version / hash / timestamp)
 - Change summary (what changed and why)
 - Acceptance criteria list
@@ -101,4 +101,4 @@ Specs are written wherever the user specifies. No hardcoded output location.
 There is no default location — always ask if the user has not specified one.
 
 ## Output Path Rule
-Write spec artifacts to the user-specified location. Never modify `agents/`, `skills/`, `templates/`, or `workflows/`.
+Write spec artifacts to the user-specified location. During spec work, never modify `agents/`, `skills/`, `templates/`, or `workflows/`.

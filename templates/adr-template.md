@@ -44,6 +44,14 @@ State the decision in one or two sentences. Be direct — no "we are considering
 
 **Pattern(s) selected:** e.g., Clean Architecture + CQRS
 
+## Default Heuristic Alignment
+
+State whether this decision follows or departs from the project's default architecture heuristic.
+
+- Default heuristic: modular monolith at the macro level, vertical slices for feature ownership, and hexagonal boundaries only where external I/O or business-critical logic justify them. React frontends use Orc-BASH. Small or simple features should avoid unnecessary architecture ceremony.
+- Alignment: FOLLOWS / DEPARTS
+- Notes: <why this decision follows the default, or which concrete constraints justify a departure>
+
 ## Rationale
 
 Why this decision and not the alternatives?

@@ -16,7 +16,7 @@ On the first user message in this repository (including greetings), before any r
 1. Open and read `<AI_DEV_SHOP_ROOT>/AGENTS.md`.
 2. Provide a welcome message that MUST include:
    - "Booted with <AI_DEV_SHOP_ROOT>/AGENTS.md loaded."
-   - A bulleted list of the 3 Coordinator modes with a 1-sentence summary of each.
+   - A bulleted list of the 4 Coordinator modes with a 1-sentence summary of each.
    - The pipeline diagram and its notes (copy from the How This Works section verbatim).
    - One sentence explaining that Consultation Mode (default ON) exists and how to enable/disable it.
    - One sentence explaining that Agent Consensus Mode exists and how to enter/exit it, without explaining debate details.
@@ -82,23 +82,19 @@ Agents are specialized roles, each with a `skills.md`. By default, all routing f
 
 **Before anything else:** Confirm `<AI_DEV_SHOP_ROOT>` — the path to the AI Dev Shop toolkit folder (default: `AI-Dev-Shop-speckit/`). Pipeline artifacts are written under `<AI_DEV_SHOP_ROOT>/reports/`. Spec files are written to the user-specified location.
 
-**For an existing codebase (first time):**
-0. Spawn CodeBase Analyzer → `<AI_DEV_SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-*.md` and optionally `MIGRATION-*.md`
-0a. Human reviews → decides Route A (migrate first) or Route B (build alongside migration)
+Existing codebases should start with CodeBase Analyzer on the first pass to produce `ANALYSIS-*.md` and, when needed, `MIGRATION-*.md`.
 
-**For all projects:**
-1. If scope is multi-domain or boundaries are unclear, spawn System Blueprint Agent → produce macro component/domain map and spec decomposition plan
-2. Spawn Spec Agent → ask user where to save the spec package; Spec Agent creates the feature folder at that location — all DoD checklist items must pass, zero [NEEDS CLARIFICATION] markers before step 3
-3. Human approves spec → spawn Red-Team Agent → spawn Architect Agent → ADR
-4. Human approves ADR → generate tasks.md → spawn TDD Agent → certify tests against spec hash
-5. Spawn Programmer Agent → implement until tests pass (~90-95%)
-6. Spawn Code Review Agent → classify findings as Required or Recommended
-7. Spawn Security Agent → human must approve any Critical/High finding before shipping
-8. Done
+Canonical stage order, context injection rules, and detailed dispatch behavior live in `<AI_DEV_SHOP_ROOT>/workflows/multi-agent-pipeline.md`.
+
+High-level flow:
+1. Use System Blueprint when macro boundaries are unclear or the scope spans multiple domains.
+2. Spec Agent creates the full spec package at the user-specified location. Zero unresolved `[NEEDS CLARIFICATION]` markers before architecture work.
+3. Human approves spec, then Red-Team and Architect produce the ADR.
+4. Human approves ADR, then Coordinator generates `tasks.md` and dispatches TDD.
+5. Programmer implements to convergence, then Code Review and Security run before shipping.
+6. Done.
 
 If tests repeatedly fail (3+ cycles on same cluster), escalate to human — do not keep retrying.
-
-Full stage-by-stage context injection and parallel execution rules: `<AI_DEV_SHOP_ROOT>/workflows/multi-agent-pipeline.md`
 
 ---
 
@@ -197,7 +193,7 @@ Cross-agent consultation is enabled by default. If consultation mode is disabled
 - **The constitution governs architecture.** Spec Agent flags compliance, Red-Team pre-flights it, Architect's ADR is the binding record. Unjustified violation = blocking escalation. See `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/constitution.md`.
 - **[NEEDS CLARIFICATION] markers block Architect dispatch.** Resolve or escalate to human first.
 - **Every artifact references the active spec version and hash.** No exceptions.
-- **Framework files are read-only.** Never modify `agents/`, `skills/`, `templates/`, or `workflows/` — these are toolkit source files. `reports/` and `project-knowledge/` are the project workspace and are writable under `<AI_DEV_SHOP_ROOT>/`. Spec files are written to the user-specified location outside `<AI_DEV_SHOP_ROOT>/`.
+- **Framework files are read-only during normal feature work.** Do not modify `agents/`, `skills/`, `templates/`, or `workflows/` when working on a project feature. If the user explicitly asks to maintain or upgrade the toolkit itself, treat that as framework maintainer work and allow edits in those directories. `reports/` and `project-knowledge/` are the project workspace and are writable under `<AI_DEV_SHOP_ROOT>/`. Spec files are written to the user-specified location outside `<AI_DEV_SHOP_ROOT>/`.
 - **Handoff contract is mandatory.** Every output must include: inputs used (spec hash, ADR, test certification), output summary, risks, suggested next assignee. Format: `<AI_DEV_SHOP_ROOT>/templates/handoff-template.md`.
 - **No agent edits outside its role.** Structural/cross-file refactoring = Refactor Agent. Inline cleanup within files being modified = Programmer. Refactor Agent does not implement features.
 - **Generated code must include inline documentation.** TypeDoc/JSDoc for TypeScript/JavaScript, docstrings for Python. No exceptions.
@@ -257,5 +253,5 @@ Full map of skills to agents: `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/skil
 
 ## Golden Sample
 
-End-to-end example (spec → red-team → ADR → tasks → test certification):
+Illustrative handoff-chain example (spec → red-team → ADR → tasks → test certification):
 `<AI_DEV_SHOP_ROOT>/project-knowledge/examples/golden-sample/README.md`

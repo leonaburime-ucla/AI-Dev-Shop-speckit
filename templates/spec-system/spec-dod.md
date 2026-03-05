@@ -46,7 +46,7 @@
 | A-07 | `errors.spec.md` is present (or explicitly marked NA with justification if feature defines no error codes) | | |
 | A-08 | `behavior.spec.md` is present (or explicitly marked NA with justification if feature has no ordering/precedence/dedup rules) | | |
 | A-09 | `traceability.spec.md` is present and all REQ-* and AC-* rows are populated (may be "pending implementation") | | |
-| A-10 | `requirements.md` (legacy checklist) is present and filled | | |
+| A-10 | `spec-manifest.md` is present and records actual filenames plus omitted files with justification | | |
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: skills-registry
 version: 1.0.0
-last_updated: 2026-03-04
+last_updated: 2026-03-05
 description: Maps every shared skill to the agents that use it. Reference when dispatching agents or updating skills.
 ---
 
@@ -16,14 +16,15 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/architecture-decisions/SKILL.md` | Architect, Programmer, System Blueprint Agent (secondary) |
 | `skills/code-review/SKILL.md` | Code Review Agent |
 | `skills/refactor-patterns/SKILL.md` | Refactor Agent |
-| `skills/coordination/SKILL.md` | Coordinator |
+| `skills/coordination/SKILL.md` | Coordinator, Observer |
 | `skills/context-engineering/SKILL.md` | Coordinator, Observer |
-| `skills/memory-systems/SKILL.md` | Coordinator |
+| `skills/memory-systems/SKILL.md` | Coordinator, Observer |
 | `skills/tool-design/SKILL.md` | Programmer |
 | `skills/agent-evaluation/SKILL.md` | Observer |
 | `skills/codebase-analysis/SKILL.md` | CodeBase Analyzer |
 | `skills/architecture-migration/SKILL.md` | CodeBase Analyzer |
 | `skills/design-patterns/SKILL.md` | Architect, CodeBase Analyzer, System Blueprint Agent (secondary) |
+| `skills/hexagonal-architecture/SKILL.md` | Architect, Programmer, CodeBase Analyzer, System Blueprint Agent |
 | `skills/system-blueprint/SKILL.md` | System Blueprint Agent, Coordinator |
 | `skills/frontend-react-orcbash/SKILL.md` | Programmer (React frontends) |
 | `skills/testable-design-patterns/SKILL.md` | Architect, Programmer, Refactor Agent, TDD Agent |

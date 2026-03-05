@@ -15,6 +15,19 @@ Technology moves fast. The patterns, libraries, and frameworks considered best p
 
 There is no "best" architecture. There are only tradeoffs — and adaptability is the most important one.
 
+## Default Architecture Heuristic
+
+Use this as the default starting position before evaluating exceptions:
+
+1. For most long-lived products, start with a **modular monolith** at the macro level.
+2. Organize delivery around **vertical slices** or strongly owned modules rather than broad shared technical layers.
+3. Apply **hexagonal boundaries** inside the slices or modules that have meaningful external I/O, provider-swappability needs, or business-critical logic that must stay framework-independent.
+4. For Python services, workers, APIs, and other domain-heavy backend code, hexagonal architecture is a strong default boundary discipline.
+5. For React frontends, use `frontend-react-orcbash` rather than generic hexagonal guidance.
+6. For trivial CRUD, scripts, and short-lived work, do not add ports-and-adapters unless the complexity justifies it.
+
+This is a default, not a mandate. Override it only when the system drivers clearly justify a different macro shape.
+
 ## System Drivers
 
 Before selecting a pattern, classify the system's primary drivers:

@@ -21,7 +21,7 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ### Context De-Noise Hardening
 **What it is:** Reduce instruction noise and improve execution reliability by moving guardrails out of prose and into enforceable structure.
-**Current state:** **Framework complete** in `project-knowledge/skill-md-format/` (standards, gates, tracker, failure matrix, overlays).
+**Current state:** **Framework complete** in `maintainers/skill-md-format/` (standards, gates, tracker, failure matrix, overlays).
 **Scope guardrail:** `skills/vercel-*` remains frozen unless explicitly re-scoped by human.
 **What to add next:**
 - Skill transformation rollout: rewrite skills in phases using the new format (`Execution` / `Guardrails` / `Output` / `Reference`).

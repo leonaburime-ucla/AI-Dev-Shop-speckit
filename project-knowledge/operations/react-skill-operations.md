@@ -1,7 +1,7 @@
 # React Skill Operations
 
 - Version: 1.0.0
-- Last Updated: 2026-02-28
+- Last Updated: 2026-03-05
 - Scope: React and Next.js implementation, review, and QA work
 
 This file operationalizes React skill usage across agents.
@@ -13,6 +13,8 @@ For any React/Next.js component task, load these by default:
 - `skills/frontend-react-orcbash/SKILL.md`
 - `skills/vercel-react-best-practices/SKILL.md`
 - `skills/vercel-composition-patterns/SKILL.md`
+
+`skills/frontend-react-orcbash/SKILL.md` is React-only. It is not the generic ports-and-adapters skill. For Python, backend TypeScript, Go, Java, workers, CLIs, or service code, use `skills/hexagonal-architecture/SKILL.md` instead of Orc-BASH.
 
 If UI audit/review is requested, also load:
 
@@ -32,7 +34,7 @@ Apply this priority order:
 1. Spec acceptance criteria and explicit user constraints
 2. Security and data-classification rules
 3. Accessibility requirements
-4. Architecture boundaries (Orc-BASH and ADR constraints)
+4. Architecture boundaries (Orc-BASH for React frontends, generic hexagonal/ADR constraints elsewhere)
 5. Performance and rendering tactics (Vercel best-practices)
 6. Style/readability preferences
 

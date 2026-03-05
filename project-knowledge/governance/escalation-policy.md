@@ -25,26 +25,9 @@ The following conditions halt the pipeline immediately. The Coordinator must sur
 
 ## Retry Budgets Per Stage
 
-When a stage fails, the Coordinator re-dispatches up to the budget. On budget exhaustion, escalate to human — do not retry further.
+When a stage fails, the Coordinator re-dispatches up to the budget defined in `<AI_DEV_SHOP_ROOT>/workflows/job-lifecycle.md`. On budget exhaustion, escalate to human and stop retrying.
 
-**Source of truth:** `<AI_DEV_SHOP_ROOT>/workflows/job-lifecycle.md` defines these budgets. This table mirrors those values. If they ever conflict, `job-lifecycle.md` wins.
-
-| Stage | Max Retries | Escalation Trigger | Reset Condition |
-|-------|------------|-------------------|-----------------|
-| `spec` | 2 | Unresolvable `[NEEDS CLARIFICATION]` after 2 passes | Human approval resets count |
-| `clarify` | 1 | Human must provide answers directly | Human answers reset count |
-| `architect` | 2 | Constitution violation without Complexity Justification | Human sign-off resets count |
-| `tdd` | 3 | Same test failures after 3 cycles | Spec revision resets count |
-| `programmer` | 5 total retries; escalate any single cluster after 3 retries | Single cluster failing after 3 retries signals spec/architecture problem | New cluster resets cluster count; spec hash change resets all |
-| `testrunner` | 2 (tooling failures only) | Test logic failures are not retried — they route to Programmer | Tooling fix resets count |
-| `code-review` | 1 | Rare — escalate only if output is malformed | N/A |
-| `security` | 1; Critical/High escalate immediately without retry | All Critical/High findings are immediate blocking escalations | Human sign-off closes the finding |
-| `refactor` | 1 | Not retried — output is proposals, not implementation | N/A |
-| `coverage-loop` (tdd → programmer → testrunner cycle for gap fill) | 3 per High-priority gap cluster | Same High-priority gap cluster unresolved after 3 full cycles | Refactor seam extraction accepted and merged resets cluster count; spec hash change resets all |
-
-**Programmer budget clarification:** The 5-retry total budget and the 3-retry per-cluster escalation are separate rules. A cluster failing 3 times triggers an immediate escalation on that cluster even if the total budget is not yet exhausted. Total budget exhaustion triggers escalation regardless of cluster count.
-
-**Coverage-loop budget clarification:** One cycle = TDD writes or augments tests → Programmer integrates any seam changes → TestRunner runs and reports coverage. If a High-priority gap cluster (same file(s) at same gap type) is still present after 3 such cycles, escalate to human — do not continue. Medium and Low priority gaps that persist after budget exhaustion are logged in the triage report and deferred, not escalated.
+`job-lifecycle.md` is the single source of truth for retry counts, backoff behavior, and per-stage escalation thresholds. Do not duplicate numeric budgets in this document.
 
 **Budget tracking:** The Coordinator records retry counts in the `Iteration Counts` table of `.pipeline-state.md`. An agent may not be dispatched if its stage is at budget — escalate first.
 
