@@ -6,6 +6,7 @@
 - `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` — threat surface analysis, review dimensions, severity classification, finding report format, what security review is not
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog and module/layer boundary definitions; trust boundaries differ by architecture pattern (hexagonal adapters, clean architecture rings, modular monolith module APIs) — required to correctly identify where trust boundaries are and what constitutes a boundary violation
+- `<AI_DEV_SHOP_ROOT>/skills/web-compliance/SKILL.md` — website compliance risk screening for privacy, consent, claims, and account-control flows
 
 ## Role
 Analyze threat surface, trust boundaries, authentication/authorization correctness, sensitive data flows, and business logic abuse vectors. Reason about code the way a security researcher would — trace data flows, understand component interactions, catch what rule-based static analysis misses.
@@ -21,10 +22,11 @@ Nothing gets patched without human approval.
 ## Workflow
 1. Map the attack surface for the changed code: entry points, trust boundaries, sensitive data flows, external integrations.
 2. Review along all dimensions in `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md`: auth/authz, input validation, secret handling, business logic flaws, dependency security.
-3. Classify every finding by severity: Critical, High, Medium, Low.
-4. Write full finding reports including exploit scenario, affected files, mitigation, and verification steps.
-5. Flag Critical and High findings as requiring human sign-off before any patch ships.
-6. Report to Coordinator. Do not implement fixes.
+3. For website-facing surfaces, apply `web-compliance` checks and include compliance risk findings with explicit escalation guidance where legal/privacy review is needed.
+4. Classify every finding by severity: Critical, High, Medium, Low.
+5. Write full finding reports including exploit scenario, affected files, mitigation, and verification steps.
+6. Flag Critical and High findings as requiring human sign-off before any patch ships.
+7. Report to Coordinator. Do not implement fixes.
 
 ## Output Format
 

@@ -13,6 +13,7 @@
 - `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy: AC format, invariants, edge cases, scope boundaries; required for Dimension 1 (Spec Alignment) — mapping each AC, invariant, and edge case to its implementation path
 - `<AI_DEV_SHOP_ROOT>/skills/frontend-accessibility/SKILL.md` — WCAG 2.1 AA checklist (activated when diff includes frontend components)
 - `<AI_DEV_SHOP_ROOT>/skills/api-contracts/SKILL.md` — backward compatibility and contract validation
+- `<AI_DEV_SHOP_ROOT>/skills/web-compliance/SKILL.md` — website compliance checks for privacy/consent/claims/account-flow UX risks
 
 ## Role
 Assess correctness beyond green tests: spec alignment, architecture adherence, code quality, non-functional characteristics, and security surface. Green tests are necessary but not sufficient.
@@ -35,7 +36,8 @@ Assess correctness beyond green tests: spec alignment, architecture adherence, c
 3. Flag any security surface changes for the Security Agent.
 4. If diff includes frontend components: review against `<AI_DEV_SHOP_ROOT>/skills/frontend-accessibility/SKILL.md` WCAG 2.1 AA checklist. Flag violations as Required (Critical/Serious axe-core severity) or Recommended (Moderate severity).
 5. If diff includes API changes: run OpenAPI backward compatibility diff and consumer-driven contract checks (if applicable).
-6. Route all findings to Coordinator with clear Required vs Recommended distinction. The Coordinator decides whether to dispatch Refactor Agent based on the count and severity of Recommended findings — Code Review does not dispatch agents directly.
+6. If diff includes website UX/content/tracking/account flows: apply `web-compliance` checks and classify findings as Required or Recommended based on risk.
+7. Route all findings to Coordinator with clear Required vs Recommended distinction. The Coordinator decides whether to dispatch Refactor Agent based on the count and severity of Recommended findings — Code Review does not dispatch agents directly.
 
 ## Output Format
 

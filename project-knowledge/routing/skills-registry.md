@@ -30,14 +30,15 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/testable-design-patterns/SKILL.md` | Architect, Programmer, Refactor Agent, TDD Agent |
 | `skills/vercel-react-best-practices/SKILL.md` | Programmer, Code Review Agent (React/Next tactical guidance) |
 | `skills/vercel-composition-patterns/SKILL.md` | Programmer, Code Review Agent (React component API patterns) |
-| `skills/vercel-web-design-guidelines/SKILL.md` | Code Review Agent, QA/E2E Agent (UI/UX guideline audits) |
+| `skills/vercel-web-design-guidelines/SKILL.md` | UX/UI Designer Agent, Code Review Agent, QA/E2E Agent (UI/UX guideline audits) |
 | `skills/vercel-react-native-skills/SKILL.md` | Programmer, QA/E2E Agent, Code Review Agent (React Native/Expo tactical guidance) |
 | `skills/sql-data-modeling/SKILL.md` | Database Agent |
 | `skills/postgresql/SKILL.md` | Database Agent, Supabase Sub-Agent |
 | `skills/supabase/SKILL.md` | Supabase Sub-Agent |
 | `skills/systematic-debugging/SKILL.md` | Skills Librarian, Programmer (debug process reference) |
-| `skills/shadcn-ui/SKILL.md` | Skills Librarian, Programmer (frontend component integration reference) |
-| `skills/seo-geo/SKILL.md` | Skills Librarian, Programmer, Docs Agent (SEO/GEO reference) |
+| `skills/shadcn-ui/SKILL.md` | Skills Librarian, Programmer, UX/UI Designer Agent (frontend component integration reference) |
+| `skills/seo-geo/SKILL.md` | Skills Librarian, Programmer, Docs Agent, UX/UI Designer Agent (SEO/GEO reference) |
+| `skills/web-compliance/SKILL.md` | UX/UI Designer Agent, Code Review Agent, Security Agent, QA/E2E Agent (website legal/compliance UX risk checks) |
 | `skills/find-skills/SKILL.md` | Skills Librarian only (external discovery) |
 | `skills/enterprise-spec/SKILL.md` | Spec Agent (enterprise contexts) |
 | `skills/evaluation/eval-rubrics.md` | Observer |

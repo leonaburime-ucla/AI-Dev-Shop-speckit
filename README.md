@@ -36,18 +36,20 @@ Other hosts do not support native slash commands. For those, open the matching f
 
 ## First-Time Project Setup
 
-- Customize [constitution.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/project-knowledge/governance/constitution.md).
-- Fill in [project_memory.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/project-knowledge/memory/project_memory.md).
+- Customize [constitution.md](project-knowledge/governance/constitution.md).
+- Fill in [project_memory.md](project-knowledge/memory/project_memory.md).
 - Start with the Coordinator in Review Mode, or run `/spec` once slash commands are installed.
 - Expect pipeline artifacts under `reports/` and spec packages at the user-specified location outside the toolkit.
 
 ## Key Files
 
-- [AGENTS.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/AGENTS.md): runtime contract, modes, routing rules
-- [workflows/multi-agent-pipeline.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/workflows/multi-agent-pipeline.md): detailed stage execution rules
-- [workflows/conventions.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/workflows/conventions.md): file placement and writable/read-only rules
-- [templates/spec-system/feature.spec.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/templates/spec-system/feature.spec.md): canonical spec entry point
-- [templates/adr-template.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/templates/adr-template.md): ADR template used by Architect
+- [AGENTS.md](AGENTS.md): runtime contract, modes, routing rules
+- [workflows/multi-agent-pipeline.md](workflows/multi-agent-pipeline.md): detailed stage execution rules
+- [workflows/conventions.md](workflows/conventions.md): file placement and writable/read-only rules
+- [templates/spec-system/feature.spec.md](templates/spec-system/feature.spec.md): canonical spec entry point
+- [templates/adr-template.md](templates/adr-template.md): ADR template used by Architect
+
+Agent roster note: the toolkit is extensible. `AGENTS.md` lists the current default agents, not a fixed maximum count.
 
 ## Architecture Defaults
 
@@ -61,6 +63,6 @@ Other hosts do not support native slash commands. For those, open the matching f
 
 - Normal feature work should not edit `agents/`, `skills/`, `templates/`, or `workflows/`.
 - If the user explicitly asks to maintain or upgrade the toolkit itself, treat that as framework maintainer work.
-- Maintainer-only rollout notes and design history live under [maintainers/README.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/maintainers/README.md).
-- Bootstrap-only scaffolding lives under [bootstrap/README.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/bootstrap/README.md).
-- Archived audit artifacts live under [archive/README.md](/Users/la/Desktop/Multi-Agent%20Swarm%20Foundation/AI-Dev-Shop-speckit/archive/README.md).
+- Maintainer-only rollout notes and design history live under [maintainers/README.md](maintainers/README.md).
+- Bootstrap-only scaffolding lives under [bootstrap/README.md](bootstrap/README.md).
+- Archived audit artifacts live under [archive/README.md](archive/README.md).

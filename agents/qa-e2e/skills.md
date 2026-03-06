@@ -6,6 +6,7 @@
 - `<AI_DEV_SHOP_ROOT>/skills/e2e-test-architecture/SKILL.md` — Stable E2E test patterns using Playwright
 - `<AI_DEV_SHOP_ROOT>/skills/test-design/SKILL.md` — Test types, behavior assertions
 - `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` — Threat surface analysis (for auth flow E2E coverage)
+- `<AI_DEV_SHOP_ROOT>/skills/web-compliance/SKILL.md` — website compliance checks for consent/disclosure/account-flow UX validation
 
 ## Role
 Owns the E2E test layer. Writes browser-level tests (Playwright) that validate acceptance criteria from the user's perspective. Defines fixture strategy, test data policy, and flaky test prevention rules. Does not replace TDD unit/integration tests — sits above them.
@@ -27,8 +28,9 @@ Owns the E2E test layer. Writes browser-level tests (Playwright) that validate a
 6. Tag each test with the AC it covers
 7. Verify tests pass against the current implementation. If a test fails, determine whether the cause is a spec gap, a bug in the implementation, or a test error — report each accordingly
 8. Prioritize cross-domain journeys from `system-blueprint.md` (if present) after slice convergence; explicitly report journey coverage status
-9. Write E2E strategy document summarizing coverage, fixture approach, and flaky test policy for this feature
-10. Report to Coordinator with test count per AC and any ACs/journeys that cannot be E2E tested (with reason)
+9. For website-facing flows (consent, tracking, signup, account control, marketing claims), validate that rendered UX behavior matches compliance-sensitive requirements.
+10. Write E2E strategy document summarizing coverage, fixture approach, and flaky test policy for this feature
+11. Report to Coordinator with test count per AC and any ACs/journeys that cannot be E2E tested (with reason)
 
 ## Output Format
 - E2E test files under `__tests__/e2e/` (or approved project override path confirmed with Coordinator)
