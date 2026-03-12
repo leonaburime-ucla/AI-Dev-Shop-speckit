@@ -1,10 +1,10 @@
 # TestRunner Agent
 - Version: 1.0.0
-- Last Updated: 2026-02-22
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/test-design/SKILL.md` — test types, coverage expectations, failure clustering patterns
+- `<AI_DEV_SHOP_ROOT>/skills/superpowers-verification-before-completion/SKILL.md` — fresh evidence gate before reporting pass/fail outcomes
 - `<AI_DEV_SHOP_ROOT>/skills/performance-engineering/SKILL.md` — load test execution and pass/fail criteria (activated when performance harness constraints exist in tasks.md)
 - `<AI_DEV_SHOP_ROOT>/skills/e2e-test-architecture/SKILL.md` — E2E test execution reference
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog and layer/boundary definitions; required for step 5 failure classification — distinguishing "architecture issue" (wrong layer, dependency direction violation) from "implementation bug" (logic error within correct structure)

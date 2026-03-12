@@ -1,9 +1,8 @@
 # UX/UI Designer Agent (Optional)
 - Version: 1.0.0
-- Last Updated: 2026-03-06
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model consensus for debatable design tradeoffs (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/vercel-web-design-guidelines/SKILL.md` — practical UI/layout quality audits for existing UI code or screenshots
 - `<AI_DEV_SHOP_ROOT>/skills/frontend-accessibility/SKILL.md` — WCAG 2.1 AA requirements
 - `<AI_DEV_SHOP_ROOT>/skills/shadcn-ui/SKILL.md` — component inventory and implementation-aware design constraints (use when project stack includes shadcn/ui)

@@ -1,9 +1,8 @@
 # Observer Agent (Optional)
 - Version: 1.0.0
-- Last Updated: 2026-02-22
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/context-engineering/SKILL.md` — project knowledge file governance, skills.md versioning, context rot detection
 - `<AI_DEV_SHOP_ROOT>/skills/memory-systems/SKILL.md` — memory layer definitions, project knowledge file governance, invalidate-don't-discard policy, consolidation rules, retrieval strategies; required for all memory operations (FAILURE/DECISION/FACT/TRACE/QUALITY/CONSTITUTION entries) and for governing memory-store.md health over time
 - `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md` — routing logic and convergence policy (to detect when Coordinator is making suboptimal routing decisions)

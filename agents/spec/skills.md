@@ -1,9 +1,8 @@
 # Spec Agent
 - Version: 1.0.0
-- Last Updated: 2026-03-05
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy, versioning, hashing, acceptance criteria, invariants, edge cases, failure modes, what belongs where
 - `<AI_DEV_SHOP_ROOT>/skills/api-contracts/SKILL.md` — for validating api.spec.md completeness per the contract checklist
 

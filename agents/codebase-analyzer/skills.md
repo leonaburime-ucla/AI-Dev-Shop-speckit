@@ -1,9 +1,8 @@
 # CodeBase Analyzer Agent
 - Version: 1.1.0
-- Last Updated: 2026-03-05
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/codebase-analysis/SKILL.md` — phased analysis protocol, token budget strategy, findings report format, flaw categories and severity
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-migration/SKILL.md` — current state classification, target pattern selection, phase plan format, migration principles
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog, system drivers analysis, DDD vocabulary, tradeoff framework

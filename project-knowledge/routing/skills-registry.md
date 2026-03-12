@@ -1,7 +1,7 @@
 ---
 name: skills-registry
 version: 1.0.0
-last_updated: 2026-03-05
+last_updated: 2026-03-12
 description: Maps every shared skill to the agents that use it. Reference when dispatching agents or updating skills.
 ---
 
@@ -36,13 +36,21 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/postgresql/SKILL.md` | Database Agent, Supabase Sub-Agent |
 | `skills/supabase/SKILL.md` | Supabase Sub-Agent |
 | `skills/systematic-debugging/SKILL.md` | Skills Librarian, Programmer (debug process reference) |
+| `skills/superpowers-brainstorming/SKILL.md` | VibeCoder Agent |
+| `skills/superpowers-using-git-worktrees/SKILL.md` | Programmer, VibeCoder Agent |
+| `skills/superpowers-verification-before-completion/SKILL.md` | Programmer, TestRunner Agent, DevOps Agent |
+| `skills/superpowers-finishing-a-development-branch/SKILL.md` | Programmer, VibeCoder Agent |
+| `skills/superpowers-receiving-code-review/SKILL.md` | Programmer |
+| `skills/superpowers-requesting-code-review/SKILL.md` | Programmer |
+| `skills/superpowers-dispatching-parallel-agents/SKILL.md` | Coordinator |
+| `skills/superpowers-writing-plans/SKILL.md` | Coordinator |
 | `skills/shadcn-ui/SKILL.md` | Skills Librarian, Programmer, UX/UI Designer Agent (frontend component integration reference) |
 | `skills/seo-geo/SKILL.md` | Skills Librarian, Programmer, Docs Agent, UX/UI Designer Agent (SEO/GEO reference) |
 | `skills/web-compliance/SKILL.md` | UX/UI Designer Agent, Code Review Agent, Security Agent, QA/E2E Agent (website legal/compliance UX risk checks) |
 | `skills/find-skills/SKILL.md` | Skills Librarian only (external discovery) |
 | `skills/enterprise-spec/SKILL.md` | Spec Agent (enterprise contexts) |
 | `skills/evaluation/eval-rubrics.md` | Observer |
-| `skills/swarm-consensus/SKILL.md` | All agents (opt-in via Coordinator) |
+| `skills/swarm-consensus/SKILL.md` | Coordinator (owns consensus dispatch; injects to other agents only when consensus mode is active) |
 | `skills/llm-council/SKILL.md` | Coordinator (structured planning council and judge-merge workflow) |
 | `skills/observability-implementation/SKILL.md` | Architect, Programmer, Security Agent |
 | `skills/devops-delivery/SKILL.md` | DevOps Agent |

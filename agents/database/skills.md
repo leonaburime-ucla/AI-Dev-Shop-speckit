@@ -1,9 +1,8 @@
 # Database Agent
 - Version: 1.0.0
-- Last Updated: 2026-02-23
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/sql-data-modeling/SKILL.md` — ERD design, normalization, primary/foreign keys, constraint types, index strategy, migration planning, naming conventions, soft delete, timestamp conventions, data type selection
 - `<AI_DEV_SHOP_ROOT>/skills/postgresql/SKILL.md` — CTEs, window functions, JSONB, triggers, stored functions, extensions, full-text search, partitioning, EXPLAIN ANALYZE, performance patterns; load when platform is Postgres-based
 - `<AI_DEV_SHOP_ROOT>/skills/change-management/SKILL.md` — expand-contract pattern for safe schema migrations (when migration involves breaking schema changes)

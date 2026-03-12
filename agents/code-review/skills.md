@@ -1,9 +1,8 @@
 # Code Review Agent
 - Version: 1.0.0
-- Last Updated: 2026-02-22
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/code-review/SKILL.md` — review dimensions, what tests cannot catch, finding classification, report format, anti-patterns
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — what architectural boundaries to enforce
 - `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` — security surface changes to flag for the Security Agent

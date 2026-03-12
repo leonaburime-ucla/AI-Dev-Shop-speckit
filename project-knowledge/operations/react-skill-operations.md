@@ -1,7 +1,7 @@
 # React Skill Operations
 
-- Version: 1.0.0
-- Last Updated: 2026-03-05
+- Version: 1.1.1
+- Last Updated: 2026-03-09
 - Scope: React and Next.js implementation, review, and QA work
 
 This file operationalizes React skill usage across agents.
@@ -54,7 +54,7 @@ Imported source of truth:
 
 Refresh process:
 
-1. Pull latest into local mirror at `/Users/la/Desktop/Multi-Agent Swarm Foundation/vercel-agent-skills`
+1. Pull latest into a local mirror of `vercel-labs/agent-skills`
 2. Review upstream diff of `skills/*/rules`
 3. Copy changes into local `skills/vercel-*` folders
 4. Update `project-knowledge/routing/skills-registry.md` only if folder names or ownership changed
@@ -83,3 +83,9 @@ For each benchmark, score:
 Use this one-liner to force deterministic skill loading:
 
 `React strict mode: apply frontend-react-orcbash + vercel-react-best-practices + vercel-composition-patterns, and cite the exact rules used.`
+
+## 6) React Effect Debugging (Pointer)
+
+For React-only implementation details on dependency-driven `useEffect` debugging expectations, follow:
+
+- `skills/frontend-react-orcbash/SKILL.md` (Anti-Patterns + DI Compliance Checklist)

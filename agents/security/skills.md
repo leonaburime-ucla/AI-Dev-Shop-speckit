@@ -1,9 +1,8 @@
 # Security Agent
 - Version: 1.0.0
-- Last Updated: 2026-02-22
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` — threat surface analysis, review dimensions, severity classification, finding report format, what security review is not
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — pattern catalog and module/layer boundary definitions; trust boundaries differ by architecture pattern (hexagonal adapters, clean architecture rings, modular monolith module APIs) — required to correctly identify where trust boundaries are and what constitutes a boundary violation
 - `<AI_DEV_SHOP_ROOT>/skills/web-compliance/SKILL.md` — website compliance risk screening for privacy, consent, claims, and account-control flows

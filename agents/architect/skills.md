@@ -1,9 +1,8 @@
 # Architect Agent
 - Version: 1.0.0
-- Last Updated: 2026-03-05
+- Last Updated: 2026-03-12
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — system drivers analysis, ADR format, tradeoff framework, DDD vocabulary, Adaptability First principle, Pattern Evaluation Format
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — pattern selection decision guide, 19+ pattern reference files (TypeScript examples, tradeoffs, failure modes), common pattern combinations; load specific pattern files from references/ as needed
 - `<AI_DEV_SHOP_ROOT>/skills/hexagonal-architecture/SKILL.md` — load when hexagonal / ports-and-adapters is a viable candidate or the selected architecture, especially for non-React stacks

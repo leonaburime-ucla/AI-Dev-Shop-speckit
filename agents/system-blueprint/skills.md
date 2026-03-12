@@ -1,13 +1,12 @@
 # System Blueprint Agent
 - Version: 1.0.0
-- Last Updated: 2026-03-05
+- Last Updated: 2026-03-12
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/system-blueprint/SKILL.md` — macro-level system planning and decomposition
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — secondary reference for macro architecture shape options and tradeoff vocabulary
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — secondary reference for system drivers and tradeoff framing (do not produce ADR decisions in this stage)
 - `<AI_DEV_SHOP_ROOT>/skills/hexagonal-architecture/SKILL.md` — load when boundary design around ports, adapters, or multiple entry points is a central concern
-- `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
 - `<AI_DEV_SHOP_ROOT>/skills/context-engineering/SKILL.md` — pull relevant project conventions and constraints
 - Conditional tertiary references (load only when relevant):
   - `<AI_DEV_SHOP_ROOT>/skills/sql-data-modeling/SKILL.md` — when data ownership/boundaries are the core uncertainty

@@ -17,28 +17,69 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ---
 
-## Priority 0 — De-Noise and Effectiveness
+## De-Noise and Effectiveness
 
 ### Context De-Noise Hardening
 **What it is:** Reduce instruction noise and improve execution reliability by moving guardrails out of prose and into enforceable structure.
 **Current state:** **Framework complete** in `maintainers/skill-md-format/` (standards, gates, tracker, failure matrix, overlays).
-**Scope guardrail:** `skills/vercel-*` remains frozen unless explicitly re-scoped by human.
+**Scope guardrail:** Current rollout covers `skills/vercel-*` and imported `skills/superpowers-*`; expand further only with explicit human approval.
 **What to add next:**
 - Skill transformation rollout: rewrite skills in phases using the new format (`Execution` / `Guardrails` / `Output` / `Reference`).
-- Human-reference preservation: keep existing long-form skills as canonical human-readable references while overlays/new versions are validated.
-- Naming convention for rollout: preserve legacy long-form docs as `HUMANS.md` with a top note that it is human-readable; keep `SKILL.md` as AI/LLM execution-optimized.
+- Source preservation: keep existing long-form or imported source skills as canonical references while overlays/new versions are validated.
+- Naming convention for rollout: preserve source docs as `ORIGINAL.md`; keep `SKILL.md` as AI/LLM execution-optimized; allow an optional root `README.md` for layout or usage notes; use `references/` for examples, active support docs, and preserved support-source files.
 - Comparison workflow: for each rewritten skill, keep side-by-side diff notes and acceptance checks before promotion.
 
 **Note:** Skill-MD-Format framework is complete, but the transformation still needs to be applied across the `skills/` folder in controlled rollout phases.
 **Note:** `agents/*/skills.md` should be transformed in a second phase after `skills/` rollout is validated.
 **Rollout safety gates:**
-- Keep old long-form files as `HUMANS.md` while validating new execution-format `SKILL.md`.
+- Keep old or imported source files as `ORIGINAL.md` while validating new execution-format `SKILL.md`.
 - Require a side-by-side promotion checklist (non-negotiable gates, routing correctness, handoff compatibility) before replacement.
 - Roll out by agent cluster with pilot validation before broad replacement.
 
 ---
 
-## Priority 1 — Pipeline Gaps
+## External OSS Intake
+
+### Code Report Video Intake Queue
+**Source video:** `https://www.youtube.com/watch?v=Xn-gtHDsaPY`
+**What it is:** Curated list of outside open-source agent/tooling repos mentioned in a March 12, 2026 Code Report video that are worth evaluating for future adoption.
+**Why it matters:** These projects may improve agent staffing, prompt evaluation, context management, UI quality, forecasting, and model control. They should be reviewed systematically instead of getting installed ad hoc.
+**Current state:** `agency-agents` has already been downloaded for review. Several other repo names came from auto-transcript text and need exact repo confirmation before installation.
+**What to add next:**
+- Create a lightweight intake checklist for external repos: exact repo URL, license, maintenance status, install method, security risk, overlap with current toolkit, and likely integration point.
+- Separate `adopt soon`, `learn from only`, and `skip` outcomes after review so the repo folder does not become a dumping ground.
+- Capture findings in a dedicated external-repos evaluation doc once the review pass starts.
+
+**Review queue:**
+- `agency-agents`
+  - Why it is useful: broad agent-role starter kit that can accelerate experimentation with specialist personas and startup-like multi-agent staffing patterns.
+  - Likely value here: role ideas, agent templates, and prompt structure comparisons against this toolkit's current agent set.
+- `promptfoo` (transcript said "Prompt Fu")
+  - Why it is useful: prompt testing and evaluation framework for model/prompt comparisons, regressions, and adversarial red-team checks.
+  - Likely value here: could strengthen prompt, rubric, and red-team validation workflows for agent prompts and user-facing AI features.
+- `Mirofish` / `Mirrorish` / `Micro Fish` (exact repo name to confirm from transcript)
+  - Why it is useful: described as a multi-agent prediction engine that ingests trend/news data and simulates agent discussion around it.
+  - Likely value here: idea source for trend analysis, market-sensing agents, or multi-agent forecasting patterns.
+- `Impeccable` (exact repo name to confirm from transcript)
+  - Why it is useful: frontend-design-oriented command/skill set focused on simplifying and improving AI-generated UI.
+  - Likely value here: possible source material for VibeCoder, UX/UI Designer, or frontend quality skills, especially around simplification and visual polish.
+- `Open Viking` (exact repo name to confirm from transcript)
+  - Why it is useful: described as an AI-agent memory/context database organized around filesystem-based resources, skills, and tiered loading.
+  - Likely value here: directly relevant to context hygiene, tiered loading, token reduction, and long-term memory organization for agents.
+- `Heretic` (exact repo name and safety posture to confirm before any install)
+  - Why it is useful: described as a tool for removing model guardrails via "obliteration".
+  - Likely value here: mostly research value around model-control techniques; high safety/governance review required before touching it.
+- `Nano Chat` / `nanochat` (exact repo name to confirm from transcript)
+  - Why it is useful: end-to-end small-LLM training pipeline including tokenization, pretraining, fine-tuning, evaluation, and UI.
+  - Likely value here: useful for learning the full LLM stack and evaluating whether a small controllable local model could support narrow internal tasks.
+
+**Do not prioritize from this video:**
+- `Recall AI`
+  - Sponsor mention, not part of the open-source install queue.
+
+---
+
+## Pipeline Gaps
 
 ### React Component Testing Policy
 **What it is:** UI testing is often skipped by LLMs. Need a strict policy enforcing React component test creation.
@@ -89,7 +130,7 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ---
 
-## Priority 2 — Consensus Orchestration
+## Consensus Orchestration
 
 ### Multi-LLM Consensus Modes and Guardrails **[PARTIAL]**
 **What it is:** `/consensus` and `skills/swarm-consensus/SKILL.md` exist, but they need stronger orchestration rules for architecture/data-modeling debates and reproducible runs with explicit mode control.
@@ -100,7 +141,7 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ---
 
-## Priority 3 — Interoperability
+## Interoperability
 
 ### Protocol Split: MCP + A2A
 **What it is:** Two distinct integration patterns for extending the pipeline.
@@ -116,7 +157,7 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ---
 
-## Priority 5 — Polish
+## Polish
 
 ### Spec-Kit Command Contract Parity **[PARTIAL]**
 **What it is:** Command files (`.claude/commands/`) currently lack machine-readable frontmatter. Spec-kit's command format includes `handoffs:` and `scripts:` fields that enable automated contract validation — e.g., checking that `/plan` references an approved spec before executing.
