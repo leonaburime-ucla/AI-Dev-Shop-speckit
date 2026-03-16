@@ -34,9 +34,12 @@ In practice, this gives a repo a repeatable way to move from idea to working cod
 [VibeCoder] -> [CodeBase Analyzer] -> [System Blueprint] -> Spec
 -> [Red-Team] -> Architect -> [Database] -> TDD
 -> Programmer -> [QA/E2E] -> TestRunner -> Code Review
--> [Refactor] -> Security -> [DevOps] -> [Docs]
--> Done
+-> [Refactor] -> Security -> [DevOps] -> [Docs] -> Done
 ```
+
+- `[VibeCoder]` is an optional starting point - say "switch to vibecoder" or `/agent vibecoder` to prototype fast, then promote to the full pipeline when ready
+- `[Observer]` is passive and active across all stages when enabled
+- `[...]` stages are optional; dispatched by Coordinator when spec/ADR triggers them or when you specifically ask for them
 
 ## Quick Overview
 
