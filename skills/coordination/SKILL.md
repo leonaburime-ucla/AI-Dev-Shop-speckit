@@ -1,7 +1,7 @@
 ---
 name: coordination
-version: 1.2.0
-last_updated: 2026-03-15
+version: 1.2.1
+last_updated: 2026-03-17
 description: Use when routing between agents, handling Review Mode intake, activating conditional skills, enforcing convergence policy, managing iteration budgets, formatting cycle summaries, or deciding when to escalate to a human checkpoint.
 ---
 
@@ -158,6 +158,22 @@ Agent output received
 │   └─ Route to: Programmer Agent
 │       Context: failing test names, spec ref, architecture constraints
 │
+├─ Programmer handoff includes Architecture Audit = BLOCKER?
+│   └─ Route to: Coordinator escalation flow
+│       Context: violated rule or unresolved ADR ambiguity, impacted files, requested clarification
+│       Next:
+│         1) Pause downstream routing for the affected scope
+│         2) Escalate to human if the user must choose whether to relax or revise the constraint
+│         3) Re-dispatch Architect Agent if the ADR needs clarification or revision
+│
+├─ Programmer handoff includes Architecture Audit = WARNING?
+│   └─ Route to: Human decision via Coordinator
+│       Context: violated rules, impacted files, smallest compliant fix for each warning
+│       Next:
+│         1) Ask whether to send the work back to Programmer for remediation or continue downstream
+│         2) Record the decision in pipeline state or cycle summary
+│         3) If human continues, keep the warning visible for Code Review
+│
 ├─ Downstream agent raises `[ARCHITECTURE_REVISION_REQUEST]`?
 │   └─ Route to: Coordinator escalation flow
 │       Context required: blocking constraint, failed alternatives, impacted specs/tasks/tests, proposed revision scope
@@ -224,6 +240,10 @@ Before accepting any agent output and routing it forward, verify the output incl
 - **Output summary**: What was produced?
 - **Risks and blockers**: What might go wrong downstream?
 - **Suggested next assignee**: The agent's recommendation (Coordinator makes the final call)
+
+Programmer handoffs also require:
+
+- **Architecture Audit**: Status (`PASS`, `WARNING`, or `BLOCKER`), ADR rules checked, files audited, violations found, and any ambiguity needing Architect clarification
 
 If any field is missing, return the output to the agent with a request to complete the handoff contract. Do not route incomplete outputs.
 

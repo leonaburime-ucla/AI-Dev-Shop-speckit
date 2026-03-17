@@ -1,6 +1,6 @@
 # Coordinator Agent
-- Version: 1.4.0
-- Last Updated: 2026-03-15
+- Version: 1.4.1
+- Last Updated: 2026-03-17
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
@@ -63,7 +63,7 @@ Use this compact loop; rely on the referenced docs for detailed procedure:
 
 1. On session start, check for an active `.pipeline-state.md` and resume via the recovery playbook when needed.
 2. Validate the active spec version/hash on every downstream artifact.
-3. Reject outputs that are missing the handoff contract.
+3. Reject outputs that are missing the handoff contract, including the required Architecture Audit evidence on Programmer handoffs.
 4. Pull only the relevant memory and context required for the next dispatch.
 5. Route using `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`, including Review Mode intake and conditional-skill activation.
 6. After human ADR approval, generate `tasks.md`, then dispatch TDD.
@@ -81,6 +81,8 @@ Use this compact loop; rely on the referenced docs for detailed procedure:
 ## Special Coordinator Cases
 
 - If a downstream agent emits `[ARCHITECTURE_REVISION_REQUEST]`, pause affected work and route to System Blueprint or Architect based on whether the issue is system-level or feature-level.
+- If Programmer handoff reports `Architecture Audit = WARNING`, surface the violations to the user and ask whether to route back to Programmer for remediation or continue downstream with the warning recorded.
+- If Programmer handoff reports `Architecture Audit = BLOCKER`, pause routing and escalate to human or Architect based on whether the issue is ADR ambiguity or implementation drift against a hard constraint.
 - If Refactor proposes changes, present them to the human first; only approved proposals go back to Programmer, then TestRunner verifies no behavior drift.
 - In Agent Direct Mode, observe and record state, but do not interject unless addressed directly.
 - When consultation mode is enabled, keep consultations bounded and advisory-only unless you explicitly escalate scope.

@@ -1,7 +1,7 @@
 ---
 name: frontend-react-orcbash
-version: 1.1.0
-last_updated: 2026-03-05
+version: 1.3.1
+last_updated: 2026-03-17
 description: Use only for React frontend code structured with the Orc-BASH pattern (Orchestration, Business Logic, API, State Management, Hooks) — a React-specific specialization of hexagonal architecture with explicit UI-facing test seams.
 ---
 
@@ -13,479 +13,186 @@ Use this skill only for React and Next.js frontend implementation.
 
 - For Python, backend TypeScript, Go, Java, CLIs, workers, or general service code, use `<AI_DEV_SHOP_ROOT>/skills/hexagonal-architecture/SKILL.md` instead.
 - Do not apply Orc-BASH outside React UI architecture.
+- Keep this file lean. Load references only when you need concrete examples or drop-in code structure.
 
-The Orchestrator is the central hub that wires together four independent concerns and exposes a clean interface to the UI. Business Logic, API, and State Manager have **zero dependencies on each other** — the Orchestrator is the only layer that knows about all of them.
+## Core Model
 
-## Dependency Flow
+The Orchestrator is the only layer that knows about all other layers. Business Logic, API, and State Manager have zero dependencies on each other. UI depends only on the Orchestrator.
 
-```
+```text
 Business Logic ──┐
 API ─────────────┼──→ Orchestrator ──→ UI
 State Manager ───┤
 Hooks ───────────┘
 ```
 
-**Arrow = dependency direction. UI depends only on Orchestrator. Orchestrator depends on everything else. Everything else depends on nothing.**
+Dependency flow rules:
 
-Business Logic, API, and State Manager import from shared `types/` only. They never import from each other. Dependencies flow inward through injection — passed as parameters in this priority order:
-1. Data (simple values)
-2. Functions (API calls, business logic methods)
-3. Classes (store instances, service instances — last resort, harder to mock)
+1. Business Logic, API, and State Manager import from shared `types/` only.
+2. Hooks receive external dependencies through an explicit typed `deps` contract from the orchestrator.
+3. Orchestrators wire dependencies explicitly. No hidden globals, no direct store imports from hooks, no implicit singletons looked up inside hooks.
+4. UI components consume orchestrator outputs only.
+5. If dependency injection is bypassed in any layer, stop and refactor before handoff.
 
-## Orchestrator Injection Is a Hard Gate
+Dependencies should be passed in this priority order:
 
-This is non-optional. If any item below is violated, the implementation is not Orc-BASH compliant:
+1. Data
+2. Functions
+3. Classes
 
-1. Hooks must receive API/state/logic through an explicit `deps` contract from the orchestrator.
-2. Orchestrators must wire dependencies explicitly (no hidden globals, no direct store imports, no implicit singleton lookups from hooks).
-3. Hooks must not import API modules, state stores, or service implementations directly.
-4. Business logic and state layers must not import each other.
-5. UI components must consume only orchestrator outputs.
+## Load Strategy
 
-**Blocking rule:** If dependency injection is bypassed in any layer, stop and refactor before handoff. Do not treat this as a style preference.
+Read this file for the contract. Open references only when needed:
+
+- `references/feature-slice-drop-in-template.md` for folder shape and slice bootstrapping
+- `references/typedoc-return-types-example.md` for typed signatures, feedback contracts, and return-type examples
+- `references/post-feature-example.md` for a full six-layer implementation example with a generic state-adapter boundary
+- `references/state-manager-zustand.md` for a concrete Zustand-backed state implementation
 
 ## Shared Micro-Level Rules
 
 Use `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` for shared micro-level implementation rules:
 
-- required two-object parameter convention (required object + optional object)
+- required two-object parameter convention
 - explicit return types and TypeDoc/TSDoc expectations
-- testability-first boundaries for functions/hooks/orchestrators
+- testability-first boundaries for functions, hooks, and orchestrators
 - `useEffect` coordination guidance and side-effect isolation
 
-## Type Signature and TypeDoc Requirements
+## Type and Documentation Requirements
 
-- Every exported function, hook, and orchestrator must declare an explicit return type in its TypeScript signature.
+- Every exported function, hook, and orchestrator must declare an explicit return type.
 - Every exported function and hook must include TypeDoc/TSDoc with `@param` and `@returns`.
-- Internal/private hooks and helper functions must also be documented when they coordinate side-effects or domain behavior (especially UI-state hooks, logic hooks, and integration hooks).
+- Internal/private hooks and helpers must also be documented when they coordinate side-effects or domain behavior.
 - Do not rely on inferred return types at Orc-BASH layer boundaries.
 
-## File Structure
+## Canonical Slice Shape
 
-```
+```text
 /features/<domain>/
 ├── types/
-│   └── post.ts                    ← Shared types — the only cross-layer import
 ├── api/
-│   └── postApi.ts                 ← Free functions, zero dependencies
 ├── logic/
-│   └── PostService.ts             ← Class or free functions, zero dependencies
 ├── state/
-│   ├── PostStatePort.ts           ← Interface defining all state operations
-│   ├── PostStateAdapter.ts        ← Adapts concrete store to the port interface
-│   └── postStore.ts               ← Zustand/Jotai/Redux store, zero dependencies
 ├── hooks/
-│   └── usePost.ts                 ← Three sub-hooks: UI State, Business Logic, Integration
 ├── orchestrators/
-│   ├── PostPageOrchestrator.ts    ← Imports adapter, not store directly
-│   └── FeedPageOrchestrator.ts    ← Different wiring, reuses same hook
 └── views/
-    ├── PostPage.tsx               ← Uses PostPageOrchestrator only
-    └── FeedPage.tsx               ← Uses FeedPageOrchestrator only
 ```
 
-## The Six Layers
+Notes:
 
-### Layer 1 — API (Free Functions)
-Pure functions that make network requests. No class, no state, no dependencies.
+- `types/` is the only allowed cross-layer import location.
+- `state/` should usually contain a port interface, an adapter, and the concrete store.
+- Different pages can have different orchestrators while reusing the same hook.
+- Cross-domain coordination happens through orchestrators, not by importing one domain's internals into another.
 
-```typescript
-// api/postApi.ts
-import type { Post } from '../types/post';
+## Layer Contracts
 
-export const fetchPost = async (
-  { postId }: { postId: string },
-  { signal }: { signal?: AbortSignal } = {},
-): Promise<Post> => {
-  const response = await fetch(`/api/posts/${postId}`, { signal });
-  if (!response.ok) throw new Error('Failed to fetch post');
-  return response.json();
-};
-```
+| Layer | Owns | Must Not Do |
+|---|---|---|
+| API | Network requests and transport details | Hold UI state, import stores, choose UI messaging |
+| Business Logic | Validation, transformations, domain rules | Import state, call API directly from UI, depend on React |
+| State | Concrete store implementation plus port/adapter seam | Know about API or business logic |
+| Hooks | UI-local state, lifecycle-aware logic, async coordination | Import API/state/logic implementations directly |
+| Orchestrator | Explicit wiring of API, logic, state, and hook outputs | Become a god object or hide dependencies |
+| UI | Rendering and event wiring | Contain non-trivial business logic or reach below orchestrator |
 
-**Rule**: API throws on failure. It does not handle errors — that's the hook's job.
+Hook structure rules:
 
----
+- Use three sub-hooks when the feature needs them: UI State Hook, optional Business Logic Hook, and Integration Hook.
+- UI State Hook is for ephemeral view state only.
+- Business Logic Hook is only for lifecycle-aware wrapping of domain logic.
+- Integration Hook is the exported hook that coordinates async work with injected dependencies.
+- If a hook dependency interface grows past roughly 8 to 10 fields, split the hook.
 
-### Layer 2 — Business Logic (Service Class or Free Functions)
-Validation, transformation, business rules. Zero dependencies outside `types/`.
-
-Use a class when you need to group related operations or maintain configuration. Use free functions for simple stateless logic.
-
-```typescript
-// logic/PostService.ts
-import type { Post } from '../types/post';
-
-export class PostService {
-  formatPost({ post }: { post: Post }): FormattedPost {
-    return {
-      ...post,
-      excerpt: post.content.substring(0, 280) + (post.content.length > 280 ? '...' : ''),
-      engagementScore: post.likes + (post.commentCount * 3),
-    };
-  }
-}
-
-export const postService = new PostService(); // Export singleton
-```
-
-**Rule**: Export a singleton. Orchestrators share the same instance — never instantiate in the orchestrator.
-
----
-
-### Layer 3 — State Manager + Port/Adapter
-
-The state layer has three parts that together implement hexagonal architecture for state:
-
-**Port** — the interface contract that defines what state operations exist. Orchestrators and hooks depend on this interface, never on the concrete store.
-
-```typescript
-// state/PostStatePort.ts
-import type { Post } from '../types/post';
-
-export interface PostStatePort {
-  post: Post | null;
-  feed: string[];
-  savePost: (post: Post) => void;
-  updatePostLikes: ({ postId, likes }: { postId: string; likes: number }) => void;
-}
-```
-
-**Concrete Store** — the actual implementation. Zero dependencies outside `types/`. Has no knowledge of API or business logic.
-
-```typescript
-// state/postStore.ts — Zustand implementation (swappable)
-import { create } from 'zustand';
-
-export const usePostStore = create<PostState>((set) => ({
-  posts: {},
-  savePost: (post) => set((state) => ({ posts: { ...state.posts, [post.id]: post } })),
-  updatePostLikes: (postId, likes) => set((state) => ({
-    posts: { ...state.posts, [postId]: { ...state.posts[postId], likes, liked: true } }
-  })),
-}));
-```
-
-**Adapter** — a hook that maps the concrete store to the port interface. This is the only file that changes when swapping state managers. Orchestrators import the adapter, never the store directly.
-
-```typescript
-// state/PostStateAdapter.ts
-import { usePostStore } from './postStore';
-import type { PostStatePort } from './PostStatePort';
-
-export const usePostStateAdapter = ({ postId }: { postId: string }): PostStatePort => {
-  const post = usePostStore(s => s.posts[postId] ?? null);
-  const feed = usePostStore(s => s.feed);
-  const savePost = usePostStore(s => s.savePost);
-  const updatePostLikes = usePostStore(s => s.updatePostLikes);
-
-  return { post, feed, savePost, updatePostLikes };
-};
-```
-
-**To switch from Zustand to Jotai**: replace `postStore.ts` and update `PostStateAdapter.ts` to use Jotai atoms. The port interface, orchestrators, and hooks are unchanged.
-
-**Rule**: Orchestrators import `usePostStateAdapter`, never `usePostStore` directly.
-
----
-
-### Layer 4 — Hooks (Three Sub-Hooks, Dependencies Injected)
-
-The hook layer has three sub-hooks with distinct responsibilities:
-
-**UI State Hook** — ephemeral view state only (modals, spinners, form input). No async, no business logic.
-
-```typescript
-/**
- * Manages ephemeral UI-only state for post interactions.
- * @returns UI state snapshot and UI-only actions.
- */
-const usePostUiState = (): {
-  uiState: { isLiking: boolean; showCommentModal: boolean; commentText: string };
-  actions: { setLiking: (v: boolean) => void; openModal: () => void };
-} => {
-  const [uiState, setUiState] = useState({
-    isLiking: false,
-    showCommentModal: false,
-    commentText: '',
-  });
-  const setLiking = useCallback((v: boolean) => setUiState(s => ({ ...s, isLiking: v })), []);
-  const openModal = useCallback(() => setUiState(s => ({ ...s, showCommentModal: true })), []);
-  return { uiState, actions: { setLiking, openModal } };
-};
-```
-
-**Business Logic Hook** (optional) — a light React wrapper for service methods that need lifecycle integration: `useEffect` triggered by business rule outcomes, or local React state tied to a service computation. Use when a service method needs to interact with React's lifecycle, not just transform data.
-
-```typescript
-/**
- * Computes memoized, domain-derived post view data.
- * @param post Current post entity from state.
- * @param formatPost Domain formatter function.
- * @returns Formatted post view model.
- */
-const usePostLogic = ({
-  post,
-  formatPost,
-}: {
-  post: Post | null;
-  formatPost: (p: Post) => FormattedPost;
-}): { formattedPost: FormattedPost | null } => {
-  // Memoize expensive business logic computation — needs React's useMemo
-  const formattedPost = useMemo(
-    () => post ? formatPost({ post }) : null,
-    [post, formatPost]
-  );
-  return { formattedPost };
-};
-```
-
-**Integration Hook** — composes the UI State Hook and Business Logic Hook, coordinates async operations with all injected dependencies. This is the exported hook that orchestrators use.
-
-```typescript
-// hooks/usePost.ts
-export interface UsePostDependencies {
-  post: Post | null;
-  fetchPost: ({ postId }: { postId: string }, optional?: { signal?: AbortSignal }) => Promise<Post>;
-  likePost: ({ postId }: { postId: string }) => Promise<{ likes: number }>;
-  formatPost: ({ post }: { post: Post }) => FormattedPost;
-  savePost: (post: Post) => void;
-  updatePostLikes: ({ postId, likes }: { postId: string; likes: number }) => void;
-}
-
-/**
- * Composes UI state, business logic, and async integration concerns.
- * @param postId Target post identifier.
- * @param deps Injected dependencies from orchestrator wiring.
- * @returns Orchestrated state and actions for post views.
- */
-export const usePost = (
-  { postId, deps }: { postId: string; deps: UsePostDependencies },
-  { prefetchOnInit = false }: { prefetchOnInit?: boolean } = {},
-): {
-  post: FormattedPost | null;
-  isLoading: boolean;
-  error: Error | null;
-  uiState: { isLiking: boolean; showCommentModal: boolean; commentText: string };
-  actions: { fetchPost: () => Promise<void>; like: () => Promise<void>; openModal: () => void };
-} => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-  const { post, fetchPost: fetchPostApi, likePost, formatPost, savePost, updatePostLikes } = deps;
-
-  const ui = usePostUiState();                          // UI State sub-hook
-  const logic = usePostLogic({                          // Business Logic sub-hook
-    post,
-    formatPost,
-  });
-
-  const fetchPost = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const fetched = await fetchPostApi({ postId });
-      savePost(fetched);
-    } catch (err) {
-      setError(err as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [postId, fetchPostApi, savePost]);
-
-  const like = useCallback(async () => {
-    ui.actions.setLiking(true);
-    try {
-      const { likes } = await likePost({ postId });
-      updatePostLikes({ postId, likes });
-    } catch (err) {
-      setError(err as Error);
-    } finally {
-      ui.actions.setLiking(false);
-    }
-  }, [postId, likePost, updatePostLikes, ui.actions]);
-
-  return {
-    post: logic.formattedPost,       // from Business Logic sub-hook
-    isLoading,
-    error,
-    uiState: ui.uiState,             // from UI State sub-hook
-    actions: { fetchPost, like, openModal: ui.actions.openModal },
-  };
-};
-```
-
-**Rule**: The `UsePostDependencies` interface is the hook's contract. Every dependency can be mocked. If this interface exceeds 8–10 fields, the hook is doing too many things — split it.
-
----
-
-### Layer 5 — Orchestrator (Per Page)
-The only layer that imports from all others. Uses the state adapter (not the store). Injects dependencies into the hook. Exposes a clean interface to UI.
-
-```typescript
-// orchestrators/PostPageOrchestrator.ts
-import * as postApi from '../api/postApi';
-import { postService } from '../logic/PostService';
-import { usePostStateAdapter } from '../state/PostStateAdapter';   // ← adapter, not store
-import { usePost } from '../hooks/usePost';
-
-/**
- * Wires all Orc-BASH dependencies for the post page use case.
- * @param postId Target post identifier.
- * @returns UI-ready view model and actions.
- */
-export const usePostPageOrchestrator = (
-  { postId }: { postId: string },
-  { prefetchOnInit = true }: { prefetchOnInit?: boolean } = {},
-): {
-  post: FormattedPost | null;
-  isLoading: boolean;
-  error: Error | null;
-  isLiking: boolean;
-  onLike: () => Promise<void>;
-} => {
-  const state = usePostStateAdapter({ postId });   // all state via adapter
-
-  const hook = usePost({ postId, deps: {
-    post: state.post,
-    fetchPost: postApi.fetchPost,
-    likePost: postApi.likePost,
-    formatPost: postService.formatPost.bind(postService),
-    savePost: state.savePost,
-    updatePostLikes: state.updatePostLikes,
-  } });
-
-  useEffect(() => {
-    if (prefetchOnInit && !state.post) hook.actions.fetchPost();
-  }, [prefetchOnInit, state.post]);
-
-  return {
-    post: hook.post,
-    isLoading: hook.isLoading,
-    error: hook.error,
-    isLiking: hook.uiState.isLiking,
-    onLike: hook.actions.like,
-  };
-};
-```
-
-**Rule**: If an orchestrator exceeds ~200–300 lines, split it or extract shared wiring into a factory function.
-
----
-
-### Layer 6 — UI (Orchestrator Only)
-UI sees nothing below the orchestrator.
-
-```typescript
-// views/PostPage.tsx
-export const PostPage = ({
-  postId,
-  useOrchestrator = usePostPageOrchestrator,
-}: {
-  postId: string;
-  useOrchestrator?: typeof usePostPageOrchestrator;
-}) => {
-  const { post, isLoading, error, isLiking, onLike } = useOrchestrator({ postId });
-
-  if (error) return <ErrorView error={error} />;
-  if (isLoading || !post) return <LoadingView />;
-  return <Card title={post.title} onLike={onLike} isLiking={isLiking} />;
-};
-```
-
-Injecting the orchestrator as a prop with a default enables full UI testing without any state or API setup.
-
-### Component Logic Extraction Rule (Mandatory)
-
-If a component contains business/domain logic beyond trivial rendering decisions:
-
-1. Move that logic into the domain `logic/` layer (service class or pure logic module).
-2. Expose it through the orchestrator/hook dependency contract.
-3. Keep component body focused on rendering + event wiring only.
-
-Do not leave non-trivial business logic as local helpers inside the component. If logic needs tests, it belongs in `logic/`, not inline in `views/`.
-
-## Error Handling
-
-| Layer | Responsibility |
-|---|---|
-| API | Throws on HTTP failure |
-| Hook | Catches, sets `error` state |
-| Orchestrator | Exposes `error` to UI |
-| UI | Renders error state |
-
-## DDD Scaling
-
-Each domain gets its own complete BASH structure:
-
-```
-/features/
-├── posts/    ← types/ api/ logic/ state/ hooks/ orchestrators/ views/
-├── comments/ ← types/ api/ logic/ state/ hooks/ orchestrators/ views/
-└── payments/ ← types/ api/ logic/ state/ hooks/ orchestrators/ views/
-```
-
-Cross-domain communication happens through orchestrators, not between domain internals.
+State rules:
+
+- Orchestrators import the state adapter, never the concrete store directly.
+- Swapping the client state library should require changing only the concrete store implementation and the state adapter.
+- Concrete state manager implementations belong in library-specific reference files, not in the core Orc-BASH contract.
+
+Orchestrator rule:
+
+- If an orchestrator exceeds roughly 200 to 300 lines, split it or extract shared wiring into a factory/helper.
+
+Component logic rule:
+
+- If a component contains business or domain logic beyond trivial rendering decisions, move that logic into `logic/` and expose it through the orchestrator or hook contract.
+
+## Feedback and Failure Handling Contract
+
+Do not model frontend failure handling as raw `Error | null` plus a timeout. In Orc-BASH, failures should be normalized before they reach the UI.
+
+Use two feedback channels:
+
+- `screen` feedback: persistent feedback for failures or warnings that affect the current screen or task
+- `notification` feedback: transient feedback for success, lightweight warnings, or informational events
+
+Responsibility split:
+
+- API throws raw infra or transport failures.
+- Business Logic may map domain failures into semantic app errors.
+- Hook catches failures and normalizes them into stable UI-facing feedback.
+- Orchestrator exposes the feedback contract.
+- UI renders feedback consistently and does not invent failure semantics ad hoc.
+
+Rendering defaults:
+
+- Use persistent screen feedback for fetch failures, offline/auth/session issues, blocking validation, and incomplete/broken screen states.
+- Use transient notifications for success and non-blocking notices.
+- Use modals rarely, only for destructive confirmation, forced acknowledgement, or session recovery flows.
+- Do not auto-dismiss blocking failures on a fixed timer.
+
+For concrete type shapes and examples, load `references/typedoc-return-types-example.md`.
 
 ## When to Use
 
-✅ Use Orc-BASH when:
-- Multiple pages need the same hook logic (feed, profile, search all show posts)
-- Cross-feature coordination required (liking updates feed, profile, analytics)
-- Web + mobile sharing the same business logic (80% code reuse — only UI layer differs)
-- Large team where layers are owned by different people
-- State manager swap is a realistic future concern
+Use Orc-BASH when:
 
-❌ Don't use Orc-BASH when:
-- Simple CRUD feature used in one place — no reusability to gain
-- Rapid prototyping — too much ceremony
-- Small team (1–3 devs) on a short-lived feature
+- multiple pages need the same hook logic
+- cross-feature coordination is required
+- business logic should be reusable across web and mobile surfaces
+- state manager swap is a realistic future concern
+- the team benefits from strict seams between UI, orchestration, state, API, and logic
 
-**Decision tree:**
-- Max reusability + minimal dependency → Orc-BASH
-- Speed and simplicity → SUIF (fusion hook)
-- Enterprise-scale, class-heavy → SHARP
+Do not use Orc-BASH when:
+
+- the feature is simple CRUD used in one place
+- you are doing rapid throwaway prototyping
+- the ceremony outweighs the reuse and testability benefits
+
+Decision rule:
+
+- max reusability plus minimal cross-layer coupling -> Orc-BASH
+- speed and simplicity -> a smaller pattern such as a fusion hook
 
 ## Anti-Patterns
 
-**Importing the store directly in the orchestrator**: Defeats the port/adapter pattern. When state manager changes, every orchestrator breaks. Always import the adapter.
+- Hook importing API modules, stores, or service implementations directly
+- Orchestrator importing the concrete store instead of the state adapter
+- Business logic importing from state
+- Non-trivial business logic living in `views/*.tsx`
+- Raw `Error | null` exposed as the UI contract
+- Separate `error`, `warning`, `successOperation`, and `message` props instead of a structured feedback model
+- Showing important failures only as 5-second toasts
+- Broad `useEffect` dependencies such as the whole `deps` object
+- Dependency-driven effects added without temporary non-production debug instrumentation during implementation
+- `Use*Dependencies` growing without being treated as a split signal
+- God orchestrators that accumulate multiple page concerns
 
-**God orchestrator**: Orchestrator exceeding 200–300 lines. Split or extract a shared wiring factory function.
+## Compliance Checklist
 
-**Instantiating in the orchestrator**: `new PostService()` creates a new instance per render. Use exported singletons.
-
-**Cross-layer imports**: Business logic importing from state, hooks importing from API directly. All cross-layer wiring belongs in the orchestrator only.
-
-**Business logic in components**: Keeping transformation/decision rules in `views/*.tsx` (including local helper functions declared inside the component) makes logic hard to test and couples behavior to rendering. Move logic to `logic/` and inject via orchestrator/hook contracts.
-
-**Broad `useEffect` dependencies**: Passing objects, arrays, or the entire `deps` bag as `useEffect` dependencies causes unstable endless re-render cycles because these references are recreated on every render. Always depend on the specific primitive values or stable references you actually need, never on a whole object or the injected dependencies object.
-
-```typescript
-// ❌ Unstable — deps object is recreated every render, triggers infinite loop
-useEffect(() => { deps.fetchPost({ postId }); }, [deps]);
-
-// ✅ Stable — depend only on the specific value that should trigger the effect
-useEffect(() => { deps.fetchPost({ postId }); }, [postId]);
-```
-
-**Skipping the Business Logic Hook when React lifecycle is needed**: Calling service methods directly in the Integration Hook without wrapping in `useMemo`/`useCallback` when those methods have referential equality implications. Use the Business Logic sub-hook for any service interaction that needs lifecycle awareness.
-
-**Verbose dependency interface as ignored signal**: `UsePostDependencies` growing past 8–10 fields means the hook has too many responsibilities. Split it into domain-specific hooks.
-
-## DI Compliance Checklist (Required Before Handoff)
-
-- Hook has a typed `deps` interface and receives all external dependencies from orchestrator.
-- Hook does not import API/state/logic implementations directly.
-- Orchestrator imports state adapter, not concrete store.
+- Hook receives all external dependencies via a typed `deps` interface.
+- Hook does not import API, state, or logic implementations directly.
+- Orchestrator imports the state adapter, not the concrete store.
 - Orchestrator wiring is explicit for API calls, logic methods, and state actions.
-- UI imports orchestrator only.
-- `useEffect` and callbacks depend on stable, specific dependency refs (not whole `deps` object).
+- UI imports the orchestrator only.
+- Exported layer boundaries have explicit return types and documentation.
+- Feedback is normalized before it reaches the UI.
+- `useEffect` and callback dependencies are stable and specific.
 
-## Full Implementation Reference
+## References
 
-For shared testability/composability rules and generic examples, use:
-- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md`
-
-See `<AI_DEV_SHOP_ROOT>/skills/frontend-react-orcbash/references/` for complete working examples:
-- `post-feature-example.md` — full Reddit posts feature with all 6 layers including state adapter
-- `typedoc-return-types-example.md` — explicit return types and TypeDoc/TSDoc coverage for exported APIs plus internal hook internals
-- `feature-slice-drop-in-template.md` — DDD/vertical-slice drop-in feature structure with rationale, weaknesses, and improvement guidance
+- `references/feature-slice-drop-in-template.md` — minimal slice layout and drop-in starting point
+- `references/typedoc-return-types-example.md` — explicit return types, TypeDoc, and feedback contract example
+- `references/post-feature-example.md` — full six-layer feature example with a generic state-adapter boundary
+- `references/state-manager-zustand.md` — concrete Zustand state store and adapter example

@@ -209,6 +209,11 @@ Repeat pattern priming when the task shifts to a materially different layer or c
 - Handoff output from TDD Agent (summary only, not full session)
 - Confirmed pattern-priming reference (from Pattern Priming step above)
 
+Programmer handoff must include an `Architecture Audit` section:
+- `PASS` = no known architectural violations found
+- `WARNING` = likely architectural violations remain; Coordinator surfaces them to the human and asks whether to route back to Programmer or continue downstream
+- `BLOCKER` = ADR ambiguity or a hard architectural constraint prevents safe continuation; Coordinator pauses routing and escalates
+
 ### TestRunner Agent
 - Test suite location
 - Spec hash certified by TDD Agent (to validate drift)

@@ -1,6 +1,6 @@
 # Orc-BASH Full Example: Reddit Posts Feature
 
-Complete implementation of all 6 layers for a posts feature.
+Complete implementation of all 6 layers for a posts feature. The state-manager-specific implementation is intentionally split into a separate reference so the state adapter remains swappable.
 
 ## types/post.ts
 
@@ -89,64 +89,21 @@ export interface PostStatePort {
 }
 ```
 
-## state/postStore.ts
+## state/ConcreteStateManager + state/PostStateAdapter.ts
 
-The concrete Zustand implementation. Zero dependencies outside `types/`.
+The port and adapter boundary stay fixed. The concrete state manager implementation is intentionally separated into library-specific references:
 
-```typescript
-import { create } from 'zustand';
-import type { Post } from '../types/post';
+- `state/PostStatePort.ts` stays stable.
+- `state/PostStateAdapter.ts` maps the chosen store to that port.
+- The concrete store implementation lives behind that adapter.
 
-interface PostState {
-  posts: Record<string, Post>;
-  feed: string[];
-  savePost: (post: Post) => void;
-  saveFeed: (posts: Post[]) => void;
-  updatePostLikes: (postId: string, likes: number) => void;
-}
+See `state-manager-zustand.md` for a concrete Zustand implementation of both `postStore.ts` and `PostStateAdapter.ts`.
 
-export const usePostStore = create<PostState>((set) => ({
-  posts: {},
-  feed: [],
+When swapping libraries, the invariant is:
 
-  savePost: (post) => set((state) => ({
-    posts: { ...state.posts, [post.id]: post }
-  })),
-
-  saveFeed: (posts) => set({
-    posts: posts.reduce((acc, post) => ({ ...acc, [post.id]: post }), {} as Record<string, Post>),
-    feed: posts.map(p => p.id),
-  }),
-
-  updatePostLikes: (postId, likes) => set((state) => ({
-    posts: {
-      ...state.posts,
-      [postId]: { ...state.posts[postId], likes, liked: true },
-    }
-  })),
-}));
-```
-
-## state/PostStateAdapter.ts
-
-Maps the concrete store to the port interface. **This is the only file that changes when swapping state managers.** Orchestrators import this, never `postStore` directly.
-
-```typescript
-import { usePostStore } from './postStore';
-import type { PostStatePort } from './PostStatePort';
-
-export const usePostStateAdapter = ({ postId }: { postId: string }): PostStatePort => {
-  const post = usePostStore(s => s.posts[postId] ?? null);
-  const feed = usePostStore(s => s.feed);
-  const savePost = usePostStore(s => s.savePost);
-  const saveFeed = usePostStore(s => s.saveFeed);
-  const updatePostLikes = usePostStore(s => s.updatePostLikes);
-
-  return { post, feed, savePost, saveFeed, updatePostLikes };
-};
-```
-
-To switch from Zustand to Jotai: replace `postStore.ts` and update `PostStateAdapter.ts` to use Jotai atoms. `PostStatePort.ts`, orchestrators, and hooks are unchanged.
+- change the concrete store implementation
+- update the adapter
+- leave hooks, orchestrators, and views alone
 
 ## hooks/usePost.ts
 
