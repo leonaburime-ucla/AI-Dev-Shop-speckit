@@ -1,7 +1,7 @@
 ---
 name: skills-registry
-version: 1.2.0
-last_updated: 2026-03-15
+version: 1.2.2
+last_updated: 2026-03-18
 description: Maps every shared skill to the agents that use it. Reference when dispatching agents or updating skills.
 ---
 
@@ -26,11 +26,13 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/design-patterns/SKILL.md` | Architect, CodeBase Analyzer, System Blueprint Agent (secondary) |
 | `skills/hexagonal-architecture/SKILL.md` | Architect, Programmer, CodeBase Analyzer, System Blueprint Agent |
 | `skills/system-blueprint/SKILL.md` | System Blueprint Agent, Coordinator |
+| `skills/system-design/SKILL.md` | System Blueprint Agent, Architect (shared macro-topology and architecture-spec reference) |
 | `skills/frontend-react-orcbash/SKILL.md` | Programmer (React frontends) |
 | `skills/testable-design-patterns/SKILL.md` | Architect, Programmer, Refactor Agent, TDD Agent |
 | `skills/vercel-react-best-practices/SKILL.md` | Programmer, Code Review Agent (React/Next tactical guidance) |
 | `skills/vercel-composition-patterns/SKILL.md` | Programmer, Code Review Agent (React component API patterns) |
 | `skills/ux-design/SKILL.md` | UX/UI Designer Agent (design system creation, visual direction, component/state design, implementation-ready handoff) |
+| `skills/interface-design/SKILL.md` | UX/UI Designer Agent, Programmer (app/tool interface-system consistency and design-memory reference) |
 | `skills/vercel-web-design-guidelines/SKILL.md` | UX/UI Designer Agent, Code Review Agent, QA/E2E Agent (UI/UX guideline audits) |
 | `skills/vercel-react-native-skills/SKILL.md` | Programmer, QA/E2E Agent, Code Review Agent (React Native/Expo tactical guidance) |
 | `skills/sql-data-modeling/SKILL.md` | Database Agent |

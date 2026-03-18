@@ -1,13 +1,18 @@
 ---
 name: test-design
-version: 1.0.0
-last_updated: 2026-03-04
+version: 1.1.0
+last_updated: 2026-03-18
 description: Use when designing tests, building requirement-to-test matrices, selecting test types, certifying test coverage against a spec, or detecting test drift after spec changes.
 ---
 
 # Skill: Test Design
 
 Tests in this system are not just verification — they are a second encoding of the spec. The TDD Agent's job is not to check that code works; it is to translate each requirement, invariant, and edge case into an executable assertion before any implementation exists. Tests are the spec made runnable.
+
+Keep this file lean. Open references only when you need deeper implementation guidance:
+
+- `references/contract-testing.md` for ADR-boundary contract testing patterns and certification examples
+- `references/property-based-testing.md` for invariant-driven test generation and library guidance
 
 ## The Two Roles Tests Play
 
@@ -75,8 +80,6 @@ Every requirement must have at least one test. Every test must trace to a requir
 - Written in behavior terms, not implementation terms
 - These are what the Convergence Threshold is measured against
 
-## Test File Naming Convention (Required)
-
 ## Test Directory Convention (Required)
 
 Place tests in type-specific directories:
@@ -92,6 +95,8 @@ Examples:
 - `__tests__/e2e/chat-sidebar.e2e.test.ts`
 
 If a repository has an approved existing convention that differs, the override must be documented in `project-knowledge/memory/project_memory.md` and referenced in the certification output. Without an explicit override, this directory rule is mandatory.
+
+## Test File Naming Convention (Required)
 
 Use explicit test-type suffixes in filenames:
 
@@ -232,80 +237,33 @@ This is the connective tissue that keeps specs, tests, and code in provable alig
 
 ## Contract Testing
 
-The ADR defines API and event contracts. Contract tests verify the implementation actually honors those contracts. These are distinct from acceptance tests (which test user-visible behavior) and unit tests (which test logic).
+The ADR defines API and event contracts. Contract tests verify the implementation actually honors those contracts.
 
-**When to write contract tests:**
-- Any interface defined in the ADR's API/Event Contract Summary section
-- Any event published or consumed across a module boundary
-- Any external service integration where you control the schema
+Use contract tests for:
+- ADR-defined API or event contracts
+- module boundaries with explicit schemas or fixtures
+- provider/consumer relationships where drift is a material risk
 
-**Testing approach by contract type:**
-
-| Contract Type | Recommended Approach | Tool Examples |
-|--------------|---------------------|---------------|
-| HTTP/REST API | Schema validation against OpenAPI spec | Schemathesis, Dredd |
-| Consumer-driven (provider must satisfy consumer) | Consumer-driven contract tests | Pact |
-| Internal event contracts | Integration test: publish event, assert consumer behavior | native test framework |
-| GraphQL | Schema + query validation | graphql-inspector |
-
-**Contract test requirements:**
-- Each contract in the ADR must have at least one contract test
-- Contract tests verify the shape and behavior of the interface, not the implementation behind it
-- If the Architect flagged a contract as "consumer-driven," generate a Pact contract file
-- If the Architect flagged "schema validation," generate tests against the OpenAPI schema
-- For cross-domain boundaries, do not rely on freehand mocks as the primary signal; prefer contract fixtures/schemas derived from the ADR contract source
-- If a mock is used at a boundary, validate it against the contract shape (schema/type/fixture) so tests fail on contract drift
-
-**In the certification record**, list contract tests separately:
-```
-Contract Tests:
-- IInvoiceRepository: integration test (see tests/contracts/invoice-repository.test.ts)
-- InvoiceCreated event: schema validation (see tests/contracts/invoice-created.schema.test.ts)
-```
-
-**Gap rule:** If a contract cannot be tested (e.g., third-party API with no sandbox), document it as a High-risk gap in the certification record with justification.
-
-**Cross-domain reliability signal:** If unit/integration suites are passing but QA/E2E repeatedly fails on cross-domain journeys, treat this as probable contract drift or over-mocking and escalate to Coordinator for contract/test redesign before continuing cycles.
-
----
+Load `references/contract-testing.md` when you need:
+- tool selection by contract type
+- certification examples
+- gap handling for untestable contracts
+- cross-domain drift guidance
 
 ## Property-Based Testing
 
-Example-based tests verify specific inputs. Property-based tests verify that a *property* holds across a large range of automatically generated inputs.
+Example-based tests verify named scenarios. Property-based tests verify that an invariant holds across a large range of generated inputs.
 
-**When to use property tests:**
-- ACs involving ranges, bounds, or numeric computation (e.g., "total must never be negative")
-- Input validation logic (e.g., "any string over 255 chars must be rejected")
-- Collections: sorting, deduplication, ordering invariants
-- Parsers, serializers, encoders — any round-trip guarantee ("parse(serialize(x)) === x")
-- Business logic invariants that must hold regardless of input shape
+Use property tests for:
+- numeric or range-based invariants
+- validation rules across broad input spaces
+- ordering, deduplication, and round-trip guarantees
+- idempotency and "no partial write on failure" guarantees
 
-**When to stick with example tests:**
-- Happy path and named failure scenarios (use example tests — property tests don't read as documentation)
-- Behavior defined by a fixed contract (HTTP status codes, specific error messages)
-- Integration and acceptance tests — use concrete, readable examples
-
-**How to derive a property from a spec AC:**
-
-| AC Pattern | Property to Test |
-|------------|-----------------|
-| "total equals sum of line items" | For any set of line items, total === sum(items.map(i => i.price * i.qty)) |
-| "quantity must be positive" | For any quantity ≤ 0, the system rejects with a validation error |
-| "idempotent submission" | For any valid request, submitting it twice returns the same result |
-| "no partial writes on failure" | For any input that triggers a failure, the database state is unchanged |
-
-**Recommended libraries:**
-- TypeScript/JavaScript: `fast-check` — model-based testing, arbitrary generators, shrinking
-- Python: `Hypothesis` — strategy-based generation, database examples, stateful testing
-
-**In the certification record**, list property tests separately:
-```
-Property Tests:
-- INV-01 (invoice total invariant): fast-check property test (see tests/properties/invoice-total.property.ts)
-- EC-01 (quantity validation): Hypothesis strategy test (see tests/properties/quantity.property.py)
-```
-
----
+Load `references/property-based-testing.md` when you need:
+- AC-to-property derivation patterns
+- library guidance
+- certification examples
 
 ## Coverage Gaps
 

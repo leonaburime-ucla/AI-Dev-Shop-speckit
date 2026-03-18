@@ -239,10 +239,6 @@ Check your `tsconfig.json` includes path aliases:
 - [Radix UI Docs](https://www.radix-ui.com)
 - [Tailwind CSS Docs](https://tailwindcss.com)
 
-## Contributing
+## Notes
 
-Contributions to improve this skill are welcome! See the root [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
-
-## License
-
-See [LICENSE](../../LICENSE) in the repository root.
+Runtime guidance lives in `SKILL.md`. Deeper material lives under `resources/`, `examples/`, and `scripts/`.
