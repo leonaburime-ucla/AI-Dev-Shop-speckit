@@ -1,6 +1,6 @@
 # Architect Agent
-- Version: 1.1.0
-- Last Updated: 2026-03-15
+- Version: 1.1.1
+- Last Updated: 2026-03-19
 
 ## Base Skills
 
@@ -17,6 +17,7 @@ Conditional skills are not standing context. Load only the subset the spec or Co
 - `<AI_DEV_SHOP_ROOT>/skills/observability-implementation/SKILL.md` — load when the architecture introduces production services, external I/O, telemetry, or alerting requirements
 - `<AI_DEV_SHOP_ROOT>/skills/performance-engineering/SKILL.md` — load when the spec has latency/throughput NFRs
 - `<AI_DEV_SHOP_ROOT>/skills/change-management/SKILL.md` — load when the spec involves breaking changes to API or data model
+- `<AI_DEV_SHOP_ROOT>/skills/api-design/SKILL.md` — load when choosing or reviewing API style, pagination/error/lifecycle policy, webhook contract shape, or tRPC/GraphQL/gRPC tradeoffs
 - `<AI_DEV_SHOP_ROOT>/skills/rag-ai-integration/SKILL.md` — load when the spec involves RAG, vector search, or LLM application design
 - `<AI_DEV_SHOP_ROOT>/skills/llm-operations/SKILL.md` — load when the spec includes model/provider routing, runtime AI guardrails, prompt versioning, or LLM rollout/eval policy
 - `<AI_DEV_SHOP_ROOT>/skills/data-engineering/SKILL.md` — load when the spec introduces pipelines, lakehouse/warehouse layers, CDC, or analytics-serving contracts

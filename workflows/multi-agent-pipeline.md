@@ -107,6 +107,7 @@ Output:
 - Product intent from human (verbatim)
 - `system-blueprint.md` (if produced) for domain boundaries and decomposition guidance
 - `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/constitution.md` (for constitution compliance check and [NEEDS CLARIFICATION] detection)
+- `<AI_DEV_SHOP_ROOT>/skills/api-design/SKILL.md` when the feature introduces or changes API style, pagination/filtering policy, error/lifecycle policy, webhook/event shape, or SDK-facing integration behavior
 - Relevant entries from `<AI_DEV_SHOP_ROOT>/project-knowledge/memory/project_memory.md` (domain conventions)
 - Last 3 entries from `<AI_DEV_SHOP_ROOT>/project-knowledge/memory/learnings.md` (recent failure patterns)
 - Existing FEAT folders in `<AI_DEV_SHOP_ROOT>/reports/pipeline/` (to avoid ID collisions, detect overlap, assign next FEAT number)
@@ -158,13 +159,14 @@ Reference: `<AI_DEV_SHOP_ROOT>/project-knowledge/quality/spec-definition-of-done
 - Current system boundaries (existing ADRs in `<AI_DEV_SHOP_ROOT>/reports/pipeline/`)
 - Non-functional constraints from spec
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md`
+- `<AI_DEV_SHOP_ROOT>/skills/api-design/SKILL.md` when the feature exposes or changes an API surface, webhook/event contract, lifecycle policy, or SDK-facing integration boundary
 - Relevant `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/` files (Coordinator selects based on system drivers in spec)
 - `<AI_DEV_SHOP_ROOT>/reports/codebase-analysis/ANALYSIS-<id>-<date>.md` executive summary (if produced — treat findings as informed estimates, not guarantees)
 - `<AI_DEV_SHOP_ROOT>/reports/codebase-analysis/MIGRATION-<id>-<date>.md` (if produced — treat as draft recommendation; validate or refine in ADR)
 
 **Architect outputs (in order):**
 1. `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/research.md` (if spec has technology choices) — using `<AI_DEV_SHOP_ROOT>/templates/research-template.md`
-2. `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` — using `<AI_DEV_SHOP_ROOT>/templates/adr-template.md` (includes Constitution Check, Research Summary, Complexity Justification)
+2. `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` — using `<AI_DEV_SHOP_ROOT>/templates/adr-template.md` (includes Constitution Check, Research Summary, Complexity Justification, and API interface decision with rejected alternatives when API design is in scope)
 
 ### Database Agent (optional — dispatched alongside or immediately after Architect when spec involves data modeling)
 
@@ -230,6 +232,7 @@ Programmer handoff must include an `Architecture Audit` section:
 - ADR for the module (for architecture compliance check)
 - `<AI_DEV_SHOP_ROOT>/skills/code-review/SKILL.md`
 - `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` (for surface flagging)
+- `<AI_DEV_SHOP_ROOT>/skills/api-design/SKILL.md` when the diff changes API style, pagination/filtering policy, error model, lifecycle policy, webhook semantics, or SDK-facing ergonomics
 - Previous Code Review findings (to detect recurrence)
 
 ### Refactor Agent
@@ -265,6 +268,7 @@ Programmer handoff must include an `Architecture Audit` section:
 - `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md`
 - `<AI_DEV_SHOP_ROOT>/reports/security/SEC-<feature-id>-<YYYY-MM-DD>.md`
 - Existing `CHANGELOG.md`
+- `<AI_DEV_SHOP_ROOT>/skills/api-design/SKILL.md` when documenting API style decisions, lifecycle policy, webhook/event contracts, or integration ergonomics
 - `<AI_DEV_SHOP_ROOT>/skills/api-contracts/SKILL.md`
 - Coordinator directive specifying doc deliverables required
 

@@ -1,7 +1,7 @@
 ---
 name: skills-registry
-version: 1.2.2
-last_updated: 2026-03-18
+version: 1.2.3
+last_updated: 2026-03-19
 description: Maps every shared skill to the agents that use it. Reference when dispatching agents or updating skills.
 ---
 
@@ -66,6 +66,7 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/security-review/SKILL.md` | Security, Code Review, DevOps |
 | `skills/performance-engineering/SKILL.md` | TestRunner Agent, Architect |
 | `skills/api-contracts/SKILL.md` | Spec Agent, Code Review Agent, Docs Agent |
+| `skills/api-design/SKILL.md` | Spec Agent, Architect, Code Review Agent, Docs Agent |
 | `skills/frontend-accessibility/SKILL.md` | Code Review Agent, QA/E2E Agent |
 | `skills/e2e-test-architecture/SKILL.md` | QA/E2E Agent, TDD Agent |
 | `skills/rag-ai-integration/SKILL.md` | Architect, Programmer, Database Agent |

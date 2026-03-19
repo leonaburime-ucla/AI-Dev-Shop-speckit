@@ -1,13 +1,15 @@
 ---
 name: api-contracts
-version: 1.0.0
-last_updated: 2026-02-26
-description: Governs API contract design, completeness, versioning, and backward compatibility.
+version: 1.0.1
+last_updated: 2026-03-19
+description: Governs concrete API contract completeness, OpenAPI generation readiness, and compatibility verification after the API style has already been chosen.
 ---
 
 # Skill: API Contracts
 
-An API contract is a promise to consumers. Breaking that promise — changing a field type, removing an endpoint, altering error shapes — has the same downstream impact as a production outage. This skill governs how contracts are defined, validated, versioned, and tested for backward compatibility.
+An API contract is a promise to consumers. Breaking that promise — changing a field type, removing an endpoint, altering error shapes — has the same downstream impact as a production outage. This skill governs how concrete contracts are validated, rendered into OpenAPI, and checked for compatibility after the API style and lifecycle policy have already been chosen.
+
+Use `skills/api-design/SKILL.md` first when the work involves style selection, versioning strategy, deprecation policy, rate-limit policy, or other design-level contract choices. This skill assumes those decisions already exist and focuses on endpoint-by-endpoint completeness.
 
 ## What a Complete API Contract Requires (per endpoint)
 
@@ -26,29 +28,11 @@ An API contract is a promise to consumers. Breaking that promise — changing a 
 - Examples are required for all request and response bodies.
 - `operationId` must be unique, snake_case, verb-first (e.g. `create_invoice`, `list_invoices`).
 
-## Versioning Strategy
+## Lifecycle Boundary
 
-- **URL versioning**: (`/v1/`, `/v2/`) — simple, cache-friendly, explicit.
-- **Header versioning**: (`Accept: application/vnd.api+json;version=2`) — cleaner URLs, harder to test in browser.
-- Choose one strategy at project start and apply consistently.
-- Never change versioning strategy mid-project.
-
-## Breaking vs Non-Breaking Changes
-
-### Non-breaking (additive — no version bump required)
-- New optional request field
-- New response field
-- New endpoint
-- New optional query parameter
-- New status code on an existing endpoint
-
-### Breaking (requires version bump and migration plan)
-- Removing or renaming a field (request or response)
-- Changing a field type
-- Making an optional field required
-- Removing an endpoint
-- Changing auth requirement
-- Changing error response structure
+- Do not choose versioning strategy here. Load `skills/api-design/references/versioning-and-lifecycle.md` for lifecycle policy.
+- Do not design rollout or migration here. Load `skills/change-management/SKILL.md` for expand-contract execution.
+- If a proposed change removes or renames a field, changes a field type, tightens requiredness, changes auth behavior, or changes error structure, flag it as a compatibility event and route to `api-design` plus `change-management`.
 
 ## Consumer-Driven Contract Testing (Pact)
 

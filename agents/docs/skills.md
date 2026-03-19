@@ -1,6 +1,6 @@
 # Docs Agent
-- Version: 1.0.0
-- Last Updated: 2026-03-13
+- Version: 1.0.1
+- Last Updated: 2026-03-19
 
 ## Base Skills
 
@@ -11,6 +11,7 @@
 Conditional skills are not standing context. Load them only when the requested deliverable needs them.
 
 - `<AI_DEV_SHOP_ROOT>/skills/api-contracts/SKILL.md` — load when generating or updating OpenAPI, API references, request/response docs, or compatibility notes
+- `<AI_DEV_SHOP_ROOT>/skills/api-design/SKILL.md` — load when documenting API style decisions, lifecycle/deprecation policy, webhook/event contracts, or SDK-facing integration guidance
 - `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md` — load when extracting acceptance criteria, invariants, edge cases, or breaking-change scope from the spec
 
 ## Role
