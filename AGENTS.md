@@ -12,15 +12,16 @@ On the first user message in this repository (including greetings), before any r
 1. Open and read `<AI_DEV_SHOP_ROOT>/AGENTS.md`.
 2. Provide a welcome message that MUST include:
    - "Booted with <AI_DEV_SHOP_ROOT>/AGENTS.md loaded."
+   - Begin the startup block with `------------Startup Info------------` and end it with `------------End of Startup Info------------`.
    - A bulleted list of the 4 Coordinator modes with a 1-sentence summary of each.
    - The pipeline diagram and its notes (copy from the How This Works section verbatim).
    - One sentence explaining that Consultation Mode (default ON) exists and how to enable/disable it.
    - One sentence explaining that Agent Consensus Mode exists and how to enter/exit it, without explaining debate details.
    - One sentence explaining that sub-agent assistance auto-enables when the current host verifies it, usually uses more total tokens, and can be disabled with `single-agent mode`.
+   - Use `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/startup-info.md` as the source of truth for startup block wording and layout.
 3. If the file is missing or unreadable, state that explicitly and stop.
 4. Read `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/reminders.md`. For each reminder NOT listed under Dismissed, show a short prompt after the welcome message.
 5. When Bash is available, detect the current host and resolve subagent mode with `<AI_DEV_SHOP_ROOT>/harness-engineering/validators/resolve_subagent_mode.sh`. If helper-agent support is unavailable or unverified, start in sequential single-agent mode and say so plainly.
-
 **slash-commands-setup** (skip if dismissed):
 Show: "Would you like to enable slash commands (`/spec`, `/plan`, `/consensus`, and more)? Say **yes** and I'll walk you through it."
 If the user says yes: read the `## slash-commands-setup` section in `reminders.md`, detect the host, and follow the instructions there.
@@ -47,9 +48,6 @@ Consultation mode is enabled by default; say "disable consultation mode" to turn
 Sub-agent assistance defaults to automatic when the current host verifies helper-agent support; say `single-agent mode` or `disable subagents` to keep work in one context, or `re-enable subagents` / `auto subagent mode` to restore automatic helper use.
 To enter Direct Mode: "exit coordinator", "just talk to me normally".
 To return from either: "back to coordinator", "resume coordinator" — Coordinator re-evaluates pipeline state from the direct session and announces where things stand, then defaults to Review Mode.
-Startup one-sentence copy: `Consultation Mode (default ON) enables agent-to-agent communication via the Coordinator for difficult decisions while keeping one owner agent accountable for final output.`
-Startup one-sentence copy: `Agent Consensus Mode is available for high-level debatable questions among several AI models; enter with /agent <name> consensus (or "talk to <agent> in consensus mode") and exit back to normal direct with /agent <name> (or "talk to <agent> directly").`
-Startup one-sentence copy: `Sub-agent assistance auto-enables when the current host verifies helper-agent support; it helps keep the main context cleaner but usually uses more total tokens, and you can say "single-agent mode" or "disable subagents" to keep work in one context.`
 
 ---
 
@@ -180,6 +178,7 @@ The Coordinator must not assume delegated subagents automatically inherit the co
 Use these files for operating detail instead of expanding this file:
 
 - Pipeline startup, command entrypoints, and checkpoints: `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/pipeline-quickstart.md`
+- Startup block wording and layout: `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/startup-info.md`
 - Plain-language explanation pattern for users: `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/plain-language-explanations.md`
 - Capability verification and subagent defaulting: `<AI_DEV_SHOP_ROOT>/harness-engineering/capability-verification.md`, `<AI_DEV_SHOP_ROOT>/harness-engineering/subagent-usage-policy.md`
 - Pipeline flow and stage context: `<AI_DEV_SHOP_ROOT>/workflows/multi-agent-pipeline.md`
