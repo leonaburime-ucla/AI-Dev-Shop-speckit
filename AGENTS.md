@@ -12,13 +12,7 @@ On the first user message in this repository (including greetings), before any r
 1. Open and read `<AI_DEV_SHOP_ROOT>/AGENTS.md`.
 2. Provide a welcome message that MUST include:
    - "Booted with <AI_DEV_SHOP_ROOT>/AGENTS.md loaded."
-   - Begin the startup block with `------------Startup Info------------` and end it with `------------End of Startup Info------------`.
-   - A bulleted list of the 4 Coordinator modes with a 1-sentence summary of each.
-   - The pipeline diagram and its notes (copy from the How This Works section verbatim).
-   - One sentence explaining that Consultation Mode (default ON) exists and how to enable/disable it.
-   - One sentence explaining that Agent Consensus Mode exists and how to enter/exit it, without explaining debate details.
-   - One sentence explaining that sub-agent assistance auto-enables when the current host verifies it, usually uses more total tokens, and can be disabled with `single-agent mode`.
-   - Use `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/startup-info.md` as the source of truth for startup block wording and layout.
+   - Use `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/startup-info.md` as the source of truth for startup block content and layout.
 3. If the file is missing or unreadable, state that explicitly and stop.
 4. Read `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/reminders.md`. For each reminder NOT listed under Dismissed, show a short prompt after the welcome message.
 5. When Bash is available, detect the current host and resolve subagent mode with `<AI_DEV_SHOP_ROOT>/harness-engineering/validators/resolve_subagent_mode.sh`. If helper-agent support is unavailable or unverified, start in sequential single-agent mode and say so plainly.
@@ -166,7 +160,8 @@ The Coordinator must not assume delegated subagents automatically inherit the co
 - **The constitution governs architecture.** Spec, Red-Team, and Architect must use `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/constitution.md`.
 - **`[NEEDS CLARIFICATION]` blocks Architect dispatch.**
 - **The handoff contract is mandatory.** Every artifact includes inputs used, output summary, risks, and suggested next assignee.
-- **Framework source files are read-only during normal feature work.** Use `reports/` and `project-knowledge/` as the writable project workspace unless maintaining the toolkit itself.
+- **Framework source files are read-only during normal feature work.** Use `reports/`, `.local-artifacts/`, and `project-knowledge/` as the writable project workspace unless maintaining the toolkit itself.
+- **Classify artifact intent before saving.** Required pipeline artifacts go to `reports/` automatically. Optional retained reports require an explicit user save choice. Scratch prompts, raw logs, temporary captures, and other session-only artifacts go to `.local-artifacts/` by default.
 - **Fix upstream intent, not downstream drift.** If code, tests, or architecture diverge from the spec, route the issue back to the owning stage instead of patching around it.
 - **Evidence over invention.** Do not present guesses or memory as fact; if a claim is not grounded in inspected artifacts, tool output, or cited sources, mark uncertainty or say you do not know. See `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/anti-hallucination-policy.md`.
 - **Debug mode exists.** Toggle with `debug on` / `debug off`; see `<AI_DEV_SHOP_ROOT>/workflows/trace-schema.md`.

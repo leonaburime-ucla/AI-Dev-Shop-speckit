@@ -9,7 +9,13 @@ All pipeline artifacts are written under `<AI_DEV_SHOP_ROOT>` — the AI-Dev-Sho
 - Specs → user-specified location (Spec Agent asks before writing; `spec_path` recorded in pipeline state)
 - Pipeline artifacts (ADR, research, tasks, red-team findings, test certification, pipeline state) → `<AI_DEV_SHOP_ROOT>/reports/pipeline/<NNN>-<feature-name>/`
 - Reports (analysis, test runs, code review, security) → `<AI_DEV_SHOP_ROOT>/reports/` subfolders
+- Local scratch, raw captures, exploratory prompts, and disposable session evidence → `<AI_DEV_SHOP_ROOT>/.local-artifacts/`
 - **Read-only:** `agents/`, `skills/`, `templates/`, `workflows/` — never modify these
+
+Artifact-intent rule:
+- pipeline-required artifacts save directly to `reports/`
+- optional retained reports ask before becoming canonical
+- session-only scratch defaults to `.local-artifacts/`
 
 ---
 

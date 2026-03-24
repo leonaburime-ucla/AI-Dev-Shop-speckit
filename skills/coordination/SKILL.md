@@ -1,7 +1,7 @@
 ---
 name: coordination
-version: 1.3.0
-last_updated: 2026-03-18
+version: 1.4.0
+last_updated: 2026-03-24
 description: Use when routing between agents, handling Review Mode intake, activating conditional skills, enforcing convergence policy, managing iteration budgets, formatting cycle summaries, or deciding when to escalate to a human checkpoint.
 ---
 
@@ -22,6 +22,7 @@ By default, inter-agent communication flows through the Coordinator with bounded
 7. **Coverage profile initialization**: At pipeline start, ask whether to keep default coverage minimums or set custom per-suite minimums across lines/branches/functions/statements; persist final profile in `tasks.md` constraints
 8. **Discovery hygiene**: Use read-only discovery passes when broad exploration is needed so implementation context stays focused
 9. **Subagent mode resolution**: Default to helper-agent use only when the current host verifies support; otherwise stay in single-agent mode and explain why
+10. **Artifact intent classification**: Distinguish pipeline-required artifacts from optional retained reports and local scratch outputs before anything is written to disk
 
 ## Cross-Agent Consultation Protocol (Default ON)
 
@@ -43,6 +44,19 @@ Before first TestRunner dispatch for a feature, confirm coverage minimums with t
 - E2E default: `80/80/80/80`
 
 If the human does not provide custom values, apply defaults and persist the active profile into `tasks.md` constraints so TestRunner and TDD use the same numbers.
+
+## Artifact Retention Prompt
+
+When the current task is about producing a report or artifact that is not required by the delivery pipeline:
+
+- If the artifact is required by the workflow, save it to the canonical `reports/` path without asking.
+- If the artifact is optional and the user has not already said to save it, ask whether it should be:
+  - `retained` in `reports/`
+  - `local only` in `.local-artifacts/`
+  - `inline only` with no file written
+- If the artifact is raw evidence, temporary prompts, or intermediate captures, default to `.local-artifacts/` unless the user explicitly asks to retain it.
+
+This is a retention decision, not a content-approval checkpoint. Do not block required pipeline writes on this prompt.
 
 ## Review Mode Intake
 

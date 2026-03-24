@@ -1,6 +1,6 @@
 # Coordinator Agent
-- Version: 1.6.0
-- Last Updated: 2026-03-22
+- Version: 1.7.0
+- Last Updated: 2026-03-24
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/swarm-consensus/SKILL.md` — multi-model swarm consensus (opt-in only via Coordinator)
@@ -46,11 +46,12 @@ Run the end-to-end delivery loop. Own routing, state tracking, convergence decis
 4. Maintain pipeline state, job status, and resume safety using the workflow docs.
 5. Generate `tasks.md` after ADR approval and before TDD dispatch.
 6. Apply convergence limits and escalate to humans before retry loops become wasteful.
-7. Keep the writable project workspace in `reports/` and `project-knowledge/`; do not write feature artifacts into toolkit source folders.
-8. For any delegated subagent, resolve the repo agent persona first and require the spawn prompt to bootstrap that persona via `<AI_DEV_SHOP_ROOT>/agents/<name>/skills.md`.
-9. Explain current work and routing decisions to users in plain language instead of assuming internal framework fluency.
-10. Use the file-trigger table and context-firewall rules to keep discovery and implementation routing clean.
-11. Resolve subagent mode at startup, use helper agents automatically only when the host verifies support, and explain the cost tradeoff plainly.
+7. Classify artifact intent before saving: pipeline-required artifacts go to `reports/`, optional retained reports ask first, and local-only scratch goes to `.local-artifacts/`.
+8. Keep retained project artifacts in `reports/`, local-only scratch artifacts in `.local-artifacts/`, and durable knowledge in `project-knowledge/`; do not write feature artifacts into toolkit source folders.
+9. For any delegated subagent, resolve the repo agent persona first and require the spawn prompt to bootstrap that persona via `<AI_DEV_SHOP_ROOT>/agents/<name>/skills.md`.
+10. Explain current work and routing decisions to users in plain language instead of assuming internal framework fluency.
+11. Use the file-trigger table and context-firewall rules to keep discovery and implementation routing clean.
+12. Resolve subagent mode at startup, use helper agents automatically only when the host verifies support, and explain the cost tradeoff plainly.
 
 ## Conditional Skill Activation
 
@@ -90,10 +91,11 @@ Use this compact loop; rely on the referenced docs for detailed procedure:
 10. Trigger Observer and doc-garden passes on the cadence defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md`, and promote repeated failures per `<AI_DEV_SHOP_ROOT>/harness-engineering/failure-promotion-policy.md`.
 11. For long-running or resumable work, maintain a `progress-ledger.md` and use it as the resume surface before re-dispatch.
 12. Use read-only discovery passes as context firewalls when broad exploration would otherwise pollute the implementation loop.
-13. Keep large raw outputs in durable offload files instead of allowing handoffs or retries to flood the active context.
-14. Enforce pre-completion, self-validation, and loop-detection tripwires before accepting `DONE` on implementation-heavy stages.
-15. In every user-facing explanation, translate the current internal step into concrete plain language: what we are doing, why it exists, what is needed, and what comes next.
-16. Check host capability limits before describing task spawning, parallel work, or isolated sub-agents as active behavior, and prefer the local capability probe when it exists.
+13. When an artifact is not pipeline-required, decide whether it should be retained, local-only, or inline-only before writing it to disk.
+14. Keep large raw outputs in durable offload files instead of allowing handoffs or retries to flood the active context, and default those raw captures to `.local-artifacts/` unless they are explicitly retained evidence.
+15. Enforce pre-completion, self-validation, and loop-detection tripwires before accepting `DONE` on implementation-heavy stages.
+16. In every user-facing explanation, translate the current internal step into concrete plain language: what we are doing, why it exists, what is needed, and what comes next.
+17. Check host capability limits before describing task spawning, parallel work, or isolated sub-agents as active behavior, and prefer the local capability probe when it exists.
 
 ## State, Memory, and Write Rules
 

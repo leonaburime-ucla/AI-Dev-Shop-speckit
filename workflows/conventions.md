@@ -1,7 +1,7 @@
 ---
 name: conventions
-version: 1.0.0
-last_updated: 2026-02-24
+version: 1.1.0
+last_updated: 2026-03-24
 description: Output root, spec folder structure, and reports folder structure for all pipeline artifacts.
 ---
 
@@ -14,9 +14,32 @@ Spec files are written to the **user-specified location** — the Spec Agent ask
 For long-running or resumable work, use a `progress-ledger.md` in the appropriate reports folder per `<AI_DEV_SHOP_ROOT>/harness-engineering/session-continuity.md`.
 For large raw outputs, logs, or traces, use offload files per `<AI_DEV_SHOP_ROOT>/harness-engineering/context-offloading.md`.
 For runtime-changing work that needs app-level validation before handoff, use a self-validation report per `<AI_DEV_SHOP_ROOT>/harness-engineering/self-validation.md`.
+Use `<AI_DEV_SHOP_ROOT>/.local-artifacts/` for ignored local-only scratch artifacts such as exploratory consensus runs, raw peer stdout/stderr captures, temporary prompts, and host-specific smoke-test baselines that are not meant to ship with the repo.
+Promote artifacts from `.local-artifacts/` into `reports/` only when the user explicitly wants them retained as reusable project evidence.
 
-**Writable under `<AI_DEV_SHOP_ROOT>`:** `reports/`, `project-knowledge/`
+**Writable under `<AI_DEV_SHOP_ROOT>`:** `reports/`, `project-knowledge/`, `.local-artifacts/`
 **Read-only during normal feature work under `<AI_DEV_SHOP_ROOT>`:** `agents/`, `skills/`, `templates/`, `workflows/` — toolkit source files. If the user explicitly asks to maintain or upgrade the toolkit itself, treat that as framework maintainer work and allow edits in these directories.
+
+---
+
+## Artifact Intent Policy
+
+Before writing any new artifact, classify it into one of these buckets:
+
+1. **Pipeline-required**
+   - Examples: ADRs, `tasks.md`, `test-certification.md`, red-team findings, `.pipeline-state.md`, required codebase-analysis outputs
+   - Behavior: save automatically to `reports/` in the canonical path defined by the workflow
+2. **Optional retained**
+   - Examples: exploratory research summaries, consensus reports, architecture comparisons, reusable context packets, host compatibility baselines
+   - Behavior: if the user has not already said to save it, ask whether to retain it in `reports/`, keep it `local only`, or return it `inline only`
+3. **Local scratch / raw evidence**
+   - Examples: temporary prompts, raw stdout/stderr captures, ad hoc smoke tests, one-off logs, intermediate notes
+   - Behavior: save to `.local-artifacts/` by default unless the user explicitly wants it promoted into `reports/`
+
+Rule of thumb:
+- `reports/` is for canonical retained artifacts the project may rely on later
+- `.local-artifacts/` is for personal iteration output and disposable session evidence
+- Do not ask permission before writing pipeline-required artifacts that the framework depends on
 
 ---
 
@@ -58,9 +81,31 @@ All pipeline artifacts for a feature live under `<AI_DEV_SHOP_ROOT>/reports/pipe
 
 ---
 
+## Local Scratch Artifact Convention
+
+Use `.local-artifacts/` for local-only, ignored outputs that help the current session but are not canonical repo artifacts.
+
+```text
+<AI_DEV_SHOP_ROOT>/.local-artifacts/
+  swarm-consensus/
+    prompts/
+    context/
+    runs/
+    offloads/
+    smoke-tests/
+```
+
+**Rules:**
+- `.local-artifacts/` is ignored by git and safe for personal iteration outputs.
+- Use it by default for ad hoc consensus runs, temporary context packets, raw CLI captures, and smoke-test artifacts.
+- If a debate, context packet, or smoke-test result becomes worth keeping for future project use, copy or rewrite the final retained artifact into `reports/`.
+- Optional reports outside swarm consensus follow the same rule: local by default unless the user explicitly retains them.
+
+---
+
 ## Reports Folder Convention
 
-All agent reports live under a single centralized folder. This is the single source of truth for everything agents produce outside of spec artifacts. The subdirectory structure is pre-created in the repo — agents can write directly without creating directories.
+All agent reports live under a single centralized folder. This is the single source of truth for retained artifacts outside of spec files. The subdirectory structure is pre-created in the repo — agents can write directly without creating directories.
 
 ```
 <AI_DEV_SHOP_ROOT>/reports/
@@ -78,6 +123,13 @@ All agent reports live under a single centralized folder. This is the single sou
   observer/
     timeline-CYCLE-<NNN>.md           (Observer — per-cycle timeline log)
     pattern-report-<YYYY-WNN>.md      (Observer — weekly pattern report)
+  swarm-consensus/
+    smoke-tests/
+      <timestamp>-cli-smoke-test.md   (user-approved retained host capability baseline)
+    context/
+      CTX-<slug>-<YYYY-MM-DD>.md      (user-approved shared packet used by all consensus participants)
+    runs/
+      <timestamp>-consensus-report.md (user-approved templated consensus report)
   continuity/
     <workstream>/progress-ledger.md   (non-feature resumable work such as toolkit maintenance)
   offloads/
@@ -89,7 +141,8 @@ All agent reports live under a single centralized folder. This is the single sou
 ```
 
 **Rules:**
-- All agents write reports here — do not scatter report files elsewhere
+- `reports/` is for retained project artifacts, not disposable session scratch
+- All agents write retained reports here — do not scatter canonical report files elsewhere
 - Test run reports are timestamped and never overwritten — each run is a separate audit artifact
 - The Programmer reads test state by running tests fresh, not by reading reports — reports are audit trail only
 - Spec files (feature.spec.md and .spec.md contract files) live at the user-specified location, not in reports/

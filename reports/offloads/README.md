@@ -2,6 +2,8 @@
 
 Use this folder for large logs, diffs, traces, JSON blobs, and other artifacts that should not stay inline in chat or handoff text.
 
+If an offload is only for local iteration and should not be kept in git, prefer `.local-artifacts/` instead of `reports/offloads/`.
+
 Use `<AI_DEV_SHOP_ROOT>/harness-engineering/context-offloading.md` as the rule set and `<AI_DEV_SHOP_ROOT>/templates/context-offload-template.md` as the default markdown format.
 
 Suggested layout:
