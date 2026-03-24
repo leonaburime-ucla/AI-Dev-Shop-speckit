@@ -1,6 +1,6 @@
 ---
 name: external-audit
-version: 1.1.0
+version: 1.1.4
 last_updated: 2026-03-24
 description: Package the current work for one external LLM auditor, capture its review, and return a decision-ready synthesis to the user.
 ---
@@ -41,13 +41,15 @@ Use `skills/llm-operations/references/peer-llm-dispatch.md` for shared packet, t
 - `auditor=<claude|gemini|codex>`: choose the external auditor CLI explicitly
 - `scope=<work-log|current-diff|staged|last-commit>`: choose the default work surface
 - `audit_timeout_seconds=<int>`: maximum wall-clock wait for the auditor call (default `300`)
-- `claude_model=<id>`: per-run Claude model override
-- `gemini_model=<id>`: per-run Gemini model override
-- `codex_model=<id>`: per-run Codex model override
+- `claude_model=<exact-id>`: per-run Claude model override with an exact model name/version
+- `gemini_model=<exact-id>`: per-run Gemini model override with an exact model name/version
+- `codex_model=<exact-id>`: per-run Codex model override with an exact model name/version
 
-If controls are omitted, infer the smallest safe default and tell the user what was chosen before dispatch.
+If controls are omitted, infer only non-model defaults and tell the user what was chosen before dispatch. Do not infer an exact auditor model name/version unless it is locally proven.
 
 ## Step 1 — Preflight
+
+Native Windows shells are not yet verified for this workflow. The path strategy is OS-agnostic, but the command examples in this skill assume a Bash-compatible shell. On Windows, prefer Git Bash or WSL for now, or translate the shell snippets to PowerShell equivalents before relying on them.
 
 Before building the packet, inspect the external CLI surface:
 
@@ -63,15 +65,15 @@ Then:
 2. Exclude the current host family unless the user explicitly asks to use it anyway.
 3. If `auditor=` is omitted, choose the planned auditor using the deterministic fallback order from `## Auditor Selection Rules`.
 4. Resolve the planned auditor model using this order:
-   - per-run override
-   - saved user preference
-   - local CLI default
-   - alias assumption
-5. If the exact planned model is inferred rather than explicitly pinned or proven, stop before dispatch and ask:
+   - per-run override naming an exact model/version
+   - saved user preference naming an exact model/version
+   - local CLI or config evidence that proves the exact model/version
+5. If the exact planned model/version is not explicitly pinned or locally proven, stop before dispatch and ask:
 
-`Planned auditor: <CLI>=<resolved-or-inferred>. Reply with "run" to proceed or override with auditor=..., claude_model=..., gemini_model=..., codex_model=....`
+`Planned auditor CLI: <CLI>. Exact model/version is not proven locally. Reply with auditor=... and claude_model=..., gemini_model=..., or codex_model=... using an exact model name/version to proceed.`
 
 Do not silently switch to a newer model family/version just because it exists locally.
+Do not dispatch using a local default, alias assumption, or inferred family name when this workflow promises exact model reporting.
 
 ## Step 2 — Build The Audit Packet
 
@@ -102,6 +104,10 @@ Default packet path:
 
 ` .local-artifacts/external-audit/packets/<timestamp>-audit-packet.md `
 
+Default dispatch copy path for peer-readable runs:
+
+` tmp/external-audit-dispatch/<timestamp>-audit-packet.md `
+
 If the user explicitly wants the packet retained as project evidence, save it instead at:
 
 ` reports/external-audit/packets/<timestamp>-audit-packet.md `
@@ -112,7 +118,16 @@ Packets are scratch by default unless the user explicitly asks to retain them.
 
 Prompt the external auditor to review the packet, not just the bare diff summary.
 
-Before asking a peer to read a packet from disk, confirm that the packet path is peer-readable. If the authoring packet lives under `.local-artifacts/` or another path the peer cannot access, create a dispatch copy in a peer-readable workspace or host temp directory and retry once with that corrected path. Use `skills/llm-operations/references/peer-llm-dispatch.md` for the rule set.
+Use `skills/llm-operations/references/peer-llm-dispatch.md` for the rule set.
+
+Dispatch workflow:
+
+1. Keep the authoring packet in `.local-artifacts/` or `reports/` according to the user's retention choice.
+2. If the peer needs to read a packet from disk, create a peer-readable dispatch copy first. For ad hoc local runs, default to `tmp/external-audit-dispatch/<timestamp>-audit-packet.md`.
+3. Probe readability before the full audit call by asking the peer to read the dispatch packet and echo the first Markdown heading.
+4. If the probe fails because the path is ignored, unreadable, or outside the peer workspace, classify it as `path_or_permission_failure`, move the dispatch copy, and retry once.
+5. Use the dispatch packet path, not the authoring packet path, in the actual audit prompt.
+6. Delete the temporary dispatch copy after the audit finishes unless the user explicitly asks to retain it for debugging or evidence.
 
 Audit prompt requirements:
 
@@ -121,6 +136,7 @@ Audit prompt requirements:
 3. Ask for file references when possible.
 4. Ask which issues are real blockers vs optional improvements.
 5. Ask for a short strengths section so the user sees what the auditor thinks is solid.
+6. Prefer a short prompt that references the dispatch packet path over embedding the full packet body inline when the peer can read files directly.
 
 Prefer structured output when the CLI supports it.
 
@@ -155,6 +171,8 @@ If the auditor is right, say what you would change and whether you should patch 
 
 ### Template Guard
 
+Use `skills/external-audit/references/external-audit-report-template.md` as the reference layout for inline output and saved reports.
+
 1. Use the section order below for inline output and saved reports.
 2. Do not collapse the external audit into a prose blob.
 3. Before writing the final report to disk, if the user has not already specified retention, ask:
@@ -169,51 +187,10 @@ If the auditor is right, say what you would change and whether you should patch 
 
 ` reports/external-audit/runs/<timestamp>-external-audit-report.md `
 
-Use this structure:
-
-```markdown
-# External Audit Report
-
-**Date:** <ISO-8601>
-**Scope:** <work-log | current-diff | staged | last-commit | custom>
-**Focus:** <the user's audit question>
-**Audit Packet:** <path>
-**Dispatch Packet:** <peer-readable path or "same as audit packet">
-**Auditor CLI:** <claude | gemini | codex>
-**Requested Model:** <requested or "n/a">
-**Resolved Model:** <resolved or "unknown">
-**Selection Source:** <per_run_override | saved_preference | local_default | alias_assumption | unknown>
-**CLI Version:** <version>
-**Timeout:** <seconds>
-
-## Work Log
-- <what you did>
-- <why>
-- <verification run or not run>
-
-## Auditor Diagnostics
-| Field | Value |
-|---|---|
-| Output mode | <json | text> |
-| stdout parser | <field or end marker> |
-| stderr summary | <short summary> |
-| Attempts | <count> |
-| Final status | <Responded | Failed | Timed out | Retry exhausted | Not installed> |
-
-## External Auditor Findings
-<succinct but faithful summary of what the external auditor said>
-
-## Coordinator Response
-
-### Agree
-<what you agree with and why>
-
-### Change
-<what you think should change as a result>
-
-### Disagree
-<what you disagree with and why>
-
-## Decision Points For User
-- <keep as-is / patch now / save retained report / request a second auditor / etc.>
-```
+6. The report must explicitly separate:
+   - what the external LLM said
+   - what you agree with
+   - what you would change
+   - what you disagree with
+   - the resulting audit outcome
+7. If the auditor did not respond successfully, keep the same template and state that clearly in `What The External LLM Said` and `Audit Outcome`.

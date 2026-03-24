@@ -6,7 +6,8 @@
 - **Audit focus:** <what the external auditor should examine most closely>
 - **Scope:** <work-log | current-diff | staged | last-commit | custom>
 - **Audit target:** <commit, diff, or explicit file set>
-- **Dispatch packet:** <peer-readable packet path when a dispatch copy is needed; otherwise "same as authoring packet">
+- **Authoring packet:** <where the coordinator wrote the canonical packet>
+- **Dispatch packet:** <peer-readable packet path actually handed to the external auditor>
 
 ## Work Log
 

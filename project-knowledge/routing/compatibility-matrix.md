@@ -64,11 +64,15 @@ Filesystem reads and writes work natively. Slash commands are not supported; use
 
 Do not hardcode task-spawning assumptions from memory alone. Verify current capability status with `bash harness-engineering/validators/probe_host_capabilities.sh` or `codex features list`.
 
+For `/audit-work`-style peer dispatch, the visible dispatch-copy path strategy should translate across OSes, but the shell snippets in this repo are still Bash-oriented and are not yet verified on native Windows shells.
+
 ### Gemini CLI
 
 Filesystem reads and writes work natively. Bash tool availability depends on your Gemini CLI configuration — verify before relying on TestRunner automation. Slash commands not supported; use Option B.
 
 Some Gemini CLI capabilities still require local or vendor verification in this repo. If the probe cannot prove a feature, describe it as `unverified`, not `unsupported`.
+
+For `/audit-work`-style peer dispatch, the visible dispatch-copy path strategy should translate across OSes, but the shell snippets in this repo are still Bash-oriented and are not yet verified on native Windows shells.
 
 ### Generic LLM (prompt-only, no tools)
 
@@ -96,6 +100,9 @@ If parallel agent support is unavailable or unverified on the current host, exec
 
 **SHA-256 hashing on web hosts:**
 Without Bash, generate hashes with `shasum -a 256 <file>` on macOS/Linux or `Get-FileHash -Algorithm SHA256 <file>` on Windows. Paste the result into the spec header. A missing or unverified hash degrades spec integrity guarantees but does not break the pipeline — flag it in the pipeline state Notes section.
+
+**External audit transport on Windows:**
+The current `/audit-work` transport design uses a repo-visible dispatch copy instead of `.local-artifacts/`, which should be portable, but the shell examples and preflight snippets are still Bash-flavored. Treat native Windows shells as unverified until a PowerShell or cross-platform helper is added.
 
 **Observer Agent on non-Claude Code hosts:**
 The Observer's LLM-as-judge pass and weekly scoring still work — they are read-only analysis tasks. What degrades is real-time interleaving with the pipeline. Run the Observer as a deferred pass after each feature ships rather than alongside the pipeline.

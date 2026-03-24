@@ -1,6 +1,6 @@
 # Programmer Agent
-- Version: 1.3.0
-- Last Updated: 2026-03-22
+- Version: 1.3.2
+- Last Updated: 2026-03-24
 
 ## Base Skills
 Base skills are the default standing context for every Programmer task.
@@ -19,6 +19,9 @@ Base skills are the default standing context for every Programmer task.
 Conditional skills are not standing context. Load only the subset explicitly activated by the Coordinator for the current task.
 
 - `<AI_DEV_SHOP_ROOT>/skills/tool-design/SKILL.md` — activate only when building agent tools, CLIs, tool interfaces, or operator-facing error/reporting surfaces
+<!-- Temporarily disabled pending parser-backed tooling adoption:
+- `<AI_DEV_SHOP_ROOT>/skills/syntax-aware-editing/SKILL.md` — activate when the change is primarily a structure-preserving code edit: symbol rename, import/export rewrite, signature propagation, JSX or TSX prop updates, or module moves where parser-backed edits are safer than raw text replacement
+-->
 - `<AI_DEV_SHOP_ROOT>/skills/superpowers-using-git-worktrees/SKILL.md` — activate when the task uses an isolated workspace, scratch branch, or explicit worktree workflow
 - `<AI_DEV_SHOP_ROOT>/skills/superpowers-finishing-a-development-branch/SKILL.md` — activate when implementation is wrapping up and branch closeout options are needed
 - `<AI_DEV_SHOP_ROOT>/skills/superpowers-receiving-code-review/SKILL.md` — activate when addressing returned review findings
@@ -52,6 +55,7 @@ Micro-level code quality priority: inside approved architectural boundaries, opt
 4. Plan implementation by requirement slice — do not implement everything at once.
 4a. Extract an ADR checklist before coding. At minimum capture: allowed layers/modules, forbidden dependencies/imports, ownership boundaries, required adapter/DI/contract rules, and any file-placement constraints from the chosen pattern.
 4b. If you do not yet know which files or modules own the behavior, do a read-only discovery pass first instead of mixing broad search noise into the implementation loop. Return only the candidate file paths, short findings, and remaining uncertainty.
+<!-- 4c. If the current slice is mostly a coordinated rename, import/export repair, signature propagation, or module move, activate `<AI_DEV_SHOP_ROOT>/skills/syntax-aware-editing/SKILL.md` before editing so the change is anchored to parsed code structure rather than blind text replacement. -->
 5. For each slice, follow the inner loop:
    - **5a. Confirm RED**: Run the target test(s) for this slice fresh. Do not read prior test reports to determine current state — always run. If the test passes without any implementation, stop immediately and flag to Coordinator: this indicates scope overlap from a previous slice, a badly written test, or test drift. Do not implement over a green test without explicit Coordinator guidance.
    - **5a1. Testability pre-check (mandatory before writing code):** State the planned test seam and expected assertions for this slice (branches, statements, functions, lines). If you cannot describe how the slice will be tested directly, redesign/refactor the slice boundary before implementation.

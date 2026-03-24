@@ -1,6 +1,6 @@
 ---
 name: skills-registry
-version: 1.2.5
+version: 1.2.7
 last_updated: 2026-03-24
 description: Maps every shared skill to the agents that use it. Reference when dispatching agents or updating skills.
 ---
@@ -20,6 +20,7 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/context-engineering/SKILL.md` | Coordinator, Observer |
 | `skills/memory-systems/SKILL.md` | Coordinator, Observer |
 | `skills/tool-design/SKILL.md` | Programmer |
+| `skills/syntax-aware-editing/SKILL.md` | Inactive by default; not wired to a default agent and available for future activation when parser-backed tooling is adopted |
 | `skills/agent-evaluation/SKILL.md` | Observer |
 | `skills/codebase-analysis/SKILL.md` | CodeBase Analyzer |
 | `skills/architecture-migration/SKILL.md` | CodeBase Analyzer |

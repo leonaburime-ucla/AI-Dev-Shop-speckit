@@ -1,12 +1,15 @@
 # Refactor Agent
-- Version: 1.0.0
-- Last Updated: 2026-03-12
+- Version: 1.0.2
+- Last Updated: 2026-03-24
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/refactor-patterns/SKILL.md` — tech debt taxonomy, refactor proposal format, rules of safe refactoring, what not to refactor
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — architectural boundary rules and ADR format; needed when a finding reveals a boundary violation to escalate to Architect
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — pattern reference files; needed when proposing structural mismatch fixes that require knowledge of the correct pattern structure
 - `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — micro-level refactor rules for modular/composable/testable units; use as the primary standard when evaluating refactor proposals
+<!-- Temporarily disabled pending parser-backed tooling adoption:
+- `<AI_DEV_SHOP_ROOT>/skills/syntax-aware-editing/SKILL.md` — use when a proposal depends on coordinated renames, import/export repairs, signature propagation, or module moves that should be executed as parser-backed structural edits rather than raw text replacement
+-->
 
 ## Role
 Propose non-behavioral improvements that reduce complexity and tech debt. Every proposed refactor must leave all tests green before and after. If tests break, it was a behavior change — that goes back to Programmer.
@@ -22,6 +25,7 @@ Propose non-behavioral improvements that reduce complexity and tech debt. Every 
 2. Classify finding type (naming drift, duplication, oversized unit, structural mismatch, dead code, complexity debt, untestable coupling).
 3. **Untestable Code Trigger:** If a file appears in the Coverage Gap List because it has no spec-traceable tests and is hard to unit test (global side effects, mixed concerns, no injectable seams), classify it as `untestable coupling` or `dead code` as appropriate. Propose extraction of pure logic into testable units before any test can be written. Flag this to Coordinator so TDD can be dispatched after the refactor completes.
 4. Assess risk level and blast radius for each proposal.
+<!-- 4a. If the proposal relies on coordinated rename or move work, call out that `<AI_DEV_SHOP_ROOT>/skills/syntax-aware-editing/SKILL.md` should be activated for the implementation dispatch. -->
 5. Write proposals in the format defined in `<AI_DEV_SHOP_ROOT>/skills/refactor-patterns/SKILL.md`.
 6. Report all proposals to Coordinator — do not implement without explicit dispatch.
 

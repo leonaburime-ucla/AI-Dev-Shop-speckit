@@ -8,7 +8,7 @@ Provide optional controls and an audit focus. The active agent will inspect the 
 
 ## Arguments
 - `[controls] [focus]`
-- `controls` (optional): `auditor=<claude|gemini|codex>`, `scope=<work-log|current-diff|staged|last-commit>`, `audit_timeout_seconds=<int>`, `claude_model=<id>`, `gemini_model=<id>`, and/or `codex_model=<id>`
+- `controls` (optional): `auditor=<claude|gemini|codex>`, `scope=<work-log|current-diff|staged|last-commit>`, `audit_timeout_seconds=<int>`, `claude_model=<exact-id>`, `gemini_model=<exact-id>`, and/or `codex_model=<exact-id>`
 - `focus`: what you want the external auditor to examine most closely
 
 ---
@@ -17,11 +17,12 @@ Provide optional controls and an audit focus. The active agent will inspect the 
 Act as an External Audit Coordinator.
 
 1. Parse `$ARGUMENTS`:
-   - Detect optional controls anywhere in args: `auditor=<claude|gemini|codex>`, `scope=<work-log|current-diff|staged|last-commit>`, `audit_timeout_seconds=<int>`, `claude_model=<id>`, `gemini_model=<id>`, and `codex_model=<id>`.
+   - Detect optional controls anywhere in args: `auditor=<claude|gemini|codex>`, `scope=<work-log|current-diff|staged|last-commit>`, `audit_timeout_seconds=<int>`, `claude_model=<exact-id>`, `gemini_model=<exact-id>`, and `codex_model=<exact-id>`.
    - Remaining text is the audit focus.
    - Defaults if omitted: `scope=work-log`; `audit_timeout_seconds=300`.
 2. Load `<AI_DEV_SHOP_ROOT>/skills/external-audit/SKILL.md`.
 3. Also use `skills/llm-operations/references/peer-llm-dispatch.md` for shared packet, transport, diagnostics, and capability rules.
+   - Treat native Windows shells as unverified for this command. The dispatch-path strategy is OS-agnostic, but the command examples and probe flow assume a Bash-compatible shell unless adapted to PowerShell.
 4. Inspect the current work surface before dispatching:
    - use the current session context plus repo evidence (`git status --short`, touched files, relevant file diffs, and when needed `git log -1 --stat`)
    - separate in-scope work from unrelated worktree changes
@@ -30,30 +31,37 @@ Act as an External Audit Coordinator.
 5. Build an audit packet using `skills/external-audit/references/audit-packet-template.md`.
    - Save packets to `.local-artifacts/external-audit/packets/<timestamp>-audit-packet.md` by default.
    - If the user explicitly asks to retain the packet, save it to `reports/external-audit/packets/` instead.
+   - If the peer will read the packet from disk, create a peer-readable dispatch copy by default at `tmp/external-audit-dispatch/<timestamp>-audit-packet.md` and record both the authoring and dispatch paths in the packet.
 6. Run external-auditor preflight:
    - detect which peer CLIs (`claude`, `gemini`, `codex`) are installed
    - prefer a different model family from the current host
    - if `auditor=` is omitted, filter out the current host family and choose the first available CLI in this exact order: `claude`, `gemini`, `codex`
    - if no different-family external CLI is available, stop and tell the user instead of silently using the same family
-   - resolve the planned model using the same policy as Swarm Consensus: per-run override, saved preference, local default, then alias assumption
-7. If the exact auditor model is inferred instead of explicitly pinned or proven, stop and print a confirmation gate:
-   `Planned auditor: <CLI>=<resolved-or-inferred>. Reply with "run" to proceed or override with auditor=..., claude_model=..., gemini_model=..., codex_model=....`
-8. If the auditor is explicit or the user confirms, dispatch the audit prompt.
-   - if the peer must read the packet from disk, make a peer-readable dispatch copy when needed; do not assume `.local-artifacts/` is readable by every CLI tool layer
+   - resolve the planned model only by: per-run override naming an exact model/version, saved pinned preference naming an exact model/version, or local CLI/config proof of the exact model/version
+7. If the exact auditor model/version is not explicitly pinned or locally proven, stop and print a model-pinning gate:
+   `Planned auditor CLI: <CLI>. Exact model/version is not proven locally. Reply with auditor=... and claude_model=..., gemini_model=..., or codex_model=... using an exact model name/version to proceed.`
+8. If the exact auditor model/version is explicit or locally proven, dispatch the audit prompt.
+   - do not hand `.local-artifacts/` paths directly to the peer by default; use the dispatch copy path for file-based peer reads
+   - run a cheap readability probe first: ask the peer to read the dispatch packet and echo the first Markdown heading
+   - if the probe fails, classify it as `path_or_permission_failure`, move the dispatch copy, and retry once before the real audit
+   - prefer a short prompt that points to the dispatch packet over embedding the full packet body inline when the peer can read files directly
    - Prefer structured output modes when available.
    - Parse `stdout` only as the auditor answer.
    - Treat `stderr` as diagnostics.
    - Save raw stdout/stderr captures to `.local-artifacts/external-audit/offloads/` by default.
    - Retry transient failures like `429` and `503` within `audit_timeout_seconds`, with at most 2 retries.
+   - delete the temporary dispatch copy after the run unless the user explicitly asks to retain it for debugging or evidence
 9. Synthesize the result back to the user. The final answer must include:
+   - the exact report structure from `skills/external-audit/references/external-audit-report-template.md`
    - the exact auditor model version used (`Resolved Model`) and the auditor CLI version
    - `Work Log`
-   - `External Auditor Findings`
+   - `What The External LLM Said`
    - `Coordinator Response -> Agree`
    - `Coordinator Response -> Change`
    - `Coordinator Response -> Disagree`
+   - `Audit Outcome`
    - `Decision Points For User`
-   - if the exact model version cannot be proven, say that explicitly instead of guessing
+   - if the exact model version cannot be proven, do not run the audit; ask for a pinned model instead
 10. Before writing the final report, if the user has not already specified retention, ask:
    `Save external audit report? Reply "save report" to retain it in reports/external-audit/runs/, "local only" to keep it in .local-artifacts/external-audit/runs/, or "inline only" for no file.`
    Save ad hoc reports to `.local-artifacts/external-audit/runs/<timestamp>-external-audit-report.md` by default. If the user explicitly wants to retain the artifact, save it to `reports/external-audit/runs/<timestamp>-external-audit-report.md` instead.
