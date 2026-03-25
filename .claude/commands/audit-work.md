@@ -22,6 +22,7 @@ Act as an External Audit Coordinator.
    - Defaults if omitted: `scope=work-log`; `audit_timeout_seconds=300`.
 2. Load `<AI_DEV_SHOP_ROOT>/skills/external-audit/SKILL.md`.
 3. Also use `skills/llm-operations/references/peer-llm-dispatch.md` for shared packet, transport, diagnostics, and capability rules.
+   - If the planned auditor is Claude, also use `skills/llm-operations/references/claude-code-cli-audits.md`.
    - Treat native Windows shells as unverified for this command. The dispatch-path strategy is OS-agnostic, but the command examples and probe flow assume a Bash-compatible shell unless adapted to PowerShell.
 4. Inspect the current work surface before dispatching:
    - use the current session context plus repo evidence (`git status --short`, touched files, relevant file diffs, and when needed `git log -1 --stat`)
@@ -47,15 +48,14 @@ Act as an External Audit Coordinator.
    - require the auditor to begin with an `Auditor Scope Check` that states what it believes it is auditing, the scope and target it used, which files or artifacts it reviewed, and any mismatch or uncertainty it noticed before giving findings
    - prefer a short prompt that points to the dispatch packet over embedding the full packet body inline when the peer can read files directly
    - if the packet already names the relevant files, prefer a bounded sectioned prompt over an open-ended repo-audit prompt
-   - for Claude Code packet-first audits, prefer a constrained `Read`-only tool surface when that is sufficient
+   - if the auditor is Claude, apply the Claude Code reference and prefer its dedicated runner when available
    - Prefer structured output modes when available.
    - Parse `stdout` only as the auditor answer.
    - Treat `stderr` as diagnostics.
    - Save raw stdout/stderr captures to `.local-artifacts/external-audit/offloads/` by default.
-   - do not treat zero-byte redirected offload files from a still-running Claude audit as failure by themselves; Claude may flush only on process exit
    - Retry transient failures like `429` and `503` within `audit_timeout_seconds`, with at most 2 retries.
    - only classify `empty_result_transport_failure` after the peer process exits successfully and stdout is still empty
-   - for Claude Code packet-first audits, use `audit_timeout_seconds` as the hard ceiling and only suspect a hang early if runtime pushes past roughly `90s`
+   - use any host-specific live-run timing or fallback bounds from the host reference you loaded
    - if the peer exits successfully but returns an empty answer body, classify it as `empty_result_transport_failure` and retry once with a tighter bounded prompt and constrained read-only tool surface when supported
    - delete the temporary dispatch copy after the run unless the user explicitly asks to retain it for debugging or evidence
 9. Synthesize the result back to the user. The final answer must include:

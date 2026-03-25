@@ -26,6 +26,7 @@ This skill is for:
 
 This workflow is **packet-first**. Default to a curated work-log packet, not a blind diff against the last push.
 Use `skills/llm-operations/references/peer-llm-dispatch.md` for shared packet, transport, diagnostics, and capability rules.
+If the planned auditor is Claude, also use `skills/llm-operations/references/claude-code-cli-audits.md`.
 
 ## Auditor Selection Rules
 
@@ -128,6 +129,7 @@ Dispatch workflow:
 4. If the probe fails because the path is ignored, unreadable, or outside the peer workspace, classify it as `path_or_permission_failure`, move the dispatch copy, and retry once.
 5. Use the dispatch packet path, not the authoring packet path, in the actual audit prompt.
 6. Delete the temporary dispatch copy after the audit finishes unless the user explicitly asks to retain it for debugging or evidence.
+7. If the auditor CLI is Claude, apply `skills/llm-operations/references/claude-code-cli-audits.md` and prefer its dedicated runner when available.
 
 Audit prompt requirements:
 
@@ -147,14 +149,14 @@ Prefer structured output when the CLI supports it.
 - Treat `stderr` as diagnostics.
 - Save raw stdout/stderr captures to `.local-artifacts/external-audit/offloads/` by default.
 - Only retain raw offloads in `reports/offloads/` if the user explicitly asks for retained evidence.
-- For Claude Code packet-first audits, do not infer failure from zero-byte redirected offload files while the process is still alive. Judge liveness by the live process and elapsed wall-clock time, not by mid-run file size.
+- Use host-specific references for auditor-specific transport quirks instead of restating them inline.
 
 Retry policy:
 
 - Retry clear transient failures such as `429`, `503`, rate-limit, or provider-capacity messages.
 - Only classify `empty_result_transport_failure` after the peer process exits successfully and stdout is still empty.
 - On `empty_result_transport_failure`, retry once with a tighter bounded prompt and a constrained read-only tool surface when the peer supports it.
-- For Claude Code packet-first audits, prefer allowing normal completion unless the run exceeds `audit_timeout_seconds`; if a soft suspicion threshold is needed, use roughly `90s`, not `30-40s`.
+- Use any host-specific retry bounds or fallback guidance from the host reference you loaded.
 - Use bounded backoff.
 - Stop after at most 2 retries.
 - Never exceed `audit_timeout_seconds`.

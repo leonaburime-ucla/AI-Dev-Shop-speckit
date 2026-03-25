@@ -39,6 +39,8 @@ Treat this as guidance, not a hard constraint:
 - If the peer must read a packet from disk, make sure the packet lives in a peer-readable location.
 - Prefer a short prompt that points the peer at the packet path over inlining the full packet body into a shell argument when a peer-readable file is available.
 - When invoking peer CLIs from shell, avoid nested heredocs, large command substitutions, or other brittle quoting patterns for long prompts. Prefer a small stable prompt string or a prompt file.
+- If a host-sensitive peer flow has a dedicated local runner script, prefer that script over rebuilding the shell wrapper ad hoc each time.
+- If the peer is Claude Code CLI, also use `<AI_DEV_SHOP_ROOT>/skills/llm-operations/references/claude-code-cli-audits.md` for host-specific transport quirks, timing behavior, and runner guidance.
 - The dispatch-copy pattern is intended to be cross-platform, but it is not yet verified on native Windows shells in this repo. Current shell examples assume a Bash-compatible environment.
 
 ### Peer-Readable Packet Locations
@@ -75,10 +77,8 @@ Before the full peer review or debate call, run a cheap readability probe agains
 While the peer process is still running:
 
 - Treat process liveness and elapsed wall-clock time as the primary signal, not the current byte count of redirected stdout/stderr files.
-- For Claude Code packet-first audits, expect that stdout may not appear until the process exits.
-- Do not classify a Claude run as stalled just because redirected stdout/stderr files remain empty while the process is alive.
 - Keep `audit_timeout_seconds` as the hard ceiling.
-- If you need a soft "this may be hung" threshold for Claude packet audits, use roughly `90s` before suspicion instead of `30-40s`.
+- Use host-specific references for any peer-specific soft suspicion thresholds or buffering quirks.
 
 ### Dispatch Cleanup
 
@@ -104,6 +104,7 @@ Do not treat path/permission failures as model reasoning failures.
 Fix the path, then retry once with the corrected dispatch copy.
 Only classify `empty_result_transport_failure` after the peer process has exited successfully and stdout is still empty.
 If a broad packet-based audit returns `empty_result_transport_failure`, retry once with a tighter prompt, a bounded file set, and a constrained read-only tool surface when the peer supports it.
+If that retry falls back to plain text, keep the fallback on a shorter bounded timeout instead of reusing the full audit timeout again.
 
 ## Model And Prompt Hygiene
 
