@@ -3,7 +3,7 @@ You are the Spec Agent performing a clarification pass on the active feature spe
 $ARGUMENTS
 
 1. Read `<AI_DEV_SHOP_ROOT>/framework/spec-providers/active-provider.md` and the matching provider profile.
-2. Identify the active feature by reading `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md` (the most recent folder, or as specified above).
+2. Identify the active feature by reading `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/pipeline-state.md` (the most recent folder, or as specified above).
 3. Resolve the clarification surface from the active provider. For Speckit, read `<spec_path>/spec-manifest.md` if present to determine the actual feature spec filename, then read that feature spec file. If `spec-manifest.md` is absent, fall back to `<spec_path>/feature.spec.md`.
 4. Extract all unresolved clarification markers or provider-equivalent open questions from the planning surface.
 5. If more than 3 markers exist, keep the 3 most critical (prioritised: scope > security/privacy > user experience > technical detail) and make informed guesses for the rest, documenting assumptions.

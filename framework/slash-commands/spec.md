@@ -16,7 +16,7 @@ Before doing anything else:
 Do not assume the planning surface is always the Speckit strict package.
 
 - If the active provider is `speckit`, use the strict package flow below.
-- If the active provider is `openspec` or `bmad`, follow that provider's native planning surface and record `spec_provider`, `spec_entrypoint_path`, and `spec_readiness_artifact` in `.pipeline-state.md`.
+- If the active provider is `openspec` or `bmad`, follow that provider's native planning surface and record `spec_provider`, `spec_entrypoint_path`, and `spec_readiness_artifact` in `pipeline-state.md`.
 
 ## STRICT MODE: Speckit Spec-Package Flow
 
@@ -63,7 +63,7 @@ All files below must be created under the user-specified location (`<user-specif
    >
    > Which do you prefer?
 
-   Create `<user-specified>/<NNN>-<feature-name>/`. Create `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/`. Record `spec_provider: speckit`, `spec_path`, `spec_entrypoint_path`, `spec_readiness_artifact`, and `spec_naming: prefixed | standard` in `.pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
+   Create `<user-specified>/<NNN>-<feature-name>/`. Create `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/`. Record `spec_provider: speckit`, `spec_path`, `spec_entrypoint_path`, `spec_readiness_artifact`, and `spec_naming: prefixed | standard` in `pipeline-state.md`. Apply the chosen naming to every file written in this spec package.
 5. Determine which spec-package files apply to this feature (see table above). Document which files you are creating and which you are omitting, with justification for each omission.
 6. Write `feature.spec.md` using `<AI_DEV_SHOP_ROOT>/framework/templates/spec-system/feature.spec.md`.
 7. Write all applicable contract files (`api.spec.md`, `state.spec.md`, `orchestrator.spec.md`, `ui.spec.md`, `errors.spec.md`) using the corresponding templates in `<AI_DEV_SHOP_ROOT>/framework/templates/spec-system/`.

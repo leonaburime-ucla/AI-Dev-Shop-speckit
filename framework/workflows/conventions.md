@@ -29,7 +29,7 @@ Promote artifacts from `.local-artifacts/` into `framework/reports/` only when t
 Before writing any new artifact, classify it into one of these buckets:
 
 1. **Pipeline-required**
-   - Examples: ADRs, `tasks.md`, `test-certification.md`, red-team findings, `.pipeline-state.md`, required codebase-analysis outputs
+   - Examples: ADRs, `tasks.md`, `test-certification.md`, red-team findings, `pipeline-state.md`, required codebase-analysis outputs
    - Behavior: save automatically to `framework/reports/` in the canonical path defined by the workflow
 2. **Optional retained**
    - Examples: exploratory research summaries, consensus reports, architecture comparisons, reusable context packets, host compatibility baselines
@@ -80,7 +80,7 @@ All pipeline artifacts for a feature live under `<AI_DEV_SHOP_ROOT>/framework/re
 
 ```
 <AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/
-  .pipeline-state.md       (Coordinator state — created at spec time, updated every stage)
+  pipeline-state.md       (Coordinator state — created at spec time, updated every stage; legacy runs may still have `.pipeline-state.md`)
   progress-ledger.md       (human/agent-readable resume ledger for long-running work)
   evaluator-contract-<slug>.md   (required when evaluator_mode is required for this feature run)
   evaluator-report-<slug>-<YYYY-MM-DD-HHmm>.md   (retained evaluator findings when kept as evidence)

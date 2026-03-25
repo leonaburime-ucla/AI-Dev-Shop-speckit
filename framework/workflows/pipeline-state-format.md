@@ -1,8 +1,10 @@
 # Pipeline State Format
 
-Every pipeline run writes a `.pipeline-state.md` file to the active feature's canonical pipeline folder. The Coordinator reads this file at the start of every session to detect and resume incomplete runs.
+Every pipeline run writes a `pipeline-state.md` file to the active feature's canonical pipeline folder. The Coordinator reads this file at the start of every session to detect and resume incomplete runs.
 
-**Location:** `framework/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`
+**Location:** `framework/reports/pipeline/<NNN>-<feature-name>/pipeline-state.md`
+
+Legacy note: older runs may still use `.pipeline-state.md`. Treat that as the previous filename and migrate it to `pipeline-state.md` when the run is next resumed or updated.
 
 ---
 
@@ -150,7 +152,7 @@ spec_readiness_artifact: <provider-defined readiness artifact>
 
 ## Write Rules
 
-- The Coordinator writes or updates `.pipeline-state.md` at every stage transition.
+- The Coordinator writes or updates `pipeline-state.md` at every stage transition.
 - Keep `progress_ledger_path` current when a progress ledger exists.
 - Update `current_hypothesis` whenever a retry changes approach.
 - After each human checkpoint is cleared, mark the corresponding checkbox.
@@ -161,7 +163,7 @@ spec_readiness_artifact: <provider-defined readiness artifact>
 
 ## Read Rules
 
-- At session start, the Coordinator checks for `.pipeline-state.md` in the active feature folder.
+- At session start, the Coordinator checks for `pipeline-state.md` in the active feature folder.
 - If found and status is `IN_PROGRESS` or `WAITING_FOR_HUMAN`, follow the Recovery Playbook (`<AI_DEV_SHOP_ROOT>/framework/workflows/recovery-playbook.md`).
 - If found and status is `ABORTED`, treat as resumable — follow the Recovery Playbook.
 - If `progress_ledger_path` is present, read the ledger before resuming or retrying.

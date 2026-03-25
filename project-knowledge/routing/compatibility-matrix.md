@@ -30,7 +30,7 @@ For the current environment, prefer the probe above plus `harness-engineering/ca
 | **Filesystem writes** (state file, spec artifacts) | ✅ Native | ❌ Requires copy-out | ✅ Native | ✅ Native | ❌ Requires copy-out |
 | **Bash tool** (TestRunner: `npm test`, `pytest`, etc.) | ✅ Full | ❌ Not supported | ✅ Full | ⚠️ Limited | ❌ Not supported |
 | **SHA-256 content hashing** (spec hash, ADR hash) | ✅ Via Bash | ⚠️ Manual only | ✅ Via Bash | ✅ Via Bash | ⚠️ Manual only |
-| **Pipeline state file** (`.pipeline-state.md`) | ✅ Auto-written | ⚠️ Manual upkeep | ✅ Auto-written | ✅ Auto-written | ⚠️ Manual upkeep |
+| **Pipeline state file** (`pipeline-state.md`) | ✅ Auto-written | ⚠️ Manual upkeep | ✅ Auto-written | ✅ Auto-written | ⚠️ Manual upkeep |
 | **Constitution gates** (blocking escalation on violation) | ✅ Full | ✅ Full (manual routing) | ✅ Full (manual routing) | ✅ Full (manual routing) | ✅ Full (manual routing) |
 | **[NEEDS CLARIFICATION] marker resolution** | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
 | **FEAT number assignment** | ✅ Auto (reads specs/) | ⚠️ Manual | ⚠️ Manual | ⚠️ Manual | ⚠️ Manual |

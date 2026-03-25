@@ -10,9 +10,10 @@ At the start of every session, before doing anything else:
 
 1. Ask the user: "Is there an active feature in progress?"
 2. If yes, locate the canonical pipeline folder: `framework/reports/pipeline/<NNN>-<feature-name>/`
-3. Check for `.pipeline-state.md` in that folder
-4. If found and status is `IN_PROGRESS`, `WAITING_FOR_HUMAN`, or `ABORTED` → follow this playbook
-5. If not found or status is `COMPLETE`, `FAILED`, or `CANCELLED` → start fresh
+3. Check for `pipeline-state.md` in that folder
+4. If `pipeline-state.md` is missing, check for legacy `.pipeline-state.md` and treat it as the same run state file
+5. If found and status is `IN_PROGRESS`, `WAITING_FOR_HUMAN`, or `ABORTED` → follow this playbook
+6. If not found or status is `COMPLETE`, `FAILED`, or `CANCELLED` → start fresh
 
 ---
 
@@ -22,13 +23,15 @@ Before resuming, verify the checkpoint is trustworthy:
 
 | Check | How | Fail Action |
 |-------|-----|-------------|
-| Spec provider is recorded | Read `spec_provider` from `.pipeline-state.md` or fall back to default provider if the run predates provider recording | If unknown, stop and ask human whether to resume under Speckit compatibility mode or update the run |
+| Spec provider is recorded | Read `spec_provider` from `pipeline-state.md` or fall back to default provider if the run predates provider recording | If unknown, stop and ask human whether to resume under Speckit compatibility mode or update the run |
 | Spec hash matches | Re-hash the file at `spec_entrypoint_path` (or Speckit `feature.spec.md` via `spec_path` compatibility), compare to state file's `spec_hash` | Stop — spec may have changed. Escalate to human before resuming. |
 | Completed stage artifacts exist | Check that every file listed in Completed Stages actually exists on disk | If missing, treat that stage as incomplete and re-run it |
 | Current stage output is partial | Check whether the in-progress stage produced any artifact | If artifact exists and looks complete, treat stage as done and advance |
 | Constitution Check not bypassed | If resuming at or after `architect`, verify adr.md has a completed Constitution Check table | If missing, re-run architect stage |
 | Progress ledger exists | If `progress_ledger_path` is set, verify the file exists and has current Next Actions / Resume Instructions | If missing or stale, recreate/update it before further dispatch |
 | Offloaded evidence exists | If the progress ledger references offload files, verify those files still exist | Recreate the offload or record the missing evidence before resuming |
+
+If the run still uses legacy `.pipeline-state.md`, rename it to `pipeline-state.md` before continuing so future resumes use the visible canonical filename.
 
 ---
 

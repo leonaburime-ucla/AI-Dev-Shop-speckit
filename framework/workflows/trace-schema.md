@@ -11,7 +11,7 @@ Structured fields for every agent dispatch and handoff. The Observer emits a tra
 ## [TRACE] <stage> dispatch / completion
 
 - trace_id: TRACE-<YYYYMMDD>-<NNN>
-- run_id: <matches .pipeline-state.md run_id>
+- run_id: <matches pipeline-state.md run_id>
 - feature: <NNN-feature-name>
 - stage: <stage name>
 - agent: <agent name>

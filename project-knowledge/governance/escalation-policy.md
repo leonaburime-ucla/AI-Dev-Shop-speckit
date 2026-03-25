@@ -29,7 +29,7 @@ When a stage fails, the Coordinator re-dispatches up to the budget defined in `<
 
 `job-lifecycle.md` is the single source of truth for retry counts, backoff behavior, and per-stage escalation thresholds. Do not duplicate numeric budgets in this document.
 
-**Budget tracking:** The Coordinator records retry counts in the `Iteration Counts` table of `.pipeline-state.md`. An agent may not be dispatched if its stage is at budget — escalate first.
+**Budget tracking:** The Coordinator records retry counts in the `Iteration Counts` table of `pipeline-state.md`. An agent may not be dispatched if its stage is at budget — escalate first.
 
 ---
 
@@ -85,10 +85,10 @@ The Coordinator does not suggest a preference unless asked. Present options neut
 
 ## After Human Decision
 
-1. Record the decision in `.pipeline-state.md` Notes section: what was decided, by whom, when
+1. Record the decision in `pipeline-state.md` Notes section: what was decided, by whom, when
 2. If the decision results in a spec revision, the spec hash changes — all downstream artifacts (ADR, test certification) are invalidated and must be re-run
 3. If the decision results in a constitution exception, the Architect must document it in the ADR Complexity Justification table before the pipeline resumes
-4. Mark the relevant human checkpoint checkbox in `.pipeline-state.md`
+4. Mark the relevant human checkpoint checkbox in `pipeline-state.md`
 
 ---
 

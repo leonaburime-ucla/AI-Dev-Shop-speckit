@@ -31,7 +31,7 @@ Do not silently switch providers mid-run.
 
 If a feature already has approved planning artifacts:
 1. decide whether to translate or regenerate
-2. record the change in `.pipeline-state.md`
+2. record the change in `pipeline-state.md`
 3. treat the switch as a human checkpoint
 
 ## Validation Rule

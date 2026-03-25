@@ -28,7 +28,7 @@ Risky:
 - after spec approval for an in-flight feature
 - after architecture or task breakdown already exists
 
-If switching mid-feature, do not silently swap formats. Create a translation or regeneration plan and record the chosen provider in `.pipeline-state.md`.
+If switching mid-feature, do not silently swap formats. Create a translation or regeneration plan and record the chosen provider in `pipeline-state.md`.
 
 ## Current Availability
 

@@ -80,14 +80,14 @@ If the Coordinator catches itself doing specialist work, stop and re-route.
 
 Use this compact loop; rely on the referenced docs for detailed procedure:
 
-1. On session start, check for an active `.pipeline-state.md` and resume via the recovery playbook when needed.
+1. On session start, check for an active `pipeline-state.md` and resume via the recovery playbook when needed.
 2. Resolve current-host subagent mode before promising helper-agent behavior; default to `subagent-assisted` only when verified, otherwise stay in `single-agent`.
 3. Validate the active spec version/hash on every downstream artifact.
 4. Reject outputs that are missing the handoff contract, including the required Architecture Audit evidence on Programmer handoffs.
 5. Pull only the relevant memory and context required for the next dispatch.
 6. Route using `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`, including Review Mode intake, delegated-agent resolution, file-trigger guidance, and conditional-skill activation.
 7. After human ADR approval, generate `tasks.md`, then dispatch TDD.
-8. Update `.pipeline-state.md` and job status after each stage transition.
+8. Update `pipeline-state.md` and job status after each stage transition.
 9. Apply retry limits and escalation policy; do not burn cycles on the same failing cluster.
 10. Trigger Observer and doc-garden passes on the cadence defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md`, and promote repeated failures per `<AI_DEV_SHOP_ROOT>/harness-engineering/failure-promotion-policy.md`.
 11. For long-running or resumable work, maintain a `progress-ledger.md` and use it as the resume surface before re-dispatch.

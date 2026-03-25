@@ -1,6 +1,6 @@
 # Job Lifecycle
 
-Every agent dispatch is a job. Jobs have explicit lifecycle states. The Coordinator tracks job state in the active `.pipeline-state.md` file and applies retry and backoff rules before escalating to a human.
+Every agent dispatch is a job. Jobs have explicit lifecycle states. The Coordinator tracks job state in the active `pipeline-state.md` file and applies retry and backoff rules before escalating to a human.
 
 ---
 
@@ -26,7 +26,7 @@ QUEUED → DISPATCHED → RUNNING → DONE
 | `FAILED` | Retry budget exhausted; job cannot proceed without human intervention |
 | `ESCALATED` | Coordinator has routed to human due to budget exhaustion or blocking condition |
 | `WAITING_FOR_HUMAN` | Job is paused at a mandatory human checkpoint |
-| `CANCELLED` | Human explicitly stopped the job. Intentional, no error. Record reason in `.pipeline-state.md` Notes. |
+| `CANCELLED` | Human explicitly stopped the job. Intentional, no error. Record reason in `pipeline-state.md` Notes. |
 | `ABORTED` | Job stopped due to external condition (context limit hit, session dropped, system error). Not intentional — resume via recovery playbook. |
 
 ---
@@ -108,7 +108,7 @@ Escalate to human (set state to `ESCALATED`) when:
 
 ## Recording Job State
 
-In `.pipeline-state.md`, update the Current Stage Detail block at every state transition:
+In `pipeline-state.md`, update the Current Stage Detail block at every state transition:
 
 ```markdown
 ## Current Stage Detail

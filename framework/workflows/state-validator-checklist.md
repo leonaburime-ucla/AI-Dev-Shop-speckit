@@ -4,9 +4,9 @@ A quick sanity-check for humans before resuming a pipeline run or reviewing memo
 
 ---
 
-## 1. Pipeline State File (`.pipeline-state.md`)
+## 1. Pipeline State File (`pipeline-state.md`)
 
-Located at the active feature's canonical pipeline folder, usually: `framework/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`
+Located at the active feature's canonical pipeline folder, usually: `framework/reports/pipeline/<NNN>-<feature-name>/pipeline-state.md`
 
 ### Required fields
 - [ ] `run_id` is present and non-empty

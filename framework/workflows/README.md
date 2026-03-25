@@ -10,7 +10,7 @@ This directory defines the operational rulebook, lifecycle states, and physical 
 
 ## State Management & Debugging
 
-- **`pipeline-state-format.md`**: The schema definition for the `.pipeline-state.md` file, which the Coordinator uses to persist current progress, active spec hashes, and retry counters across sessions.
+- **`pipeline-state-format.md`**: The schema definition for the `pipeline-state.md` file, which the Coordinator uses to persist current progress, active spec hashes, and retry counters across sessions.
 - **`state-validator-checklist.md`**: A manual sanity-check guide for human operators to verify the integrity of the pipeline state or memory store before resuming an interrupted run.
 - **`recovery-playbook.md`**: Instructions for the Coordinator (or human) on how to cleanly recover from terminal states, context limit aborts, or mid-run spec hash mismatches.
 - **`trace-schema.md`**: The formatting rules for agent debug logs and tracing output, used when the pipeline is operating in verbose/debug mode.

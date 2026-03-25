@@ -4,7 +4,7 @@ This file defines the durable progress artifact for long-running or resumable wo
 
 ## Why This Exists
 
-`.pipeline-state.md` tracks coordinator state and retry counters. It is not enough by itself for clean human or agent resume. Long-running work also needs a human-readable progress ledger that records what changed, what failed, and what should happen next.
+`pipeline-state.md` tracks coordinator state and retry counters. It is not enough by itself for clean human or agent resume. Long-running work also needs a human-readable progress ledger that records what changed, what failed, and what should happen next.
 
 This file is about state continuity, not a blanket instruction to reset context every time. Reset-vs-compaction choice depends on current model behavior and should be revisited through `harness-engineering/load-bearing-harness-audit.md`.
 
@@ -56,7 +56,7 @@ Update the ledger:
 ## Coordinator Rules
 
 - Create the ledger at the first meaningful checkpoint for long-running work if it does not already exist.
-- Include the ledger path in `.pipeline-state.md`.
+- Include the ledger path in `pipeline-state.md`.
 - Read the ledger before resuming any interrupted run.
 - If a run is resumable but the ledger is missing, recreate it before further dispatch.
 

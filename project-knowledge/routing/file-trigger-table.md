@@ -16,7 +16,7 @@ It is a routing aid, not an absolute law. Human intent and explicit mode switche
 | `specs/**`, `openspec/**`, `_bmad-output/**`, `**/PRD.md`, `**/ux-spec.md`, `**/story-*.md`, `**/epic-*.md` | Spec Agent | Provider-owned planning artifacts and clarifications belong to Spec until they are handed off downstream. |
 | `framework/reports/pipeline/**/red-team-findings.md` | Red-Team Agent | Adversarial preflight belongs to Red-Team. |
 | `framework/reports/pipeline/**/adr.md`, `framework/reports/pipeline/**/research.md` | Architect | ADRs and architecture research are Architect outputs. |
-| `framework/reports/pipeline/**/tasks.md`, `.pipeline-state.md` | Coordinator | Task generation and pipeline state are Coordinator-owned artifacts. |
+| `framework/reports/pipeline/**/tasks.md`, `framework/reports/pipeline/**/pipeline-state.md` | Coordinator | Task generation and pipeline state are Coordinator-owned artifacts. |
 | `framework/reports/pipeline/**/test-certification.md`, `__tests__/**`, `tests/**` (test-definition work) | TDD Agent | Test design and certification belong to TDD. |
 | `src/**/*.sql`, `db/**`, `migrations/**`, `supabase/migrations/**` | Database Agent | Schema, migration, and query ownership start with Database. |
 | `supabase/functions/**`, Supabase platform wiring | Database Agent -> Supabase Sub-Agent when needed | Supabase-specific implementation belongs to the platform specialist under Database. |

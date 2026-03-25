@@ -60,7 +60,7 @@ Providers only own the upstream planning/spec surface and how that surface is ma
 
 ## State Recording
 
-When a run uses a provider, `.pipeline-state.md` should record at least:
+When a run uses a provider, `pipeline-state.md` should record at least:
 
 - `spec_provider`
 - `spec_entrypoint_path`

@@ -36,7 +36,7 @@ Convert product intent into precise, versioned, testable specifications that bec
    >
    > Which do you prefer?
 
-   Create `<user-specified>/<NNN>-<feature-name>/` when the provider uses a user-owned target folder. Create `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/` and record `spec_provider`, `spec_entrypoint_path`, `spec_readiness_artifact`, and any compatibility fields such as `spec_path` or `spec_naming` in `.pipeline-state.md`.
+   Create `<user-specified>/<NNN>-<feature-name>/` when the provider uses a user-owned target folder. Create `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/` and record `spec_provider`, `spec_entrypoint_path`, `spec_readiness_artifact`, and any compatibility fields such as `spec_path` or `spec_naming` in `pipeline-state.md`.
 
 6. Produce or revise the provider-defined planning surface. For the default Speckit provider, write the strict package at `<user-specified>/<NNN>-<feature-name>/` using `<AI_DEV_SHOP_ROOT>/framework/templates/spec-system/` templates for every applicable file.
 7. Complete any provider-defined constitution or readiness sections. For Speckit, complete the Constitution Compliance table in `feature.spec.md`, generate `spec-manifest.md`, and fill `spec-dod.md`.

@@ -122,7 +122,7 @@ Output:
 - Last 3 entries from `<AI_DEV_SHOP_ROOT>/project-knowledge/memory/learnings.md` (recent failure patterns)
 - Existing FEAT folders in `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/` (to avoid ID collisions, detect overlap, assign next FEAT number)
 
-The Spec Agent must record in `.pipeline-state.md`:
+The Spec Agent must record in `pipeline-state.md`:
 - `spec_provider`
 - `spec_entrypoint_path`
 - `spec_readiness_artifact`
@@ -134,7 +134,7 @@ For the default Speckit provider, the existing `spec_path` convention remains va
 - The exact interface boundary: endpoint signatures, data shapes, or event names
 - Which ACs require the integration to be live
 
-The Coordinator records these dependencies in `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`. When all referenced features reach Done, the Coordinator may trigger an optional Integration Verification run against the combined system.
+The Coordinator records these dependencies in `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/pipeline-state.md`. When all referenced features reach Done, the Coordinator may trigger an optional Integration Verification run against the combined system.
 
 ### Red-Team Agent (runs after Spec approval, before Architect dispatch)
 - Active provider-defined planning surface (full content + hash) — must have zero unresolved clarification blockers
@@ -151,7 +151,7 @@ The Coordinator records these dependencies in `<AI_DEV_SHOP_ROOT>/framework/repo
 
 Coordinator cannot dispatch Architect until ALL of the following pass:
 
-- Active provider is resolved from `.pipeline-state.md`
+- Active provider is resolved from `pipeline-state.md`
 - Provider-defined `spec_entrypoint_path` exists and matches the recorded hash anchor
 - Provider-defined `spec_readiness_artifact` exists and passes its gate
 - Zero unresolved clarification blockers remain in the provider-defined planning surface
@@ -160,7 +160,7 @@ Coordinator cannot dispatch Architect until ALL of the following pass:
 - Implementation-readiness gate passed
 
 For the default Speckit provider, the compatibility gate also requires:
-- Full package exists at the `spec_path` recorded in `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`:
+- Full package exists at the `spec_path` recorded in `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/pipeline-state.md`:
   - `feature.spec.md`
   - `api.spec.md`
   - `state.spec.md`
@@ -380,7 +380,7 @@ Passing suites should be summarized briefly. Failing suites should include exact
 A feature reaches **Done** when all of the following are true:
 1. All three human checkpoints cleared: spec approval, architecture sign-off, security sign-off
 2. All tests pass against the certified spec hash
-3. All Critical/High security findings are resolved, or accepted with documented rationale in `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/.pipeline-state.md`
+3. All Critical/High security findings are resolved, or accepted with documented rationale in `<AI_DEV_SHOP_ROOT>/framework/reports/pipeline/<NNN>-<feature-name>/pipeline-state.md`
 4. Coverage report is attached to the final TestRunner artifact; hard gates pass per metric using the active profile (defaults: unit lines/branches/functions/statements >= 98%, integration lines/branches/functions/statements >= 90%, e2e lines/branches/functions/statements >= 80%); all High-priority gaps are resolved or explicitly accepted with risk rationale; no uncovered lines remain in changed/high-priority runtime paths without documented technical justification.
 
 The Coordinator issues a **merge-ready summary** to the human:
