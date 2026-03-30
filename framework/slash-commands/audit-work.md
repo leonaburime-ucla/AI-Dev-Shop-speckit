@@ -32,7 +32,8 @@ Act as an External Audit Coordinator.
 5. Build an audit packet using `skills/external-audit/references/audit-packet-template.md`.
    - Save packets to `.local-artifacts/external-audit/packets/<timestamp>-audit-packet.md` by default.
    - If the user explicitly asks to retain the packet, save it to `framework/reports/external-audit/packets/` instead.
-   - If the peer will read the packet from disk, create a peer-readable dispatch copy by default at `framework/reports/external-audit/dispatch/<timestamp>-audit-packet.md` and record both the authoring and dispatch paths in the packet.
+   - Prefer serving the packet to the peer as a self-contained `stdin` payload when the bounded work log fits cleanly in one prompt.
+   - If the peer still needs to read the packet from disk, follow the shared transport fallback rules in `skills/llm-operations/references/peer-llm-dispatch.md` and record both the authoring and dispatch paths in the packet.
 6. Run external-auditor preflight:
    - detect which peer CLIs (`claude`, `gemini`, `codex`) are installed
    - prefer a different model family from the current host
@@ -46,9 +47,8 @@ Act as an External Audit Coordinator.
 8. If the exact auditor model/version is not explicitly pinned or locally proven, stop and print a model-pinning gate:
    `Planned auditor CLI: <CLI>. Exact model/version is not proven locally. Reply with auditor=... and claude_model=..., gemini_model=..., or codex_model=... using an exact model name/version to proceed.`
 9. If the exact auditor model/version is explicit or locally proven, dispatch the audit prompt.
-   - do not hand `.local-artifacts/` paths directly to the peer by default; use the dispatch copy path for file-based peer reads
-   - run a cheap readability probe first: ask the peer to read the dispatch packet and echo the first Markdown heading
-   - if the probe fails, classify it as `path_or_permission_failure`, move the dispatch copy, and retry once before the real audit
+   - do not hand `.local-artifacts/` paths directly to the peer when file-based reads are required; use the shared transport fallback rules from `skills/llm-operations/references/peer-llm-dispatch.md`
+   - run a cheap readability probe first when using file-based transport: ask the peer to read the dispatch packet and echo the first Markdown heading
    - require the auditor to begin with an `Auditor Scope Check` that states what it believes it is auditing, the scope and target it used, which files or artifacts it reviewed, and any mismatch or uncertainty it noticed before giving findings
    - prefer a short prompt that points to the dispatch packet over embedding the full packet body inline when the peer can read files directly
    - if the packet already names the relevant files, prefer a bounded sectioned prompt over an open-ended repo-audit prompt
@@ -61,7 +61,7 @@ Act as an External Audit Coordinator.
    - only classify `empty_result_transport_failure` after the peer process exits successfully and stdout is still empty
    - use any host-specific live-run timing or fallback bounds from the host reference you loaded
    - if the peer exits successfully but returns an empty answer body, classify it as `empty_result_transport_failure` and retry once with a tighter bounded prompt and constrained read-only tool surface when supported
-   - delete the temporary dispatch copy after the run unless the user explicitly asks to retain it for debugging or evidence
+   - when file-based dispatch was used, delete the temporary dispatch copy after the run unless the user explicitly asks to retain it for debugging or evidence
 10. Synthesize the result back to the user. The final answer must include:
    - the exact report structure from `skills/external-audit/references/external-audit-report-template.md`
    - the exact auditor model version used (`Resolved Model`) and the auditor CLI version

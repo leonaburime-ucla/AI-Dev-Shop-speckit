@@ -106,7 +106,7 @@ If parallel agent support is unavailable or unverified on the current host, exec
 Without Bash, generate hashes with `shasum -a 256 <file>` on macOS/Linux or `Get-FileHash -Algorithm SHA256 <file>` on Windows. Paste the result into the spec header. A missing or unverified hash degrades spec integrity guarantees but does not break the pipeline — flag it in the pipeline state Notes section.
 
 **External audit transport on Windows:**
-The current `/audit-work` transport design uses a repo-visible dispatch copy instead of `.local-artifacts/`, which should be portable, but the shell examples and preflight snippets are still Bash-flavored. Treat native Windows shells as unverified until a PowerShell or cross-platform helper is added.
+The current peer-audit transport design is `stdin`-first, with a shared temporary repo-visible dispatch fallback when a peer needs file reads and cannot access ignored paths. That should be portable, but the shell examples and preflight snippets are still Bash-flavored. Treat native Windows shells as unverified until a PowerShell or cross-platform helper is added.
 
 **Observer Agent on non-Claude Code hosts:**
 The Observer's LLM-as-judge pass and weekly scoring still work — they are read-only analysis tasks. What degrades is real-time interleaving with the pipeline. Run the Observer as a deferred pass after each feature ships rather than alongside the pipeline.

@@ -7,6 +7,8 @@ Use this reference when one LLM is asking another LLM CLI to review, debate, or 
 - Build a shared packet first.
 - Make the packet packet-first and work-log-first.
 - Treat raw diffs, commits, or logs as supporting evidence, not the default payload.
+- Prefer delivering a self-contained packet via `stdin` when the peer does not need repo file reads and the payload fits cleanly in one bounded request.
+- Use file-based dispatch only when the peer must inspect repo files directly or the packet would become too large or brittle to inline safely.
 
 For most toolkit-maintenance work, the packet should lead with:
 
@@ -36,6 +38,7 @@ Treat this as guidance, not a hard constraint:
 - Treat `stderr` as diagnostics and save it separately.
 - Keep raw offloads in local scratch by default unless the user explicitly wants retained evidence.
 - Do not treat zero-byte redirected offload files from an in-flight peer process as a failure signal by themselves. Some peers, including Claude Code in this repo's packet-audit pattern, may buffer output until process exit.
+- Prefer `stdin` or another self-contained prompt transport before asking the peer to read a packet from disk.
 - If the peer must read a packet from disk, make sure the packet lives in a peer-readable location.
 - Prefer a short prompt that points the peer at the packet path over inlining the full packet body into a shell argument when a peer-readable file is available.
 - When invoking peer CLIs from shell, avoid nested heredocs, large command substitutions, or other brittle quoting patterns for long prompts. Prefer a small stable prompt string or a prompt file.
@@ -45,18 +48,23 @@ Treat this as guidance, not a hard constraint:
 
 ### Peer-Readable Packet Locations
 
+This section is the source of truth for the temporary dispatch fallback location. Do not duplicate the exact fallback path across workflow docs unless a tool-specific runner requires it.
+
 Do not assume every peer CLI can read every local path.
 
 - Ignored repo paths such as `.local-artifacts/` may be invisible to some tool layers.
 - Generic OS temp paths such as `/tmp` may be outside the peer's allowed workspace.
 - Default pattern:
   - write the authoring packet to `.local-artifacts/`
-  - create a peer-readable dispatch copy in a visible workspace path such as `framework/reports/<workflow>/dispatch/`
+  - if the peer can be served with a self-contained `stdin` payload, use that instead of any file path
+  - if the peer can read the authoring path and still needs file-based transport, use it directly
+  - if the peer cannot read it because the path is ignored, unreadable, or out of workspace, tell the user briefly and create a temporary peer-readable dispatch copy under `tmp/peer-dispatch/<workflow>/`
   - give the peer the dispatch copy path, not the authoring path
 - If needed, create a dispatch copy inside:
-  - the repo workspace, if the peer can read it there, or
-  - the host's documented project temp/workspace path
+  - `tmp/peer-dispatch/<workflow>/` inside the repo workspace for local-only runs, or
+  - a retained `framework/reports/...` path only when the user explicitly wants a repo-kept artifact or the workflow itself is already being retained
 - Do not put the dispatch copy under a gitignored or tool-ignored path if the peer needs to read it with file tools.
+- Do not promote a local-only packet into `framework/reports/` just to satisfy peer readability. Use `tmp/` first.
 
 If the packet is copied for dispatch, record both:
 
@@ -69,7 +77,8 @@ Before the full peer review or debate call, run a cheap readability probe agains
 
 - Ask the peer to read the dispatch packet and echo the first Markdown heading or another small deterministic string from it.
 - If that probe fails because the path is ignored, unreadable, or out of workspace, classify it as `path_or_permission_failure`.
-- Fix the dispatch path and retry once before spending tokens on the real task.
+- Tell the user briefly which path failed.
+- Fix the dispatch path, prefer `tmp/peer-dispatch/<workflow>/`, and retry once before spending tokens on the real task.
 - Do not treat a failed readability probe as model disagreement or reasoning failure.
 
 ### Live-Run Observation
@@ -86,6 +95,7 @@ Dispatch copies are transport artifacts, not primary evidence.
 
 - Keep the authoring packet in `.local-artifacts/` or `framework/reports/` according to the user's retention choice.
 - Delete temporary dispatch copies after the peer run finishes unless the user explicitly asks to retain them.
+- If a local-only dispatch copy in `tmp/` should be kept after the run, move it into `.local-artifacts/` instead of leaving it in `tmp/`.
 - If the dispatch copy is retained temporarily for troubleshooting, say so and clean it up before closing the task when feasible.
 
 ## Failure Classification

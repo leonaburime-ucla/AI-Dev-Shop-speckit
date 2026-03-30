@@ -118,10 +118,6 @@ Default packet path:
 
 ` .local-artifacts/external-audit/packets/<timestamp>-audit-packet.md `
 
-Default dispatch copy path for peer-readable runs:
-
-` framework/reports/external-audit/dispatch/<timestamp>-audit-packet.md `
-
 If the user explicitly wants the packet retained as project evidence, save it instead at:
 
 ` framework/reports/external-audit/packets/<timestamp>-audit-packet.md `
@@ -137,12 +133,10 @@ Use `skills/llm-operations/references/peer-llm-dispatch.md` for the rule set.
 Dispatch workflow:
 
 1. Keep the authoring packet in `.local-artifacts/` or `framework/reports/` according to the user's retention choice.
-2. If the peer needs to read a packet from disk, create a peer-readable dispatch copy first. For ad hoc local runs, default to `framework/reports/external-audit/dispatch/<timestamp>-audit-packet.md`.
-3. Probe readability before the full audit call by asking the peer to read the dispatch packet and echo the first Markdown heading.
-4. If the probe fails because the path is ignored, unreadable, or outside the peer workspace, classify it as `path_or_permission_failure`, move the dispatch copy, and retry once.
-5. Use the dispatch packet path, not the authoring packet path, in the actual audit prompt.
-6. Delete the temporary dispatch copy after the audit finishes unless the user explicitly asks to retain it for debugging or evidence.
-7. If the auditor CLI is Claude, apply `skills/llm-operations/references/claude-code-cli-audits.md` and prefer its dedicated runner when available. Pass the exact proven Claude model to the runner instead of relying on the local default.
+2. Prefer a self-contained `stdin` payload when the packet plus any needed excerpts fit cleanly in one bounded audit prompt.
+3. If the peer still needs to read a packet from disk, follow the file-transport and readability-probe rules in `skills/llm-operations/references/peer-llm-dispatch.md`.
+4. Use the dispatch packet path, not the authoring packet path, in the actual audit prompt when file-based transport is used.
+5. If the auditor CLI is Claude, apply `skills/llm-operations/references/claude-code-cli-audits.md` and prefer its dedicated runner when available. Pass the exact proven Claude model to the runner instead of relying on the local default.
 
 Audit prompt requirements:
 

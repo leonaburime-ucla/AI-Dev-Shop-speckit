@@ -34,6 +34,9 @@ Act as a Swarm Consensus Coordinator.
 6. If the question depends on repo-specific or project-specific context, create a shared context packet first using `skills/swarm-consensus/references/context-packet-template.md`. Before writing it, if the user has not already specified retained vs local-only, ask:
    `Save context packet? Reply "save packet" to retain it in framework/reports/swarm-consensus/context/ or "local only" to keep it in .local-artifacts/swarm-consensus/context/.`
    Save local-only packets to `.local-artifacts/swarm-consensus/context/CTX-<slug>-<YYYY-MM-DD>.md` by default. If the user explicitly wants it retained, save or promote it to `framework/reports/swarm-consensus/context/`.
+   - Prefer serving the packet to peers as a self-contained `stdin` payload when it fits cleanly in one bounded prompt.
+   - If a peer still needs file-based packet access, follow the shared transport fallback rules in `skills/llm-operations/references/peer-llm-dispatch.md`.
+   - Do not promote a local-only packet into `framework/reports/` only to satisfy peer readability.
 7. Treat the current host model as the `Primary` participant and require a substantive frozen first-pass response before any peer synthesis. If the host environment cannot surface that first-pass response cleanly, create exactly one same-family child/helper to fill the `Primary` slot before continuing. Do not count that helper as an extra voting peer. A peer-only run is invalid and must stop.
 8. Run consensus in the chosen mode:
    - `single-pass`: independent first pass + one synthesis.

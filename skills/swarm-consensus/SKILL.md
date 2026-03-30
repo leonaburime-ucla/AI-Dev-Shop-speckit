@@ -192,8 +192,10 @@ Use a shared context packet when the question depends on brownfield repo knowled
    - architecture summary
    - relevant files and source artifacts
    - known unknowns and open decisions
-7. Give the same packet to every peer CLI. The primary model may inspect the repo directly, but the swarm prompt must still be based on the same packet so the reasoning baseline is shared.
+7. Give the same packet content to every peer CLI. The primary model may inspect the repo directly, but peer transport should prefer a self-contained `stdin` payload when the packet fits cleanly in one bounded prompt.
 8. If the question is materially repo-dependent and no shared packet exists yet, create one before dispatching peers.
+9. If a peer still needs file-based packet access because the payload is too large or it must inspect repo files directly, follow the shared transport fallback rules in `skills/llm-operations/references/peer-llm-dispatch.md`.
+10. Do not promote a local-only context packet into `framework/reports/` only to satisfy peer readability.
 
 ### Online Resource Pre-Fetch (primary model responsibility)
 
