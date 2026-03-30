@@ -13,7 +13,7 @@ Base skills are the default standing context for every Programmer task.
 - `<AI_DEV_SHOP_ROOT>/skills/pattern-priming/SKILL.md` — mandatory style-alignment step before production code for a new task or layer
 - `<AI_DEV_SHOP_ROOT>/skills/inline-code-documentation/SKILL.md` — inline documentation contract for all new or materially changed code
 - `<AI_DEV_SHOP_ROOT>/skills/superpowers-verification-before-completion/SKILL.md` — fresh evidence gate before claiming a fix or completion
-- `<AI_DEV_SHOP_ROOT>/harness-engineering/context-firewalls.md` — isolate broad discovery work from implementation context when exploration would otherwise crowd the active fix loop
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/context-firewalls.md` — isolate broad discovery work from implementation context when exploration would otherwise crowd the active fix loop
 
 ## Conditional Skills
 Conditional skills are not standing context. Load only the subset explicitly activated by the Coordinator for the current task.
@@ -75,14 +75,14 @@ Micro-level code quality priority: inside approved architectural boundaries, opt
    - confirm no certified tests were deleted or weakened to manufacture green
    - confirm changed files stayed within scope, or disclose the deviation explicitly
    - record what remains open, if anything
-8. If runtime-changing behavior is in scope, run the appropriate self-validation harness from `<AI_DEV_SHOP_ROOT>/harness-engineering/self-validation.md` and write the result to `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/self-validation/`.
+8. If runtime-changing behavior is in scope, run the appropriate self-validation harness from `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/self-validation.md` and write the result to `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/self-validation/`.
    - Use the bounded self-validation retry rule from that file. Do not keep rerunning the same runtime check indefinitely.
-   - If the failure is still ambiguous after the first repair pass, you may use one bounded diagnosis pass before the final rerun. Follow the definition in `<AI_DEV_SHOP_ROOT>/harness-engineering/self-validation.md`.
+   - If the failure is still ambiguous after the first repair pass, you may use one bounded diagnosis pass before the final rerun. Follow the definition in `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/self-validation.md`.
    - End with a clear status: `PASS`, `PARTIAL`, or `BLOCKER`.
    - `PARTIAL` is allowed only when the exact failing step, artifacts, current hypothesis, and remaining risk are recorded explicitly.
    - `BLOCKER` means the runtime evidence shows a genuine stop condition. Escalate instead of continuing.
    - If self-validation cannot be run at all, state exactly why.
-9. Offload large raw outputs, long logs, DOM dumps, JSON payloads, or trace files per `<AI_DEV_SHOP_ROOT>/harness-engineering/context-offloading.md` instead of pasting them inline. Use success-silent / failure-loud handling for routine command output.
+9. Offload large raw outputs, long logs, DOM dumps, JSON payloads, or trace files per `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/context-offloading.md` instead of pasting them inline. Use success-silent / failure-loud handling for routine command output.
 10. Review own output for inline documentation compliance using `<AI_DEV_SHOP_ROOT>/skills/inline-code-documentation/SKILL.md` before handoff.
 11. Update `progress-ledger.md` before pause, handoff, or resume-heavy completion so a fresh session can continue without reconstructing context from memory.
 12. Report what was implemented, what remains, and known risks.

@@ -6,7 +6,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-WATCHLIST = ROOT / "harness-engineering/doc-staleness-watchlist.md"
+WATCHLIST = ROOT / "harness-engineering/maintenance/doc-staleness-watchlist.md"
 ROW_RE = re.compile(
     r"^\|\s*`([^`]+)`\s*\|\s*`([^`]+(?:`,\s*`[^`]+)*)`\s*\|\s*(\d+)\s*\|\s*([0-9]{4}-[0-9]{2}-[0-9]{2})\s*\|\s*(.+?)\s*\|$"
 )

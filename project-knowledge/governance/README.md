@@ -1,14 +1,9 @@
 # Governance
 
-Project-level governance policies and hard rules.
+Repo-local mirror of the project workspace governance surface.
 
-## Files
+Keep only project-owned governance files here. The toolkit's static governance rules live under `framework/governance/`.
 
-- `constitution.md`
-- `anti-hallucination-policy.md`
-- `escalation-policy.md`
-- `knowledge-routing.md`
-- `tool-permission-policy.md`
-- `data-classification.md`
-- `skills-librarian-policy.md`
-- `skill-conflict-resolution.md`
+Current runtime file:
+
+- `constitution.md` - the mirrored default/example of the host project's live constitution at `<ADS_PROJECT_KNOWLEDGE_ROOT>/governance/constitution.md`

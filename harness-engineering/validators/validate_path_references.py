@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+PROJECT_KNOWLEDGE_MIRROR = ROOT / "project-knowledge"
 SCAN_TARGETS = [
     ROOT / "AGENTS.md",
     ROOT / "CLAUDE.md",
@@ -15,21 +16,21 @@ SCAN_TARGETS = [
     ROOT / ".claude/commands",
     ROOT / "agents",
     ROOT / "skills",
+    ROOT / "framework",
+    ROOT / "project-knowledge/README.md",
     ROOT / "project-knowledge/governance",
-    ROOT / "project-knowledge/operations",
-    ROOT / "project-knowledge/quality",
-    ROOT / "project-knowledge/routing",
-    ROOT / "templates",
-    ROOT / "workflows",
+    ROOT / "project-knowledge/memory",
+    ROOT / "project-knowledge/meta",
     ROOT / "harness-engineering",
 ]
 
 AI_DEV_SHOP_ROOT_RE = re.compile(r"<AI_DEV_SHOP_ROOT>/([A-Za-z0-9_./-]+)")
+ADS_PROJECT_KNOWLEDGE_ROOT_RE = re.compile(r"<ADS_PROJECT_KNOWLEDGE_ROOT>/([A-Za-z0-9_./-]+)")
 BACKTICK_PATH_RE = re.compile(
-    r"`((?:AGENTS|CLAUDE|GEMINI|README|todo)\.md|(?:agents|skills|project-knowledge|workflows|templates|slash-commands|reports|harness-engineering)/[A-Za-z0-9_./-]+(?:\.[A-Za-z0-9_-]+)?)`"
+    r"`((?:AGENTS|CLAUDE|GEMINI|README|todo)\.md|(?:\.claude/commands|agents|skills|framework|project-knowledge|harness-engineering)/[A-Za-z0-9_./-]+(?:\.[A-Za-z0-9_-]+)?)`"
 )
 MARKDOWN_LINK_RE = re.compile(
-    r"\]\(((?:AGENTS|CLAUDE|GEMINI|README|todo)\.md|(?:agents|skills|project-knowledge|workflows|templates|slash-commands|reports|harness-engineering)/[^)#\s]+)"
+    r"\]\(((?:AGENTS|CLAUDE|GEMINI|README|todo)\.md|(?:\.claude/commands|agents|skills|framework|project-knowledge|harness-engineering)/[^)#\s]+)"
 )
 
 
@@ -41,6 +42,8 @@ class Violation:
 
 
 def should_skip(path_text: str) -> bool:
+    if path_text.endswith("-"):
+        return True
     return any(token in path_text for token in ("<", ">", "*", "...", "$", "{", "}"))
 
 
@@ -59,12 +62,12 @@ def repo_files() -> list[Path]:
     return sorted(files)
 
 
-def check_reference(path_text: str) -> bool:
+def check_repo_reference(path_text: str) -> bool:
     if should_skip(path_text):
         return True
     if path_text.startswith("specs/"):
         return True
-    if path_text.startswith("framework/reports/"):
+    if path_text.startswith("project-knowledge/reports/"):
         base_name = Path(path_text).name
         stem = Path(path_text).stem
         if not path_text.endswith(".md"):
@@ -74,28 +77,45 @@ def check_reference(path_text: str) -> bool:
     return (ROOT / path_text).exists()
 
 
+def check_workspace_reference(path_text: str) -> bool:
+    return check_repo_reference(str(Path("project-knowledge") / path_text))
+
+
 def find_violations() -> list[Violation]:
     violations: list[Violation] = []
     seen: set[tuple[Path, int, str]] = set()
 
     for file_path in repo_files():
         for line_number, line in enumerate(file_path.read_text(encoding="utf-8").splitlines(), start=1):
-            candidates: set[str] = set()
+            repo_candidates: set[str] = set()
+            workspace_candidates: set[str] = set()
             for match in AI_DEV_SHOP_ROOT_RE.finditer(line):
-                candidates.add(match.group(1))
+                repo_candidates.add(match.group(1))
+            for match in ADS_PROJECT_KNOWLEDGE_ROOT_RE.finditer(line):
+                workspace_candidates.add(match.group(1))
             for match in BACKTICK_PATH_RE.finditer(line):
-                candidates.add(match.group(1))
+                repo_candidates.add(match.group(1))
             for match in MARKDOWN_LINK_RE.finditer(line):
-                candidates.add(match.group(1))
+                repo_candidates.add(match.group(1))
 
-            for candidate in sorted(candidates):
-                if check_reference(candidate):
+            for candidate in sorted(repo_candidates):
+                if check_repo_reference(candidate):
                     continue
                 key = (file_path, line_number, candidate)
                 if key in seen:
                     continue
                 seen.add(key)
                 violations.append(Violation(file_path, line_number, candidate))
+
+            for candidate in sorted(workspace_candidates):
+                reference = f"<ADS_PROJECT_KNOWLEDGE_ROOT>/{candidate}"
+                if check_workspace_reference(candidate):
+                    continue
+                key = (file_path, line_number, reference)
+                if key in seen:
+                    continue
+                seen.add(key)
+                violations.append(Violation(file_path, line_number, reference))
 
     return violations
 

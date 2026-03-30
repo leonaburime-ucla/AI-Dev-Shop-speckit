@@ -213,7 +213,7 @@ Example of compliant usage: "The system must return HTTP 422 with body `{ error:
 
 **Implementation-readiness test**: Before a strict-mode spec package is approved, apply this test: can a competent developer who has never seen this project implement the feature from these spec files alone, without asking any clarifying questions? If the answer is no — because something is missing, ambiguous, or requires assumed context — the spec is not done.
 
-**Reference**: `<AI_DEV_SHOP_ROOT>/project-knowledge/quality/spec-definition-of-done.md` is the authoritative checklist template for strict-mode spec packages.
+**Reference**: `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/spec-definition-of-done.md` is the authoritative checklist template for strict-mode spec packages.
 
 **Mechanical validation**: when Python is available, run `python3 <AI_DEV_SHOP_ROOT>/framework/spec-providers/speckit/validators/validate_spec_package.py <spec-folder>` before handoff. Treat any non-zero exit code as a blocking failure.
 

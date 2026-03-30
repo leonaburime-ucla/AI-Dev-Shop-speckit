@@ -22,7 +22,7 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ### AGENTS.md Map Reduction **[DONE / MONITORED]**
 **What it is:** Shrink `AGENTS.md` into a tighter runtime map so the root instruction surface routes agents instead of re-explaining the whole framework.
-**Current state:** Detailed startup/invocation/checkpoint content now lives in `project-knowledge/operations/pipeline-quickstart.md`, and the full agent roster now lives in `project-knowledge/routing/agent-index.md`. `AGENTS.md` remains the runtime map and startup contract and is back under the safer size target.
+**Current state:** Detailed startup/invocation/checkpoint content now lives in `framework/operations/pipeline-quickstart.md`, and the full agent roster now lives in `framework/routing/agent-index.md`. `AGENTS.md` remains the runtime map and startup contract and is back under the safer size target.
 **What to add next:**
 - Keep startup/mode/routing semantics at the root and move deeper operating detail into linked canonical docs.
 - Remove repeated explanations that already live in `agents/`, `framework/workflows/`, `skills/`, or `harness-engineering/`.
@@ -108,12 +108,12 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 
 ### React Component Testing Policy
 **What it is:** UI testing is often skipped by LLMs. Need a strict policy enforcing React component test creation.
-**Current state:** Added to `project-knowledge/quality/react-component-testing-policy.md`.
+**Current state:** Added to `harness-engineering/quality/react-component-testing-policy.md`.
 **What to add:** Enforce the policy across TDD and Programmer routing. Update skill definition files and evaluation checklists.
 
 ### Debug Playbook
 **What it is:** Agents need a structured debug loop (reproduce, isolate, instrument, hypothesize, fix) to prevent thrashing.
-**Current state:** Added to `project-knowledge/quality/debug-playbook.md`.
+**Current state:** Added to `harness-engineering/quality/debug-playbook.md`.
 **What to add:** Enforce trace requirements and escalation rules across Programmer and QA roles.
 
 ### Observer Agent Operational Cadence
@@ -137,7 +137,7 @@ Items marked **[PARTIAL]** have foundational work already in this repo.
 **What it is:** Ensure code anti-patterns that make testing hard are consistently surfaced to humans during implementation and review.
 **Current state:** Catalog added in quality docs; enforcement across rewrite/rollout flow still pending.
 **What to add:**
-- Use `project-knowledge/quality/testability-antipatterns.md` as the canonical catalog.
+- Use `harness-engineering/quality/testability-antipatterns.md` as the canonical catalog.
 - Require anti-pattern findings to be reported in handoff summaries with location, impact, and remediation route.
 - Treat repeated unresolved anti-patterns as escalation candidates instead of silently continuing.
 

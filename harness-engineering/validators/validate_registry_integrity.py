@@ -7,8 +7,8 @@ from pathlib import Path
 from collections import Counter
 
 ROOT = Path(__file__).resolve().parents[2]
-REGISTRY = ROOT / "project-knowledge/routing/skills-registry.md"
-EXCEPTIONS = ROOT / "project-knowledge/routing/skills-registry-exceptions.md"
+REGISTRY = ROOT / "framework/routing/skills-registry.md"
+EXCEPTIONS = ROOT / "framework/routing/skills-registry-exceptions.md"
 ROW_RE = re.compile(r"^\|\s*`([^`]+)`\s*\|")
 EXCEPTION_RE = re.compile(r"^\s*-\s*`([^`]+)`")
 
@@ -63,7 +63,7 @@ def main() -> int:
     if hard_failures:
         for entry in hard_failures:
             print(f"VIOLATION: skills-registry references a missing path -> {entry}")
-            print("FIX: update project-knowledge/routing/skills-registry.md or restore the missing file.")
+            print("FIX: update framework/routing/skills-registry.md or restore the missing file.")
         print(f"FAIL: {len(hard_failures)} stale path(s) found in skills-registry.")
         return 1
 
@@ -85,8 +85,8 @@ def main() -> int:
         for entry in unregistered_skills:
             print(f"VIOLATION: canonical skill missing from skills-registry -> {entry}")
             print(
-                "FIX: add it to project-knowledge/routing/skills-registry.md or record an intentional exclusion in "
-                "project-knowledge/routing/skills-registry-exceptions.md."
+                "FIX: add it to framework/routing/skills-registry.md or record an intentional exclusion in "
+                "framework/routing/skills-registry-exceptions.md."
             )
         print(f"FAIL: {len(unregistered_skills)} canonical skill file(s) missing from skills-registry.")
         return 1

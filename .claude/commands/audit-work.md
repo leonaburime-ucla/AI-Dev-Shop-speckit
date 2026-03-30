@@ -30,9 +30,9 @@ Act as an External Audit Coordinator.
    - build a concrete work log of what was changed, why, what was verified, and what remains uncertain
    - default to the curated work log as the main packet payload; include commit or diff references only when they materially help the auditor inspect details
 5. Build an audit packet using `skills/external-audit/references/audit-packet-template.md`.
-   - Save packets to `.local-artifacts/external-audit/packets/<timestamp>-audit-packet.md` by default.
-   - If the user explicitly asks to retain the packet, save it to `framework/reports/external-audit/packets/` instead.
-   - If the peer will read the packet from disk, create a peer-readable dispatch copy by default at `framework/reports/external-audit/dispatch/<timestamp>-audit-packet.md` and record both the authoring and dispatch paths in the packet.
+   - Save packets to `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/external-audit/packets/<timestamp>-audit-packet.md` by default.
+   - If the user explicitly asks to retain the packet, save it to `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/external-audit/packets/` instead.
+   - If the peer will read the packet from disk, create a peer-readable dispatch copy by default at `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/external-audit/dispatch/<timestamp>-audit-packet.md` and record both the authoring and dispatch paths in the packet.
 6. Run external-auditor preflight:
    - detect which peer CLIs (`claude`, `gemini`, `codex`) are installed
    - prefer a different model family from the current host
@@ -42,7 +42,7 @@ Act as an External Audit Coordinator.
 7. If the exact auditor model/version is not explicitly pinned or locally proven, stop and print a model-pinning gate:
    `Planned auditor CLI: <CLI>. Exact model/version is not proven locally. Reply with auditor=... and claude_model=..., gemini_model=..., or codex_model=... using an exact model name/version to proceed.`
 8. If the exact auditor model/version is explicit or locally proven, dispatch the audit prompt.
-   - do not hand `.local-artifacts/` paths directly to the peer by default; use the dispatch copy path for file-based peer reads
+   - do not hand `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/` paths directly to the peer by default; use the dispatch copy path for file-based peer reads
    - run a cheap readability probe first: ask the peer to read the dispatch packet and echo the first Markdown heading
    - if the probe fails, classify it as `path_or_permission_failure`, move the dispatch copy, and retry once before the real audit
    - require the auditor to begin with an `Auditor Scope Check` that states what it believes it is auditing, the scope and target it used, which files or artifacts it reviewed, and any mismatch or uncertainty it noticed before giving findings
@@ -52,7 +52,7 @@ Act as an External Audit Coordinator.
    - Prefer structured output modes when available.
    - Parse `stdout` only as the auditor answer.
    - Treat `stderr` as diagnostics.
-   - Save raw stdout/stderr captures to `.local-artifacts/external-audit/offloads/` by default.
+   - Save raw stdout/stderr captures to `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/external-audit/offloads/` by default.
    - Retry transient failures like `429` and `503` within `audit_timeout_seconds`, with at most 2 retries.
    - only classify `empty_result_transport_failure` after the peer process exits successfully and stdout is still empty
    - use any host-specific live-run timing or fallback bounds from the host reference you loaded
@@ -71,5 +71,5 @@ Act as an External Audit Coordinator.
    - `Decision Points For User`
    - if the exact model version cannot be proven, do not run the audit; ask for a pinned model instead
 10. Before writing the final report, if the user has not already specified retention, ask:
-   `Save external audit report? Reply "save report" to retain it in framework/reports/external-audit/runs/, "local only" to keep it in .local-artifacts/external-audit/runs/, or "inline only" for no file.`
-   Save ad hoc reports to `.local-artifacts/external-audit/runs/<timestamp>-external-audit-report.md` by default. If the user explicitly wants to retain the artifact, save it to `framework/reports/external-audit/runs/<timestamp>-external-audit-report.md` instead.
+   `Save external audit report? Reply "save report" to retain it in <ADS_PROJECT_KNOWLEDGE_ROOT>/reports/external-audit/runs/, "local only" to keep it in <ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/external-audit/runs/, or "inline only" for no file.`
+   Save ad hoc reports to `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/external-audit/runs/<timestamp>-external-audit-report.md` by default. If the user explicitly wants to retain the artifact, save it to `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/external-audit/runs/<timestamp>-external-audit-report.md` instead.

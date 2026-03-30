@@ -58,13 +58,13 @@ Do not assume every peer CLI can read every local path.
   - write the authoring packet to `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/`
   - if the peer can be served with a self-contained `stdin` payload, use that instead of any file path
   - if the peer can read the authoring path and still needs file-based transport, use it directly
-  - if the peer cannot read it because the path is ignored, unreadable, or out of workspace, tell the user briefly and create a temporary peer-readable dispatch copy under `tmp/peer-dispatch/<workflow>/`
+  - if the peer cannot read it because the path is ignored, unreadable, or out of workspace, tell the user briefly and create a temporary peer-readable dispatch copy under `<ADS_PROJECT_KNOWLEDGE_ROOT>/tmp/peer-dispatch/<workflow>/`
   - give the peer the dispatch copy path, not the authoring path
 - If needed, create a dispatch copy inside:
-  - `tmp/peer-dispatch/<workflow>/` inside the repo workspace for local-only runs, or
+  - `<ADS_PROJECT_KNOWLEDGE_ROOT>/tmp/peer-dispatch/<workflow>/` inside the workspace root for local-only runs, or
   - a retained `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/...` path only when the user explicitly wants a repo-kept artifact or the workflow itself is already being retained
 - Do not put the dispatch copy under a gitignored or tool-ignored path if the peer needs to read it with file tools.
-- Do not promote a local-only packet into `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/` just to satisfy peer readability. Use `tmp/` first.
+- Do not promote a local-only packet into `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/` just to satisfy peer readability. Use the workspace `tmp/` fallback first.
 
 If the packet is copied for dispatch, record both:
 
@@ -78,7 +78,7 @@ Before the full peer review or debate call, run a cheap readability probe agains
 - Ask the peer to read the dispatch packet and echo the first Markdown heading or another small deterministic string from it.
 - If that probe fails because the path is ignored, unreadable, or out of workspace, classify it as `path_or_permission_failure`.
 - Tell the user briefly which path failed.
-- Fix the dispatch path, prefer `tmp/peer-dispatch/<workflow>/`, and retry once before spending tokens on the real task.
+- Fix the dispatch path, prefer `<ADS_PROJECT_KNOWLEDGE_ROOT>/tmp/peer-dispatch/<workflow>/`, and retry once before spending tokens on the real task.
 - Do not treat a failed readability probe as model disagreement or reasoning failure.
 
 ### Live-Run Observation
@@ -95,7 +95,7 @@ Dispatch copies are transport artifacts, not primary evidence.
 
 - Keep the authoring packet in `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/` or `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/` according to the user's retention choice.
 - Delete temporary dispatch copies after the peer run finishes unless the user explicitly asks to retain them.
-- If a local-only dispatch copy in `tmp/` should be kept after the run, move it into `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/` instead of leaving it in `tmp/`.
+- If a local-only dispatch copy in `tmp/` should be kept after the run, move it into `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/` instead of leaving it in the workspace `tmp/`.
 - If the dispatch copy is retained temporarily for troubleshooting, say so and clean it up before closing the task when feasible.
 
 ## Failure Classification
@@ -133,16 +133,16 @@ If that retry falls back to plain text, keep the fallback on a shorter bounded t
 Use these sources in this order:
 
 1. local capability probes in `harness-engineering/validators/`
-2. `project-knowledge/routing/capability-probes.tsv`
-3. `project-knowledge/routing/compatibility-matrix.md`
+2. `framework/routing/capability-probes.tsv`
+3. `framework/routing/compatibility-matrix.md`
 4. host-specific smoke-test artifacts when they exist
 
 Useful local references:
 
 - `harness-engineering/validators/probe_host_capabilities.sh`
 - `harness-engineering/validators/resolve_subagent_mode.sh`
-- `project-knowledge/routing/capability-probes.tsv`
-- `project-knowledge/routing/compatibility-matrix.md`
+- `framework/routing/capability-probes.tsv`
+- `framework/routing/compatibility-matrix.md`
 - `skills/swarm-consensus/references/cli-smoke-test.md`
 
 ## Reusable Rule

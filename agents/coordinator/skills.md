@@ -20,20 +20,20 @@ Use these files as the source of truth instead of re-stating them here:
 - Full pipeline stages and stage-by-stage context injection: `<AI_DEV_SHOP_ROOT>/framework/workflows/multi-agent-pipeline.md`
 - Artifact locations and path rules: `<AI_DEV_SHOP_ROOT>/framework/workflows/conventions.md`
 - State file, recovery, and retry lifecycle: `<AI_DEV_SHOP_ROOT>/framework/workflows/pipeline-state-format.md`, `<AI_DEV_SHOP_ROOT>/framework/workflows/recovery-playbook.md`, `<AI_DEV_SHOP_ROOT>/framework/workflows/job-lifecycle.md`
-- Memory write routing: `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/knowledge-routing.md`
-- Escalation policy: `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/escalation-policy.md`
-- Plain-language explanation pattern: `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/plain-language-explanations.md`
-- File-pattern routing table: `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/file-trigger-table.md`
-- Host capability limits and sub-agent support matrix: `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/compatibility-matrix.md`
-- Capability verification policy and probe strategy: `<AI_DEV_SHOP_ROOT>/harness-engineering/capability-verification.md`
-- Subagent usage defaults, downgrade rules, and token-cost guidance: `<AI_DEV_SHOP_ROOT>/harness-engineering/subagent-usage-policy.md`
-- Observer maintenance cadence: `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md`
-- Failure promotion rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/failure-promotion-policy.md`
-- Context-firewall rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/context-firewalls.md`
-- Session continuity ledger rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/session-continuity.md`
-- Context offloading rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/context-offloading.md`
-- Runtime self-validation rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/self-validation.md`
-- Pre-completion and loop-detection tripwires: `<AI_DEV_SHOP_ROOT>/harness-engineering/tripwires.md`
+- Memory write routing: `<AI_DEV_SHOP_ROOT>/framework/governance/knowledge-routing.md`
+- Escalation policy: `<AI_DEV_SHOP_ROOT>/framework/governance/escalation-policy.md`
+- Plain-language explanation pattern: `<AI_DEV_SHOP_ROOT>/framework/operations/plain-language-explanations.md`
+- File-pattern routing table: `<AI_DEV_SHOP_ROOT>/framework/routing/file-trigger-table.md`
+- Host capability limits and sub-agent support matrix: `<AI_DEV_SHOP_ROOT>/framework/routing/compatibility-matrix.md`
+- Capability verification policy and probe strategy: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/capability-verification.md`
+- Subagent usage defaults, downgrade rules, and token-cost guidance: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/subagent-usage-policy.md`
+- Observer maintenance cadence: `<AI_DEV_SHOP_ROOT>/harness-engineering/maintenance/observer-cadence.md`
+- Failure promotion rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/failure-promotion-policy.md`
+- Context-firewall rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/context-firewalls.md`
+- Session continuity ledger rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/session-continuity.md`
+- Context offloading rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/context-offloading.md`
+- Runtime self-validation rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/self-validation.md`
+- Pre-completion and loop-detection tripwires: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/tripwires.md`
 
 ## Role
 
@@ -63,7 +63,7 @@ Run the end-to-end delivery loop. Own routing, state tracking, convergence decis
 
 - Follow the Review Mode intake procedure and owner map in `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`.
 - Coordinator-only meta work such as status, routing explanation, and mode control stays here; specialist work dispatches out.
-- When explaining a route or a framework step, use the pattern from `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/plain-language-explanations.md`.
+- When explaining a route or a framework step, use the pattern from `<AI_DEV_SHOP_ROOT>/framework/operations/plain-language-explanations.md`.
 
 ## Anti-Drift Rules
 
@@ -89,7 +89,7 @@ Use this compact loop; rely on the referenced docs for detailed procedure:
 7. After human ADR approval, generate `tasks.md`, then dispatch TDD.
 8. Update `pipeline-state.md` and job status after each stage transition.
 9. Apply retry limits and escalation policy; do not burn cycles on the same failing cluster.
-10. Trigger Observer and doc-garden passes on the cadence defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md`, and promote repeated failures per `<AI_DEV_SHOP_ROOT>/harness-engineering/failure-promotion-policy.md`.
+10. Trigger Observer and doc-garden passes on the cadence defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/maintenance/observer-cadence.md`, and promote repeated failures per `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/failure-promotion-policy.md`.
 11. For long-running or resumable work, maintain a `progress-ledger.md` and use it as the resume surface before re-dispatch.
 12. Use read-only discovery passes as context firewalls when broad exploration would otherwise pollute the implementation loop.
 13. When an artifact is not pipeline-required, decide whether it should be retained, local-only, or inline-only before writing it to disk.
@@ -102,7 +102,7 @@ Use this compact loop; rely on the referenced docs for detailed procedure:
 
 - Follow `<AI_DEV_SHOP_ROOT>/framework/workflows/conventions.md` for artifact placement.
 - Follow `<AI_DEV_SHOP_ROOT>/framework/workflows/pipeline-state-format.md` and `<AI_DEV_SHOP_ROOT>/framework/workflows/job-lifecycle.md` for state and retry tracking.
-- Follow `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/knowledge-routing.md` before writing any memory entry.
+- Follow `<AI_DEV_SHOP_ROOT>/framework/governance/knowledge-routing.md` before writing any memory entry.
 - If the user says "remember this" or similar, classify it, confirm destination, then write it to the correct project-knowledge file.
 - During normal feature work, do not modify `agents/`, `skills/`, `framework/spec-providers/`, `framework/templates/`, `framework/workflows/`, or `framework/slash-commands/` unless the user is explicitly asking to maintain the toolkit itself.
 
@@ -133,5 +133,5 @@ Use this compact loop; rely on the referenced docs for detailed procedure:
 
 ## Immediate Escalation Triggers
 
-- Apply the escalation triggers in `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md` and `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/escalation-policy.md`.
+- Apply the escalation triggers in `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md` and `<AI_DEV_SHOP_ROOT>/framework/governance/escalation-policy.md`.
 - Always block immediately on stale spec hashes, unresolved `[NEEDS CLARIFICATION]` reaching Architect, conflicting specialist guidance that changes direction, or `[ARCHITECTURE_REVISION_REQUEST]` blocking convergence.

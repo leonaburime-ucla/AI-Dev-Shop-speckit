@@ -12,7 +12,7 @@ All project-owned pipeline artifacts are written under `<ADS_PROJECT_KNOWLEDGE_R
 - Local scratch, raw captures, exploratory prompts, and disposable session evidence → `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/`
 - Live project memory → `<ADS_PROJECT_KNOWLEDGE_ROOT>/memory/`
 - Live constitution → `<ADS_PROJECT_KNOWLEDGE_ROOT>/governance/constitution.md`
-- **Read-only toolkit source:** `agents/`, `skills/`, `framework/spec-providers/`, `framework/templates/`, `framework/workflows/`, `framework/slash-commands/`, and the toolkit-local `project-knowledge/` reference tree
+- **Read-only toolkit source:** `agents/`, `skills/`, `framework/spec-providers/`, `framework/templates/`, `framework/workflows/`, `framework/slash-commands/`, and the repo-local `project-knowledge/` workspace mirror
 
 Artifact-intent rule:
 - pipeline-required artifacts save directly to `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/`
@@ -163,7 +163,7 @@ Coordinator cannot dispatch Architect until ALL of the following pass:
 
 For the default Speckit provider, apply the compatibility gate defined in `<AI_DEV_SHOP_ROOT>/framework/spec-providers/speckit/compatibility.md`.
 
-Reference: `<AI_DEV_SHOP_ROOT>/project-knowledge/quality/spec-definition-of-done.md`
+Reference: `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/spec-definition-of-done.md`
 
 ### Architect Agent
 - `framework/spec-providers/active-provider.md`
@@ -302,8 +302,8 @@ Passing suites should be summarized briefly. Failing suites should include exact
 - All agent outputs from the current cycle (summaries, not full sessions)
 - Previous Observer reports (for trend analysis)
 - `<ADS_PROJECT_KNOWLEDGE_ROOT>/memory/learnings.md` (to cross-reference new patterns against known ones)
-- `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md` (for cadence triggers, doc-garden workflow, and benchmark refresh rules)
-- `<AI_DEV_SHOP_ROOT>/harness-engineering/failure-promotion-policy.md` (for mandatory promotion when failure classes recur)
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/maintenance/observer-cadence.md` (for cadence triggers, doc-garden workflow, and benchmark refresh rules)
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/failure-promotion-policy.md` (for mandatory promotion when failure classes recur)
 
 **Minimum Observer cadence:**
 - after every 3rd completed feature
@@ -347,7 +347,7 @@ Passing suites should be summarized briefly. Failing suites should include exact
 ## Convergence Policy
 
 - **Threshold**: ~90-95% acceptance tests passing before advancing to Code Review (calibrate to risk: payment systems may require 100%)
-- **Iteration budget**: 5 total retries across all clusters; escalate any single failing cluster after 3 retries — see `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/escalation-policy.md`
+- **Iteration budget**: 5 total retries across all clusters; escalate any single failing cluster after 3 retries — see `<AI_DEV_SHOP_ROOT>/framework/governance/escalation-policy.md`
 
 ---
 

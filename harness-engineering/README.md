@@ -20,29 +20,56 @@ This first rollout is intentionally pragmatic. It does not try to rewrite the fr
 ```text
 harness-engineering/
   README.md
-  capability-verification.md
-  ci-enforcement.md
-  context-firewalls.md
-  context-offloading.md
-  doc-staleness-policy.md
-  doc-staleness-watchlist.md
-  evaluation-loops.md
-  failure-promotion-policy.md
-  load-bearing-harness-audit.md
-  observer-cadence.md
-  registry-integrity-policy.md
-  self-validation.md
-  session-continuity.md
-  tripwires.md
-  quality-score.md
-  subagent-usage-policy.md
-  tech-debt-tracker.md
+  runtime/
+    capability-verification.md
+    context-firewalls.md
+    context-offloading.md
+    self-validation.md
+    session-continuity.md
+    subagent-usage-policy.md
+    tripwires.md
+  maintenance/
+    doc-staleness-policy.md
+    doc-staleness-watchlist.md
+    observer-cadence.md
+    tech-debt-tracker.md
+  policy/
+    ci-enforcement.md
+    registry-integrity-policy.md
+  quality/
+    README.md
+    evaluation-loops.md
+    failure-promotion-policy.md
+    load-bearing-harness-audit.md
+    quality-score.md
+    spec-definition-of-done.md
+    agent-performance-scorecard.md
+    test-first-design-policy.md
+    testability-antipatterns.md
+    react-component-testing-policy.md
+    debug-playbook.md
   plans/
     active/
     completed/
+  hooks/
+  maintainers/
+  skills-inbox/
+  archive/
   references/
   validators/
 ```
+
+## Folder Roles
+
+- `runtime/`: live harness rules that affect agent execution, resumption, self-validation, context flow, and capability checks
+- `maintenance/`: cleanup cadence, doc-staleness tracking, and ongoing harness debt management
+- `policy/`: hard repo-enforcement policies that back validators and CI checks
+- `quality/`: evaluator loops, failure-promotion doctrine, load-bearing audits, scorecards, and testing-quality guidance
+- `validators/`: executable checks and probe scripts
+- `references/`: distilled external source material
+- `maintainers/`: maintainer-only framework evolution docs
+- `skills-inbox/`: external skill ingestion quarantine
+- `archive/`: retained historical framework artifacts
 
 ## What Is Implemented Now
 
@@ -105,7 +132,7 @@ python3 harness-engineering/validators/doc_garden_audit.py
 ## Current Boundaries
 
 - These validators currently check repository knowledge integrity, not application runtime behavior.
-- Self-validation templates live here, but the project-specific repo that uses this toolkit must still define the actual boot commands, health checks, critical-path assertions, and any richer static-analysis/runtime enforcement it wants. The bounded retry and optional sidecar-diagnosis rules live in `harness-engineering/self-validation.md`; the host project supplies the concrete commands those rules execute.
+- Self-validation templates live here, but the project-specific repo that uses this toolkit must still define the actual boot commands, health checks, critical-path assertions, and any richer static-analysis/runtime enforcement it wants. The bounded retry and optional sidecar-diagnosis rules live in `harness-engineering/runtime/self-validation.md`; the host project supplies the concrete commands those rules execute.
 - The evaluator-loop and load-bearing-audit validators only enforce retained artifact shape and declared presence. They do not prove that the evaluator or benchmark methodology itself was high quality.
 - Enterprise shift-left harnesses remain in `skills/enterprise-spec/`; this folder is the broader repo-level harness layer.
 - `AGENTS.md` reduction is intentionally tracked separately in `todo.md` so the harness layer can stabilize first.

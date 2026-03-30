@@ -33,7 +33,7 @@ Current status in this repo:
 Implementation rule:
 
 - do not claim hook support based on memory, vendor reputation, or another host's behavior
-- follow `harness-engineering/capability-verification.md`
+- follow `harness-engineering/runtime/capability-verification.md`
 - add host-specific hook support only when there is a concrete integration point, a local or official verification path, and clear user-facing behavior
 
 Possible future contents of this folder:

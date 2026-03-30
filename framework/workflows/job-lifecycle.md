@@ -50,7 +50,7 @@ Before dispatching retry 4 or 5, inject the full failure cluster history and ask
 
 ## Pre-Completion Gate
 
-Before the Coordinator accepts `DONE` for implementation or verification stages, require the pre-completion checklist defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/tripwires.md`.
+Before the Coordinator accepts `DONE` for implementation or verification stages, require the pre-completion checklist defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/tripwires.md`.
 
 Reject the handoff if:
 

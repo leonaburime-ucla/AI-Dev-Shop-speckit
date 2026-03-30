@@ -81,7 +81,7 @@ Legacy note: older runs may still use `.pipeline-state.md`. Treat that as the pr
 progress_ledger_path: <ADS_PROJECT_KNOWLEDGE_ROOT>/reports/pipeline/<NNN>-<feature-name>/progress-ledger.md
 ```
 
-Points to the human/agent-readable resume surface defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/session-continuity.md`.
+Points to the human/agent-readable resume surface defined in `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/session-continuity.md`.
 
 - Required when work is expected to cross sessions, handoffs, or retry-heavy loops
 - Recommended for any feature that reaches programmer retry 2+

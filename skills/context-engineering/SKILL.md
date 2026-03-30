@@ -63,7 +63,7 @@ Governance: Resolved items should be closed (not deleted — mark as [RESOLVED])
 
 ## Memory Placement Authority
 
-When making any context engineering decision about where to write a memory entry, `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/knowledge-routing.md` is the authoritative source. It defines which file each category of memory belongs in and supersedes any informal judgment call.
+When making any context engineering decision about where to write a memory entry, `<AI_DEV_SHOP_ROOT>/framework/governance/knowledge-routing.md` is the authoritative source. It defines which file each category of memory belongs in and supersedes any informal judgment call.
 
 Rules:
 - Before writing any memory entry, consult `knowledge-routing.md` to confirm the correct destination file

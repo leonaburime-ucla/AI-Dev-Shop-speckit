@@ -126,9 +126,10 @@ Agent roster note: the toolkit is extensible. `AGENTS.md` lists the current defa
 
 ## Repository Architecture
 
-This toolkit keeps its engine files grouped while preserving a clean split between source and writable artifacts:
+This toolkit keeps its engine files grouped while preserving a clean split between framework source and project-owned state:
 
-- **The Engine (Read-Only):** `agents/`, `skills/`, `framework/spec-providers/`, `framework/templates/`, `framework/workflows/`, `framework/slash-commands/`, and the toolkit's own `project-knowledge/` reference material are framework source. They remain read-only during normal feature work to prevent agents from accidentally overwriting pipeline rules. You can safely overwrite these folders when upgrading to a new version of the toolkit.
+- **The Engine (Read-Only):** `agents/`, `skills/`, `framework/`, and `harness-engineering/` are the toolkit control surface. They stay read-only during normal host-project work so ADS can be updated independently without mixing framework logic with project state.
+- **The Workspace Mirror (Repo-Local Template):** `project-knowledge/` mirrors the external workspace shape inside this repo so the toolkit can ship defaults, examples, and bootstrap-ready files for governance, memory, reports, metadata, tmp, and local artifacts.
 - **The Project Workspace (Writable):** `ADS-project-knowledge/` is the project-owned sibling workspace. Agents write retained artifacts to `ADS-project-knowledge/reports/`, memory to `ADS-project-knowledge/memory/`, the real constitution to `ADS-project-knowledge/governance/constitution.md`, local scratch to `ADS-project-knowledge/.local-artifacts/`, and future workspace metadata to `ADS-project-knowledge/meta/`.
 
 For the host application itself, keep app-specific product docs in the host repo, not in the toolkit internals. `AI-Dev-Shop-speckit/` ships the engine and templates; `ADS-project-knowledge/` is where the toolkit stores project-owned state that should travel with the host repo.
@@ -151,6 +152,6 @@ Furthermore, this framework is built on **Harness Engineering** principles. Rath
 
 - Normal feature work should not edit `agents/`, `skills/`, `framework/spec-providers/`, `framework/templates/`, `framework/workflows/`, or `framework/slash-commands/`.
 - If the user explicitly asks to maintain or upgrade the toolkit itself, treat that as framework maintainer work.
-- Maintainer-only rollout notes and design history live under [project-knowledge/maintainers/README.md](project-knowledge/maintainers/README.md).
+- Maintainer-only rollout notes and design history live under [harness-engineering/maintainers/README.md](harness-engineering/maintainers/README.md).
 - Bootstrap-only scaffolding lives under [framework/templates/bootstrap/README.md](framework/templates/bootstrap/README.md).
-- Archived audit artifacts live under [project-knowledge/archive/README.md](project-knowledge/archive/README.md).
+- Archived audit artifacts live under [harness-engineering/archive/README.md](harness-engineering/archive/README.md).

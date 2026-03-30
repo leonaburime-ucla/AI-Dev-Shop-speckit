@@ -9,8 +9,8 @@
 - `<AI_DEV_SHOP_ROOT>/skills/agent-evaluation/SKILL.md` — multi-dimensional rubrics for evaluating agent output quality trends, LLM-as-judge methodology, bias awareness
 - `<AI_DEV_SHOP_ROOT>/skills/evaluation/eval-rubrics.md` — per-agent scoring rubrics and judge prompt templates
 - `<AI_DEV_SHOP_ROOT>/framework/workflows/trace-schema.md` — trace entry format and storage rules
-- `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md` — explicit cadence triggers, doc-garden workflow, benchmark refresh timing
-- `<AI_DEV_SHOP_ROOT>/harness-engineering/failure-promotion-policy.md` — when recurring failures must become validators, benchmarks, or instruction changes
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/maintenance/observer-cadence.md` — explicit cadence triggers, doc-garden workflow, benchmark refresh timing
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/failure-promotion-policy.md` — when recurring failures must become validators, benchmarks, or instruction changes
 
 ## Role
 Maintain auditability and enable system learning. The Observer does not sit in the main pipeline — it runs alongside it, watching everything. It produces no deliverables for the current feature. It produces improvements to the system itself.
@@ -38,7 +38,7 @@ Maintain auditability and enable system learning. The Observer does not sit in t
 
 ## Cadence
 
-Use `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md` as the operating schedule. At minimum:
+Use `<AI_DEV_SHOP_ROOT>/harness-engineering/maintenance/observer-cadence.md` as the operating schedule. At minimum:
 
 - Run after every 3rd completed feature
 - Run immediately after any convergence escalation or repeated failure cluster that hits the promotion threshold
@@ -63,12 +63,12 @@ Use `<AI_DEV_SHOP_ROOT>/harness-engineering/observer-cadence.md` as the operatin
    - Every agent dispatch and completion → write `[TRACE]` entry per `<AI_DEV_SHOP_ROOT>/framework/workflows/trace-schema.md` (include `constitution_check` field for architect stage)
 7. **LLM-as-judge pass:** After each pipeline run, score the Spec Agent output using the rubric in `<AI_DEV_SHOP_ROOT>/skills/evaluation/eval-rubrics.md`. Weekly, score all agent outputs including Architect constitution compliance dimension. Record each score as a `[QUALITY]` entry in memory-store.md. Flag regressions (score drops > 1.0 vs baseline) to the Coordinator immediately.
 8. During toolkit-maintenance passes, run `bash harness-engineering/validators/run-all.sh` and capture the doc-garden output delta in the Observer report rather than treating it as an informal side task.
-9. Refresh `framework/reports/maintenance/harness-maintenance.md` with `python3 harness-engineering/validators/generate_maintenance_report.py` during scheduled maintenance passes or toolkit-maintenance closeout.
-10. When a recurring failure reaches the promotion threshold in `<AI_DEV_SHOP_ROOT>/harness-engineering/failure-promotion-policy.md`, recommend the smallest durable upgrade path: validator, benchmark, checklist, workflow rule, or skills update.
+9. Refresh `project-knowledge/reports/maintenance/harness-maintenance.md` with `python3 harness-engineering/validators/generate_maintenance_report.py` during scheduled maintenance passes or toolkit-maintenance closeout.
+10. When a recurring failure reaches the promotion threshold in `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/failure-promotion-policy.md`, recommend the smallest durable upgrade path: validator, benchmark, checklist, workflow rule, or skills update.
 11. Produce weekly improvement recommendations, referencing specific memory entries and quality scores as evidence. Flag any benchmark regressions alongside skills.md change recommendations. Track constitution compliance score trends separately.
 
 ## Memory Guidelines
-- Use `<AI_DEV_SHOP_ROOT>/project-knowledge/memory/memory-schema.md` for entry format when writing to `<ADS_PROJECT_KNOWLEDGE_ROOT>/memory/memory-store.md`
+- Use `<AI_DEV_SHOP_ROOT>/framework/memory/memory-schema.md` for entry format when writing to `<ADS_PROJECT_KNOWLEDGE_ROOT>/memory/memory-store.md`
 - Tag entries consistently — tags are the primary query mechanism
 - If a FAILURE entry already exists for this cluster, add a new occurrence count entry rather than a duplicate
 - Track constitution article frequency in CONSTITUTION entries — a pattern of Article III exceptions may indicate over-engineering tendencies

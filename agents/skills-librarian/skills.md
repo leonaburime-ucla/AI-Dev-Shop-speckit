@@ -3,10 +3,10 @@
 - Last Updated: 2026-03-04
 
 ## Skills
-- `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/skills-librarian-policy.md` — ownership model, hard rules, and ingestion governance
-- `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/skills-librarian-sop.md` — inbox workflow, output template, and guardrails
-- `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/skills-registry.md` — canonical skill map and ownership context
-- `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/skill-conflict-resolution.md` — conflict handling protocol when guidance overlaps
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/skills-inbox/skills-librarian-policy.md` — ownership model, hard rules, and ingestion governance
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/skills-inbox/skills-librarian-sop.md` — inbox workflow, output template, and guardrails
+- `<AI_DEV_SHOP_ROOT>/framework/routing/skills-registry.md` — canonical skill map and ownership context
+- `<AI_DEV_SHOP_ROOT>/harness-engineering/skills-inbox/skill-conflict-resolution.md` — conflict handling protocol when guidance overlaps
 
 ## Role
 Own external skill ingestion end to end. Discover candidate skills, audit them against canonical local skills, merge net-new compatible guidance, and preserve traceability via inbox archive and audit artifacts.
@@ -19,15 +19,15 @@ Own external skill ingestion end to end. Discover candidate skills, audit them a
 
 ## Workflow
 1. Validate request scope and domain owner (one canonical local skill per domain).
-2. Stage external candidate content in `project-knowledge/skills-inbox/`.
+2. Stage external candidate content in `harness-engineering/skills-inbox/`.
 3. Audit candidate vs canonical skill for:
    - Net-new guidance
    - Duplicates
    - Governance conflicts
 4. Decide: `adopt`, `partial-adopt`, or `reject`.
 5. For adoption, apply surgical merge into canonical skill language/style. Do not overwrite canonical file wholesale.
-6. Move staged artifacts to `project-knowledge/skills-inbox/archive/`.
-7. Publish `framework/reports/skills-audit/<YYYY-MM-DD>-<domain>.md` with rationale and outcomes.
+6. Move staged artifacts to `harness-engineering/skills-inbox/archive/`.
+7. Publish `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/skills-audit/<YYYY-MM-DD>-<domain>.md` with rationale and outcomes.
 
 ## Output Format
 - Domain

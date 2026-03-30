@@ -6,7 +6,7 @@ Examples: `Coordinator(Review Mode): ...` or `Coordinator(Pipeline): ...` or `Pr
 In Agent Direct Mode, use `AgentName(Direct):`; if Direct Mode is started with consensus enabled, use `AgentName(Consensus):`.
 This is strictly required to let the user know exactly who is talking and to confirm the AI Dev Shop framework is active.
 
-- Reserved pipeline agent names are listed in `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/agent-index.md`. Apply the delegated naming guard in `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`. Claiming a reserved pipeline agent name without matching persona-load confirmation is a mandatory blocker.
+- Reserved pipeline agent names are listed in `<AI_DEV_SHOP_ROOT>/framework/routing/agent-index.md`. Apply the delegated naming guard in `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`. Claiming a reserved pipeline agent name without matching persona-load confirmation is a mandatory blocker.
 
 ---
 # Mandatory Startup
@@ -14,9 +14,9 @@ On the first user message in this repository (including greetings), before any r
 1. Open and read `<AI_DEV_SHOP_ROOT>/AGENTS.md`.
 2. Provide a welcome message that MUST include:
    - "Booted with <AI_DEV_SHOP_ROOT>/AGENTS.md loaded."
-   - Use `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/startup-info.md` as the source of truth for startup block content and layout.
+   - Use `<AI_DEV_SHOP_ROOT>/framework/operations/startup-info.md` as the source of truth for startup block content and layout.
 3. If the file is missing or unreadable, state that explicitly and stop.
-4. Read `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/reminders.md`. For each reminder NOT listed under Dismissed, show a short prompt inside the startup block after the startup notices and before `------------End of Startup Info------------`.
+4. Read `<AI_DEV_SHOP_ROOT>/framework/operations/reminders.md`. For each reminder NOT listed under Dismissed, show a short prompt inside the startup block after the startup notices and before `------------End of Startup Info------------`.
 5. When Bash is available, detect the current host and resolve subagent mode with `<AI_DEV_SHOP_ROOT>/harness-engineering/validators/resolve_subagent_mode.sh`. If helper-agent support is unavailable or unverified, start in sequential single-agent mode and say so plainly.
 **slash-commands-setup** (skip if dismissed):
 Show: "Would you like to enable slash commands (`/spec`, `/plan`, `/consensus`, and more)? Say **yes** and I'll walk you through it."
@@ -50,7 +50,7 @@ To return from either: "back to coordinator", "resume coordinator" — Coordinat
 ## User Explanation Rule
 
 It is fine to use internal terms such as `harness engineering`, `Observer`, or `progress-ledger`, but do not assume the user already knows them.
-Use `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/plain-language-explanations.md` and explain the current step in this order: what we are doing, why it exists, what we need from the user (if anything), and what happens next.
+Use `<AI_DEV_SHOP_ROOT>/framework/operations/plain-language-explanations.md` and explain the current step in this order: what we are doing, why it exists, what we need from the user (if anything), and what happens next.
 Translate internal terms on first meaningful use, then keep the explanation concrete and proportional to the user's immediate need.
 
 ---
@@ -81,7 +81,7 @@ Agents are specialized roles, each with a `skills.md`. By default, all routing f
 
 ## Starting the Pipeline
 
-Use `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/pipeline-quickstart.md` as the source of truth for:
+Use `<AI_DEV_SHOP_ROOT>/framework/operations/pipeline-quickstart.md` as the source of truth for:
 
 - startup sequencing
 - slash/manual pipeline entrypoints
@@ -93,7 +93,7 @@ The minimum startup rule still holds: confirm `<AI_DEV_SHOP_ROOT>`, start existi
 
 ## Invoking the Pipeline
 
-Operator entrypoints live in `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/pipeline-quickstart.md`.
+Operator entrypoints live in `<AI_DEV_SHOP_ROOT>/framework/operations/pipeline-quickstart.md`.
 
 - Claude Code: slash commands are the preferred entrypoint.
 - Codex CLI, Gemini CLI, Claude.ai, and generic LLM hosts use the matching `framework/slash-commands/*.md` template content manually.
@@ -103,9 +103,9 @@ Operator entrypoints live in `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/pi
 
 ## Agents
 
-Use `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/agent-index.md` for the full agent roster, role summaries, and persona file entrypoints.
+Use `<AI_DEV_SHOP_ROOT>/framework/routing/agent-index.md` for the full agent roster, role summaries, and persona file entrypoints.
 
-Use `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/skills-registry.md` for shared-skill ownership and reuse mapping.
+Use `<AI_DEV_SHOP_ROOT>/framework/routing/skills-registry.md` for shared-skill ownership and reuse mapping.
 
 ---
 
@@ -165,10 +165,10 @@ Apply the detailed delegated naming and validity guard in `<AI_DEV_SHOP_ROOT>/sk
 - **The constitution governs architecture.** Spec, Red-Team, and Architect must use `<ADS_PROJECT_KNOWLEDGE_ROOT>/governance/constitution.md`. The toolkit ships the default template at `<AI_DEV_SHOP_ROOT>/framework/templates/bootstrap/constitution-template.md`.
 - **`[NEEDS CLARIFICATION]` blocks Architect dispatch.**
 - **The handoff contract is mandatory.** Every artifact includes inputs used, output summary, risks, and suggested next assignee.
-- **Framework source files are read-only during normal feature work.** Keep project-owned writes in `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/`, `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/`, `<ADS_PROJECT_KNOWLEDGE_ROOT>/memory/`, `<ADS_PROJECT_KNOWLEDGE_ROOT>/governance/`, and `<ADS_PROJECT_KNOWLEDGE_ROOT>/meta/` unless the user explicitly asks to keep state inside the toolkit for compatibility.
+- **Framework source files are read-only during normal feature work.** Keep project-owned writes in `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/`, `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/`, `<ADS_PROJECT_KNOWLEDGE_ROOT>/memory/`, `<ADS_PROJECT_KNOWLEDGE_ROOT>/governance/`, `<ADS_PROJECT_KNOWLEDGE_ROOT>/meta/`, and `<ADS_PROJECT_KNOWLEDGE_ROOT>/tmp/` unless the user explicitly asks to keep state inside the toolkit for compatibility.
 - **Classify artifact intent before saving.** Required pipeline artifacts go to `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/` automatically. Optional retained reports require an explicit user save choice. Scratch prompts, raw logs, temporary captures, and other session-only artifacts go to `<ADS_PROJECT_KNOWLEDGE_ROOT>/.local-artifacts/` by default.
 - **Fix upstream intent, not downstream drift.** If code, tests, or architecture diverge from the spec, route the issue back to the owning stage instead of patching around it.
-- **Evidence over invention.** Do not present guesses or memory as fact; if a claim is not grounded in inspected artifacts, tool output, or cited sources, mark uncertainty or say you do not know. See `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/anti-hallucination-policy.md`.
+- **Evidence over invention.** Do not present guesses or memory as fact; if a claim is not grounded in inspected artifacts, tool output, or cited sources, mark uncertainty or say you do not know. See `<AI_DEV_SHOP_ROOT>/framework/governance/anti-hallucination-policy.md`.
 - **Debug mode exists.** Toggle with `debug on` / `debug off`; see `<AI_DEV_SHOP_ROOT>/framework/workflows/trace-schema.md`.
 
 ---
@@ -178,20 +178,20 @@ Apply the detailed delegated naming and validity guard in `<AI_DEV_SHOP_ROOT>/sk
 Use these files for operating detail instead of expanding this file:
 
 - Spec-provider contract and active provider selection: `<AI_DEV_SHOP_ROOT>/framework/spec-providers/active-provider.md`, `<AI_DEV_SHOP_ROOT>/framework/spec-providers/core/provider-contract.md`, `<AI_DEV_SHOP_ROOT>/framework/spec-providers/core/provider-selection.md`
-- Pipeline startup, command entrypoints, and checkpoints: `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/pipeline-quickstart.md`
-- Startup block wording and layout: `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/startup-info.md`
-- Plain-language explanation pattern for users: `<AI_DEV_SHOP_ROOT>/project-knowledge/operations/plain-language-explanations.md`
-- Capability verification and subagent defaulting: `<AI_DEV_SHOP_ROOT>/harness-engineering/capability-verification.md`, `<AI_DEV_SHOP_ROOT>/harness-engineering/subagent-usage-policy.md`
+- Pipeline startup, command entrypoints, and checkpoints: `<AI_DEV_SHOP_ROOT>/framework/operations/pipeline-quickstart.md`
+- Startup block wording and layout: `<AI_DEV_SHOP_ROOT>/framework/operations/startup-info.md`
+- Plain-language explanation pattern for users: `<AI_DEV_SHOP_ROOT>/framework/operations/plain-language-explanations.md`
+- Capability verification and subagent defaulting: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/capability-verification.md`, `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/subagent-usage-policy.md`
 - Pipeline flow and stage context: `<AI_DEV_SHOP_ROOT>/framework/workflows/multi-agent-pipeline.md`
 - Coordinator behavior and routing guardrails: `<AI_DEV_SHOP_ROOT>/agents/coordinator/skills.md`
 - Routing decision tree and cycle summary format: `<AI_DEV_SHOP_ROOT>/skills/coordination/SKILL.md`
-- Convergence and escalation policy: `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/escalation-policy.md`
-- Anti-hallucination and evidence rules: `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/anti-hallucination-policy.md`
-- Knowledge routing and memory writes: `<AI_DEV_SHOP_ROOT>/project-knowledge/governance/knowledge-routing.md`
-- Session continuity and resume ledger rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/session-continuity.md`
-- Pre-completion and loop-detection tripwires: `<AI_DEV_SHOP_ROOT>/harness-engineering/tripwires.md`
+- Convergence and escalation policy: `<AI_DEV_SHOP_ROOT>/framework/governance/escalation-policy.md`
+- Anti-hallucination and evidence rules: `<AI_DEV_SHOP_ROOT>/framework/governance/anti-hallucination-policy.md`
+- Knowledge routing and memory writes: `<AI_DEV_SHOP_ROOT>/framework/governance/knowledge-routing.md`
+- Session continuity and resume ledger rules: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/session-continuity.md`
+- Pre-completion and loop-detection tripwires: `<AI_DEV_SHOP_ROOT>/harness-engineering/runtime/tripwires.md`
 - Path and artifact conventions: `<AI_DEV_SHOP_ROOT>/framework/workflows/conventions.md`
 - Pipeline state and job lifecycle: `<AI_DEV_SHOP_ROOT>/framework/workflows/pipeline-state-format.md`, `<AI_DEV_SHOP_ROOT>/framework/workflows/job-lifecycle.md`, `<AI_DEV_SHOP_ROOT>/framework/workflows/recovery-playbook.md`
-- Agent roster and persona entrypoints: `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/agent-index.md`
-- Skills registry: `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/skills-registry.md`
-- Golden sample handoff chain: `<AI_DEV_SHOP_ROOT>/project-knowledge/examples/golden-sample/README.md`
+- Agent roster and persona entrypoints: `<AI_DEV_SHOP_ROOT>/framework/routing/agent-index.md`
+- Skills registry: `<AI_DEV_SHOP_ROOT>/framework/routing/skills-registry.md`
+- Golden sample handoff chain: `<AI_DEV_SHOP_ROOT>/framework/examples/golden-sample/README.md`

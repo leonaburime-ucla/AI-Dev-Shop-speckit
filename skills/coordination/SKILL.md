@@ -89,7 +89,7 @@ Default owner mapping:
 
 ## File Trigger Guidance
 
-When the changed files, target paths, or requested area are already known, consult `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/file-trigger-table.md` before deciding the owner.
+When the changed files, target paths, or requested area are already known, consult `<AI_DEV_SHOP_ROOT>/framework/routing/file-trigger-table.md` before deciding the owner.
 
 Use the trigger table to reduce routing mistakes, especially for:
 
@@ -143,7 +143,7 @@ Do not spawn a generic worker first and hope it infers the repo persona from con
 
 ## Reserved Pipeline Agent Names
 
-Use `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/agent-index.md` as the canonical reserved-name list for delegated helpers and response prefixes.
+Use `<AI_DEV_SHOP_ROOT>/framework/routing/agent-index.md` as the canonical reserved-name list for delegated helpers and response prefixes.
 
 - A delegated helper may use one of those reserved names only after persona bootstrap and first-reply confirmation.
 - If the helper has not yet confirmed the persona load, it must use a generic helper label such as `Worker`, `Explorer`, or `Helper`.
@@ -159,13 +159,13 @@ When building any delegated spawn prompt, include in this order:
 4. Give the concrete task directive with scope, constraints, ownership boundaries, and expected output.
 5. Require the subagent to stop if the persona file is missing or unreadable.
 6. Require the subagent to confirm in its first reply that the persona file was loaded.
-7. Require the subagent to use a reserved pipeline agent name from `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/agent-index.md` only after that confirmation; otherwise it must use a generic helper label.
+7. Require the subagent to use a reserved pipeline agent name from `<AI_DEV_SHOP_ROOT>/framework/routing/agent-index.md` only after that confirmation; otherwise it must use a generic helper label.
 
 ## Delegated Output Validity Guard
 
 - Generic platform helper types are not a substitute for AI Dev Shop repo personas.
 - Treat delegated output as invalid if the spawn prompt omitted the resolved persona bootstrap or if the subagent did not confirm the persona file load in its first reply.
-- Treat delegated output as a mandatory blocker if the subagent claims any reserved pipeline agent name from `<AI_DEV_SHOP_ROOT>/project-knowledge/routing/agent-index.md` without matching persona-load confirmation.
+- Treat delegated output as a mandatory blocker if the subagent claims any reserved pipeline agent name from `<AI_DEV_SHOP_ROOT>/framework/routing/agent-index.md` without matching persona-load confirmation.
 - Invalid delegated output may be used only as scratch discovery. Do not present it as authoritative agent work, do not merge it as pipeline-valid, and do not count it as a completed delegated track.
 - When this failure happens on a host with platform spawning support, respawn with the correct bootstrap or continue locally instead of trusting the generic helper output.
 

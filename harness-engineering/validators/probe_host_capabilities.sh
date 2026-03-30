@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-CATALOG_PATH="$ROOT_DIR/project-knowledge/routing/capability-probes.tsv"
+CATALOG_PATH="$ROOT_DIR/framework/routing/capability-probes.tsv"
 MD_OUTPUT=""
 JSON_OUTPUT=""
 

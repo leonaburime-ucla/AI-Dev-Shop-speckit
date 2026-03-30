@@ -21,7 +21,31 @@ END_MARKER = "<<SWARM_END>>"
 DISCOVERY_CACHE_VERSION = 1
 REPO_ROOT = Path(__file__).resolve().parents[3]
 HOST_ROOT = REPO_ROOT.parent
-WORKSPACE_ROOT = HOST_ROOT / "ADS-project-knowledge"
+REPO_WORKSPACE_ROOT = REPO_ROOT / "project-knowledge"
+
+
+def resolve_workspace_root() -> Path:
+    for key in ("ADS_PROJECT_KNOWLEDGE_ROOT", "ADS_WORKSPACE_ROOT"):
+        raw = os.environ.get(key)
+        if raw:
+            return Path(raw).expanduser().resolve()
+    sibling = HOST_ROOT / "ADS-project-knowledge"
+    if sibling.exists():
+        return sibling
+    return REPO_WORKSPACE_ROOT
+
+
+def display_path(path: Path) -> str:
+    for base in (HOST_ROOT, REPO_ROOT):
+        try:
+            return path.relative_to(base).as_posix()
+        except ValueError:
+            continue
+    return path.as_posix()
+
+
+WORKSPACE_ROOT = resolve_workspace_root()
+WORKSPACE_LABEL = display_path(WORKSPACE_ROOT)
 DEFAULT_SMOKE_TEST_DIR = WORKSPACE_ROOT / ".local-artifacts" / "swarm-consensus" / "smoke-tests"
 DEFAULT_DISCOVERY_CACHE_PATH = str(DEFAULT_SMOKE_TEST_DIR / "last-known-good.json")
 
@@ -72,7 +96,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--artifacts-dir",
         default=str(DEFAULT_SMOKE_TEST_DIR),
-        help="Directory for dated smoke-test artifacts when --save-artifact is used. Override with ADS-project-knowledge/reports/swarm-consensus/smoke-tests if you want a retained repo artifact.",
+        help=f"Directory for dated smoke-test artifacts when --save-artifact is used. Override with {WORKSPACE_LABEL}/reports/swarm-consensus/smoke-tests if you want a retained repo artifact.",
     )
     parser.add_argument(
         "--discover-claude",
@@ -211,8 +235,10 @@ def resolve_cache_artifact_path(value: str | None) -> Path | None:
     candidate = Path(str(value))
     if candidate.is_absolute():
         return candidate
+    if candidate.parts[:1] == (WORKSPACE_ROOT.name,):
+        return (WORKSPACE_ROOT.parent / candidate).resolve()
     host_candidate = (HOST_ROOT / candidate).resolve()
-    if host_candidate.exists() or candidate.parts[:1] == (WORKSPACE_ROOT.name,):
+    if host_candidate.exists():
         return host_candidate
     return (REPO_ROOT / candidate).resolve()
 

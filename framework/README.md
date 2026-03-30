@@ -1,6 +1,6 @@
 # Framework
 
-This folder groups the toolkit-owned framework surface that used to sit at the repo root.
+This folder groups the toolkit-owned framework surface that controls how ADS runs.
 
 ## Layout
 
@@ -8,10 +8,10 @@ This folder groups the toolkit-owned framework surface that used to sit at the r
 - `templates/` holds framework templates consumed by agents and workflows
 - `workflows/` defines pipeline rules, state formats, and conventions
 - `slash-commands/` holds reusable command templates for hosts that support or emulate slash commands
-- `reports/` holds retained framework artifacts and pipeline outputs
+- `governance/`, `memory/`, `operations/`, `routing/`, and `examples/` hold static toolkit guidance that used to be mixed into `project-knowledge/`
 
 ## Write Rules
 
-- Treat `spec-providers/`, `templates/`, `workflows/`, and `slash-commands/` as read-only during normal feature work.
-- Treat `reports/` as writable retained output.
-- Use `.local-artifacts/` for disposable local-only scratch output.
+- Treat everything under `framework/` as read-only during normal host-project feature work unless the user is explicitly maintaining ADS itself.
+- For toolkit maintenance that needs the repo-local workspace mirror, write retained artifacts to `project-knowledge/reports/`.
+- For toolkit maintenance scratch output, use `project-knowledge/.local-artifacts/`.
