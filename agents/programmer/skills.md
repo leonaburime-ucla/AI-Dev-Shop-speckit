@@ -1,13 +1,15 @@
 # Programmer Agent
-- Version: 1.3.5
-- Last Updated: 2026-04-10
+- Version: 1.3.8
+- Last Updated: 2026-04-11
 
 ## Base Skills
 Base skills are the default standing context for every Programmer task.
 
 - `<AI_DEV_SHOP_ROOT>/skills/systematic-debugging/SKILL.md` — mandatory root-cause-first debugging workflow when tests fail or unexpected behavior appears
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — boundaries and contracts to stay within
-- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — highest-priority micro-level implementation rules (modular/composable/testable units) after macro architecture boundaries are set
+- `<AI_DEV_SHOP_ROOT>/skills/coding-foundations/SKILL.md` — tiny shared parent for explicit dependencies, decision/effect separation, mutation-by-exception, stable contracts, fail-fast defaults, and small readable units
+- `<AI_DEV_SHOP_ROOT>/skills/implementation-guardrails/SKILL.md` — child layer for complexity/scaling awareness, selective complexity notes, query-shape awareness, one-source-of-truth rules, and other implementation-style guardrails
+- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — child layer on top of coding-foundations with stricter modular/composable/testable-unit constraints
 - `<AI_DEV_SHOP_ROOT>/skills/context-engineering/SKILL.md` — project conventions in `<ADS_PROJECT_KNOWLEDGE_ROOT>/memory/` that apply to the current domain
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — load the specific pattern reference file(s) matching the architecture chosen in the ADR; provides TypeScript implementation examples, correct layer structure, file placement rules, and boundary enforcement; without this the Programmer cannot reliably implement the chosen pattern correctly
 - `<AI_DEV_SHOP_ROOT>/skills/pattern-priming/SKILL.md` — mandatory style-alignment step before production code for a new task or layer
@@ -61,6 +63,7 @@ Micro-level code quality priority: inside approved architectural boundaries, opt
 5. For each slice, follow the inner loop:
    - **5a. Confirm RED**: Run the target test(s) for this slice fresh. Do not read prior test reports to determine current state — always run. If the test passes without any implementation, stop immediately and flag to Coordinator: this indicates scope overlap from a previous slice, a badly written test, or test drift. Do not implement over a green test without explicit Coordinator guidance.
    - **5a1. Testability pre-check (mandatory before writing code):** State the planned test seam and expected assertions for this slice (branches, statements, functions, lines). If you cannot describe how the slice will be tested directly, redesign/refactor the slice boundary before implementation.
+   - **5a2. Complexity/style pre-check (mandatory for non-trivial paths):** If the slice touches caller-controlled collections, nested iteration, batch transforms, custom algorithms, or per-item I/O, identify the effective complexity and query shape before coding. Leave a short inline note only when the cost or tradeoff will not be obvious from the code itself.
    - **5b. Implement**: Write the smallest viable change to make only the target test(s) pass. Do not implement more than the current slice requires.
    - **5c. Confirm GREEN**: Run the target test(s) again and confirm they pass. On success, keep only the short status summary in active context unless exact output is needed later.
    - **5d. Check for regressions**: Run the full local suite. If any previously passing test breaks, revert and diagnose before proceeding.
@@ -116,6 +119,10 @@ Micro-level code quality priority: inside approved architectural boundaries, opt
   - candidate files or modules
   - why they matter
   - remaining uncertainty
+- Style Notes (required when applicable):
+  - changed paths that needed complexity or query-shape notes
+  - purity or effect-boundary decisions
+  - justified deviations from the default style rules
 - Offload References:
   - path(s) for large logs, traces, JSON, or screenshots when applicable
 - Loop Alert (required if triggered):

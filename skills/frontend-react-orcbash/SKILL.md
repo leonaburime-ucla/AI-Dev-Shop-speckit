@@ -51,7 +51,14 @@ Read this file for the contract. Open references only when needed:
 
 ## Shared Micro-Level Rules
 
-Use `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` for shared micro-level implementation rules:
+Use `<AI_DEV_SHOP_ROOT>/skills/coding-foundations/SKILL.md` for the shared micro-level baseline:
+
+- explicit dependencies at hook, orchestrator, and adapter boundaries
+- decision/effect separation where practical
+- mutation-by-exception
+- stable contracts and fail-fast defaults
+
+Use `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` for stricter testability rules:
 
 - required two-object parameter convention
 - explicit return types and TypeDoc/TSDoc expectations

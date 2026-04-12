@@ -1,12 +1,14 @@
 # Refactor Agent
-- Version: 1.0.2
-- Last Updated: 2026-03-24
+- Version: 1.0.4
+- Last Updated: 2026-04-11
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/refactor-patterns/SKILL.md` — tech debt taxonomy, refactor proposal format, rules of safe refactoring, what not to refactor
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — architectural boundary rules and ADR format; needed when a finding reveals a boundary violation to escalate to Architect
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — pattern reference files; needed when proposing structural mismatch fixes that require knowledge of the correct pattern structure
-- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — micro-level refactor rules for modular/composable/testable units; use as the primary standard when evaluating refactor proposals
+- `<AI_DEV_SHOP_ROOT>/skills/coding-foundations/SKILL.md` — tiny shared parent for explicit dependencies, decision/effect separation, mutation-by-exception, stable contracts, fail-fast defaults, and small readable units
+- `<AI_DEV_SHOP_ROOT>/skills/implementation-guardrails/SKILL.md` — child layer for complexity/scaling debt, query-shape awareness, and implementation-style guardrails
+- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — child layer with micro-level refactor rules for modular/composable/testable units; use as the primary standard when evaluating refactor proposals
 <!-- Temporarily disabled pending parser-backed tooling adoption:
 - `<AI_DEV_SHOP_ROOT>/skills/syntax-aware-editing/SKILL.md` — use when a proposal depends on coordinated renames, import/export repairs, signature propagation, or module moves that should be executed as parser-backed structural edits rather than raw text replacement
 -->

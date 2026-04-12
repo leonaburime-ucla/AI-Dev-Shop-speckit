@@ -1,29 +1,29 @@
 ---
 name: testable-design-patterns
-version: 1.0.0
-last_updated: 2026-03-03
-description: Use when designing or implementing micro-level code so functions and side-effect boundaries are composable, modular, and easy to test without fragile mocks.
+version: 1.2.0
+last_updated: 2026-04-11
+description: Use when designing or implementing micro-level code so test seams, contracts, and coverage-friendly boundaries stay easy to verify without fragile mocks.
 ---
 
 # Skill: Testable Design Patterns (Micro-Level)
 
-Apply this skill whenever writing or reviewing code internals. This is the highest-priority micro-level rule set across Architect, Programmer, Refactor, and TDD.
+Apply this skill whenever writing or reviewing code internals that need strict testability constraints. This skill is the child layer on top of `coding-foundations`.
+
+Do not wire this skill by itself. Any agent that loads `testable-design-patterns` must also load `coding-foundations` explicitly.
 
 ## Priority Model
 
 1. Macro architecture first: boundaries, ownership, and contracts from ADR.
-2. Micro testability second: every unit inside those boundaries must be modular, composable, and easy to assert.
+2. Coding foundations second: the shared baseline defined in `coding-foundations`.
+3. Micro testability third: every unit inside those boundaries must be modular, composable, and easy to assert.
 
-If macro and micro conflict, adjust the micro design while preserving macro boundaries.
+If macro and micro conflict, adjust the micro design while preserving macro boundaries. If the foundations and the testability constraints conflict, keep the testability constraint.
 
 ## Required Design Rules
 
-1. Use explicit boundaries: separate pure logic from side-effect adapters.
-2. Inject all side effects (I/O, time, random, storage, network) through parameters.
-3. Return assertion-friendly contracts: named fields and explicit actions.
-4. Prefer pure deterministic logic for business rules.
-5. Keep units small enough to test with focused fixtures.
-6. Treat hard-to-test code as a design defect.
+1. Return assertion-friendly contracts: named fields and explicit actions.
+2. Keep unit boundaries simple enough to test with focused fixtures and minimal mocks.
+3. Treat hard-to-test code as a design defect.
 
 ## Parameter Convention (Required)
 
@@ -80,7 +80,6 @@ The following rules apply to all in-scope modules (see Scope Boundary above). Th
 ### Test Seam Rules
 - Every non-trivial branch must have an injectable seam (parameter-injected dependency, not global access).
 - Error paths must return typed outcomes or throw typed errors — no raw `Error` or opaque string messages at module boundaries.
-- Avoid instantiating singletons or service objects inside functions; inject them via parameters.
 
 ### Third-Party SDK / Opaque Error Exception
 When integrating third-party SDKs (AWS, Stripe, Twilio, etc.) that throw generic or untyped errors:
@@ -112,7 +111,6 @@ These patterns prevent achieving high branch/statement/function coverage and are
 
 Refactor when any of these appear:
 
-- Hidden dependencies (global clock/random/singletons/network).
 - Functions with mixed concerns (business rule + side effect + formatting).
 - Tests requiring excessive mocks or deep internal probing.
 - Cyclomatic complexity > 4 in any in-scope function (see Scope Boundary above).

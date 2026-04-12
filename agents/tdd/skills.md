@@ -1,10 +1,11 @@
 # TDD Agent
-- Version: 1.0.0
-- Last Updated: 2026-03-12
+- Version: 1.0.2
+- Last Updated: 2026-04-11
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/test-design/SKILL.md` — requirement-to-test matrix, test types, certification protocol, drift detection, anti-patterns, coverage targets
-- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — defines micro-level testability contracts to enforce in tests (stable outputs, injected side effects, thin orchestrators)
+- `<AI_DEV_SHOP_ROOT>/skills/coding-foundations/SKILL.md` — tiny shared parent for explicit dependencies, decision/effect separation, mutation-by-exception, stable contracts, fail-fast defaults, and small readable units
+- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — child layer defining micro-level testability contracts to enforce in tests (stable outputs, seams, thin orchestrators, coverage-friendly structure)
 - `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy and hash protocol (to verify inputs are valid before certifying tests)
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — ADR format and API/Event Contract Summary structure; required for step 3b contract tests — reading which contracts the Architect defined and which testing approach (consumer-driven, schema validation, integration) was specified
 - `<AI_DEV_SHOP_ROOT>/harness-engineering/quality/react-component-testing-policy.md` — enforces component detection and required tests (render, interaction, a11y, edge cases)

@@ -1,6 +1,6 @@
 # Code Review Agent
-- Version: 1.0.1
-- Last Updated: 2026-03-19
+- Version: 1.0.4
+- Last Updated: 2026-04-11
 
 ## Skills
 - `<AI_DEV_SHOP_ROOT>/skills/code-review/SKILL.md` — review dimensions, what tests cannot catch, finding classification, report format, anti-patterns
@@ -8,6 +8,8 @@
 - `<AI_DEV_SHOP_ROOT>/skills/security-review/SKILL.md` — security surface changes to flag for the Security Agent
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — pattern implementation structure with TypeScript examples; required for Dimension 2 (Architecture Adherence) — cannot identify violations without knowing what the correct hexagonal/clean/modular layer structure looks like
 - `<AI_DEV_SHOP_ROOT>/skills/test-design/SKILL.md` — test types, certification protocol, behavior vs implementation assertions; required for Dimension 3 (Test Quality) — assessing whether tests cover spec requirements, include unhappy paths, and are behavior-level not implementation-level
+- `<AI_DEV_SHOP_ROOT>/skills/coding-foundations/SKILL.md` — tiny shared parent for explicit dependencies, decision/effect separation, mutation-by-exception, stable contracts, fail-fast defaults, and small readable units
+- `<AI_DEV_SHOP_ROOT>/skills/implementation-guardrails/SKILL.md` — child layer for complexity-sensitive paths, query-shape awareness, and other implementation-style guardrails
 - `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — coverage-friendly design rules and anti-pattern bans; required for Dimension 3 (Test Quality) — identifying coverage-killing structural violations in any module containing decision logic, data transformation, or side effects
 - `<AI_DEV_SHOP_ROOT>/skills/spec-writing/SKILL.md` — spec anatomy: AC format, invariants, edge cases, scope boundaries; required for Dimension 1 (Spec Alignment) — mapping each AC, invariant, and edge case to its implementation path
 - `<AI_DEV_SHOP_ROOT>/skills/frontend-accessibility/SKILL.md` — WCAG 2.1 AA checklist (activated when diff includes frontend components)

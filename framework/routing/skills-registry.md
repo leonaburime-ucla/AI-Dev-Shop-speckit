@@ -1,7 +1,7 @@
 ---
 name: skills-registry
-version: 1.2.10
-last_updated: 2026-04-10
+version: 1.2.13
+last_updated: 2026-04-11
 description: Maps every shared skill to the agents that use it. Reference when dispatching agents or updating skills.
 ---
 
@@ -27,11 +27,13 @@ All agents draw from `<AI_DEV_SHOP_ROOT>/skills/`. Do not duplicate skill conten
 | `skills/architecture-migration/SKILL.md` | CodeBase Analyzer |
 | `skills/design-patterns/SKILL.md` | Architect, CodeBase Analyzer, System Blueprint Agent (secondary) |
 | `skills/backend-implementation/SKILL.md` | Programmer (default backend/service/worker implementation entrypoint) |
+| `skills/coding-foundations/SKILL.md` | Architect, Programmer, TDD Agent, Refactor Agent, Code Review Agent (tiny shared parent for micro-level coding axioms) |
 | `skills/hexagonal-architecture/SKILL.md` | Architect, Programmer, CodeBase Analyzer, System Blueprint Agent |
+| `skills/implementation-guardrails/SKILL.md` | Architect, Programmer, Refactor Agent, Code Review Agent (child layer for complexity, scaling, and maintainability guardrails; always load alongside `coding-foundations`) |
 | `skills/system-blueprint/SKILL.md` | System Blueprint Agent, Coordinator |
 | `skills/system-design/SKILL.md` | System Blueprint Agent, Architect (shared macro-topology and architecture-spec reference) |
 | `skills/frontend-react-orcbash/SKILL.md` | Programmer (React frontends) |
-| `skills/testable-design-patterns/SKILL.md` | Architect, Programmer, Refactor Agent, TDD Agent |
+| `skills/testable-design-patterns/SKILL.md` | Architect, Programmer, TDD Agent, Refactor Agent, Code Review Agent (child layer for testability and coverage-friendly structure; always load alongside `coding-foundations`) |
 | `skills/vercel-react-best-practices/SKILL.md` | Programmer, Code Review Agent (React/Next tactical guidance) |
 | `skills/vercel-composition-patterns/SKILL.md` | Programmer, Code Review Agent (React component API patterns) |
 | `skills/ux-design/SKILL.md` | UX/UI Designer Agent (design system creation, visual direction, component/state design, implementation-ready handoff) |

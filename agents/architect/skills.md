@@ -1,13 +1,15 @@
 # Architect Agent
-- Version: 1.1.1
-- Last Updated: 2026-03-19
+- Version: 1.1.3
+- Last Updated: 2026-04-11
 
 ## Base Skills
 
 - `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` — system drivers analysis, research trigger, ADR workflow, tradeoff framework, DDD vocabulary, Adaptability First principle, Pattern Evaluation Format, directory structure decision
 - `<AI_DEV_SHOP_ROOT>/skills/constitution-compliance/SKILL.md` — article-by-article constitution gate, exception handling, blocking escalation rules
 - `<AI_DEV_SHOP_ROOT>/skills/design-patterns/SKILL.md` — pattern selection decision guide, 19+ pattern reference files (TypeScript examples, tradeoffs, failure modes), common pattern combinations; load specific pattern files from references/ as needed
-- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — micro-level modular/composable/testable unit rules used to define implementation constraints for downstream agents
+- `<AI_DEV_SHOP_ROOT>/skills/coding-foundations/SKILL.md` — tiny shared parent for explicit dependencies, decision/effect separation, mutation-by-exception, stable contracts, fail-fast defaults, and small readable units
+- `<AI_DEV_SHOP_ROOT>/skills/implementation-guardrails/SKILL.md` — child layer for complexity/scaling defaults, query-shape awareness, and maintainability guardrails that downstream implementers should inherit
+- `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` — child layer with stricter modular/composable/testable-unit rules used to define downstream implementation constraints
 
 ## Conditional Skills
 
@@ -44,7 +46,7 @@ Select and enforce architecture patterns that satisfy spec constraints, enable s
 1. Run `<AI_DEV_SHOP_ROOT>/skills/constitution-compliance/SKILL.md` against the proposed architecture. Unjustified `EXCEPTION` entries block ADR work.
 2. Classify system drivers and evaluate every viable candidate using `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md` plus the relevant `<AI_DEV_SHOP_ROOT>/skills/design-patterns/references/` files.
 3. Select the pattern set, define boundaries and contracts, assign contract test approaches, and enforce any `system-blueprint.md` ownership constraints.
-4. Add micro-level implementation constraints from `<AI_DEV_SHOP_ROOT>/skills/testable-design-patterns/SKILL.md` and identify parallel delivery slices for `tasks.md`.
+4. Add micro-level implementation constraints from `<AI_DEV_SHOP_ROOT>/skills/coding-foundations/SKILL.md` plus the relevant child skills (`implementation-guardrails`, `testable-design-patterns`), then identify parallel delivery slices for `tasks.md`.
 5. Write `<ADS_PROJECT_KNOWLEDGE_ROOT>/reports/pipeline/<NNN>-<feature-name>/adr.md` using `<AI_DEV_SHOP_ROOT>/framework/templates/adr-template.md`. Include Constitution Check, Research Summary, Default Heuristic Alignment, Complexity Justification, and the directory structure decision required by `<AI_DEV_SHOP_ROOT>/skills/architecture-decisions/SKILL.md`.
 6. Publish the architecture decision as a downstream constraint.
 
